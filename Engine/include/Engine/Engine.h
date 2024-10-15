@@ -7,7 +7,9 @@
 #include <string_view>
 
 #include "Color.h"
+#include "Logger.h"
 #include "Event.h"
+#include "PrimitiveRenderer.h"
 
 struct Resolution
 {
@@ -43,8 +45,16 @@ public:
 
 	void run();
 
+	Logger& logger() { return _logger; }
+	const Logger& logger() const { return _logger; }
+
+	PrimitiveRenderer& renderer() { return _renderer; }
+	const PrimitiveRenderer& renderer() const { return _renderer; }
+
 private:
 	sf::RenderWindow _window;
+	Logger _logger;
+	PrimitiveRenderer _renderer;
 	OnInitFunc _init_func;
 	OnUpdateFunc _update_func;
 	OnEventFunc _event_func;

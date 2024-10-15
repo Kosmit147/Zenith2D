@@ -27,7 +27,7 @@ public:
 
     inline const KeyEvent& key_event() const
     { 
-        assert(_type != EventType::KeyPressed && _type != EventType::KeyReleased);
+        assert(_type == EventType::KeyPressed || _type == EventType::KeyReleased);
         return _key_event;
     }
 

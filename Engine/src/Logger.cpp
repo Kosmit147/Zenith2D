@@ -18,18 +18,18 @@ void Logger::log(std::string_view message, LogSeverity severity) const
 		switch (severity)
 		{
 		case LogSeverity::Notification:
-			log_notification(message);
+			log_notification("{}", message);
 			break;
 		case LogSeverity::Warning:
-			log_warning(message);
+			log_warning("{}", message);
 			break;
 		case LogSeverity::Error:
-			log_error(message);
+			log_error("{}", message);
 			break;
 		}
     }
 
 	if (log_file_path)
-		write_to_file(log_file_path.value(), message);
+		append_to_file(log_file_path.value(), message);
 }
 

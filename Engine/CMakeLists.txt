@@ -18,7 +18,8 @@ add_library(Engine
     "src/Event.cpp"
     "src/Key.cpp"
     "src/Logger.cpp"
-)
+    "src/PrimitiveRenderer.cpp"
+ "include/Engine/PrimitiveRenderer.h" "src/PrimitiveRenderer.cpp")
 target_include_directories(Engine PRIVATE include/Engine)
 target_include_directories(Engine INTERFACE include)
 target_link_libraries(Engine PUBLIC sfml-graphics)

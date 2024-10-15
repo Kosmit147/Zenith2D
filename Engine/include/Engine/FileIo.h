@@ -24,16 +24,33 @@ inline std::optional<std::stringstream> read_from_file(const std::filesystem::pa
     if (!stream.good()) [[unlikely]]
         return {};
 
-    return std::optional<std::stringstream>{ stream };
+    // return std::optional<std::stringstream>{ stream };
+    return stream;
 }
 
 // TODO: move to cpp file
 inline bool write_to_file(const std::filesystem::path& path, std::string_view content)
 {
-    if (!std::filesystem::exists(path)) [[unlikely]]
+    std::ofstream file(path);
+
+    if (!file.good())
         return false;
 
-    std::ofstream file(path);
+    file << content.data();
+
+    if (!file.good())
+        return false;
+
+    return true;
+}
+
+inline bool append_to_file(const std::filesystem::path& path, std::string_view content)
+{
+    std::ofstream file(path, std::ios::app);
+
+    if (!file.good())
+        return false;
+
     file << content.data();
 
     if (!file.good())

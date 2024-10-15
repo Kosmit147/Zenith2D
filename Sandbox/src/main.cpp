@@ -10,7 +10,7 @@ static void on_init()
 
 static void on_update(uint64_t delta_time)
 {
-    // std::println("On Update with delta time: {}", delta_time);
+    std::println("On Update with delta time: {} ms.", delta_time);
 }
 
 static void on_event(const Event& e)
@@ -42,5 +42,9 @@ int main()
 	};
 
 	Engine e{ window_params, on_init, on_update, on_event };
+	e.logger().log_to_console = false;
+	e.logger().log_file_path = "../test.xd";
+	e.logger().log("XDDDD", LogSeverity::Error);
+	e.clear_color = Color::Black;
 	e.run();
 }

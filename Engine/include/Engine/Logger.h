@@ -3,6 +3,7 @@
 #include <print>
 #include <format>
 #include <filesystem>
+#include <iostream>
 #include <utility>
 #include <string_view>
 #include <optional>
@@ -15,20 +16,21 @@ static const char* reset = "\x1b[0m";
 } // namespace ansi_colors
 
 template<typename... Args>
-inline auto log_notification(std::format_string<Args...>&& format, Args&&... args) -> void
+inline void log_notification(std::format_string<Args...>&& format, Args&&... args)
 {
     std::println(std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
 };
 
 template<typename... Args>
-inline auto log_warning(std::format_string<Args...>&& format, Args&&... args) -> void
+inline void log_warning(std::format_string<Args...>&& format, Args&&... args)
 {
     std::cout << ansi_colors::yellow;
     std::println(std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
     std::cout << ansi_colors::reset;
 }
 
-template<typename... Args> inline auto log_error(std::format_string<Args...>&& format, Args&&... args) -> void
+template<typename... Args>
+inline void log_error(std::format_string<Args...>&& format, Args&&... args)
 {
     std::cout << ansi_colors::red;
     std::println(stderr, std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
