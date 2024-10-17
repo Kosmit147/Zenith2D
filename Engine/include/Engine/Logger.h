@@ -11,10 +11,10 @@
 #include "LoggingOptions.h"
 
 namespace ansi_colors {
-constexpr auto red = "\x1b[31m";
-constexpr auto yellow = "\x1b[33m";
-constexpr auto white = "\x1b[37m";
-constexpr auto reset = "\x1b[0m";
+inline auto red = "\x1b[31m";
+inline auto yellow = "\x1b[33m";
+inline auto white = "\x1b[37m";
+inline auto reset = "\x1b[0m";
 } // namespace ansi_colors
 
 class Logger
