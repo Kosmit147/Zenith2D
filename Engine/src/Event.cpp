@@ -6,11 +6,17 @@ std::optional<Event> Event::create_from_sf_event(const sf::Event& event)
 
     switch (event.type)
     {
+    case sf::Event::Closed:
+        ret = { EventType::WindowClosed };
+        break;
+    case sf::Event::Resized:
+        // TODO
+        break;
     case sf::Event::KeyPressed:
-        ret = { EventType::KeyPressed, KeyEvent { .key = key_from_sf_scancode(event.key.scancode) } };
+        ret = { EventType::KeyPressed, KeyEvent{ .key = key_from_sf_scancode(event.key.scancode) } };
         break;
     case sf::Event::KeyReleased:
-        ret = { EventType::KeyReleased, KeyEvent { .key = key_from_sf_scancode(event.key.scancode) } };
+        ret = { EventType::KeyReleased, KeyEvent{ .key = key_from_sf_scancode(event.key.scancode) } };
         break;
     }
 

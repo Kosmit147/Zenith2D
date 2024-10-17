@@ -1,57 +1,53 @@
 #pragma once
 
-#include <print>
-#include <format>
 #include <filesystem>
+#include <format>
 #include <iostream>
-#include <utility>
-#include <string_view>
 #include <optional>
+#include <print>
+#include <string_view>
+#include <utility>
+
+#include "LoggingOptions.h"
 
 namespace ansi_colors {
-static const char* red = "\x1b[31m";
-static const char* yellow = "\x1b[33m";
-static const char* white = "\x1b[37m";
-static const char* reset = "\x1b[0m";
+constexpr auto red = "\x1b[31m";
+constexpr auto yellow = "\x1b[33m";
+constexpr auto white = "\x1b[37m";
+constexpr auto reset = "\x1b[0m";
 } // namespace ansi_colors
-
-template<typename... Args>
-inline void log_notification(std::format_string<Args...>&& format, Args&&... args)
-{
-    std::println(std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
-};
-
-template<typename... Args>
-inline void log_warning(std::format_string<Args...>&& format, Args&&... args)
-{
-    std::cout << ansi_colors::yellow;
-    std::println(std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
-    std::cout << ansi_colors::reset;
-}
-
-template<typename... Args>
-inline void log_error(std::format_string<Args...>&& format, Args&&... args)
-{
-    std::cout << ansi_colors::red;
-    std::println(stderr, std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
-    std::cout << ansi_colors::reset;
-}
-
-enum class LogSeverity
-{
-    Notification,
-    Warning,
-    Error,
-};
 
 class Logger
 {
 public:
-    Logger(bool log_to_console, const std::filesystem::path& log_file_path = "");
+    LogTarget log_target;
+    std::optional<std::filesystem::path> log_file_path;
+
+public:
+    Logger(LogTarget log_target, const std::filesystem::path& log_file_path = "");
 
     void log(std::string_view message, LogSeverity severity) const;
 
-public:
-    bool log_to_console;
-    std::optional<std::filesystem::path> log_file_path;
+private:
+    template<typename... Args>
+    inline void log_notification(std::format_string<Args...>&& format, Args&&... args) const
+    {
+        std::println(std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
+    };
+
+    template<typename... Args>
+    inline void log_warning(std::format_string<Args...>&& format, Args&&... args) const
+    {
+        std::cout << ansi_colors::yellow;
+        std::println(std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
+        std::cout << ansi_colors::reset;
+    }
+
+    template<typename... Args>
+    inline void log_error(std::format_string<Args...>&& format, Args&&... args) const
+    {
+        std::cout << ansi_colors::red;
+        std::println(stderr, std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
+        std::cout << ansi_colors::reset;
+    }
 };

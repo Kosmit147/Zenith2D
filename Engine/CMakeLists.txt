@@ -16,10 +16,12 @@ add_library(Engine
     "src/Color.cpp"
     "src/Engine.cpp"
     "src/Event.cpp"
+    "src/FileIo.cpp"
     "src/Key.cpp"
     "src/Logger.cpp"
     "src/PrimitiveRenderer.cpp"
- "include/Engine/PrimitiveRenderer.h" "src/PrimitiveRenderer.cpp")
+    "src/Window.cpp"
+)
 target_include_directories(Engine PRIVATE include/Engine)
 target_include_directories(Engine INTERFACE include)
 target_link_libraries(Engine PUBLIC sfml-graphics)

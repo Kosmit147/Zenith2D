@@ -4,28 +4,19 @@
 
 #include <utility>
 
-static inline uint32_t get_window_style(const WindowParams& params)
+Engine::Engine(const WindowParams& window_params, const OnInitFunc& init_func,
+               const OnUpdateFunc& update_func, const OnEventFunc& event_func)
+    : _window(window_params), _init_func(init_func), _update_func(update_func), _event_func(event_func),
+      _logger(true), _renderer(&_window)
 {
-    if (params.fullscreen)
-        return sf::Style::Default | sf::Style::Fullscreen;
-    else
-        return sf::Style::Default;
-}
-
-Engine::Engine(const WindowParams& window_params, const OnInitFunc& init_func, const OnUpdateFunc& update_func, const OnEventFunc& event_func)
-    : _window(static_cast<sf::VideoMode>(window_params.resolution), window_params.title.data(), get_window_style(window_params)),
-      _init_func(init_func), _update_func(update_func), _event_func(event_func), _logger(true), _renderer(&_window)
-{
-    _window.setFramerateLimit(window_params.framerate_limit);
     _init_func();
 }
 
-Engine::Engine(const WindowParams& window_params, OnInitFunc&& init_func, OnUpdateFunc&& update_func, OnEventFunc&& event_func)
-    : _window(static_cast<sf::VideoMode>(window_params.resolution), window_params.title.data(), get_window_style(window_params)),
-      _init_func(std::move(init_func)), _update_func(std::move(update_func)), _event_func(std::move(event_func)),
-	  _logger(true), _renderer(&_window)
+Engine::Engine(const WindowParams& window_params, OnInitFunc&& init_func, OnUpdateFunc&& update_func,
+               OnEventFunc&& event_func)
+    : _window(window_params), _init_func(std::move(init_func)), _update_func(std::move(update_func)),
+      _event_func(std::move(event_func)), _logger(true), _renderer(&_window)
 {
-    _window.setFramerateLimit(window_params.framerate_limit);
     _init_func();
 }
 
@@ -33,21 +24,25 @@ void Engine::run()
 {
     sf::Clock delta_clock;
 
-    while (_window.isOpen())
+    while (_window.is_open())
     {
-        for (auto sf_event = sf::Event{}; _window.pollEvent(sf_event);)
+        for (auto event = _window.poll_event(); event;)
         {
-            if (sf_event.type == sf::Event::Closed)
+            auto& ev = event.value();
+
+            if (ev.type() == EventType::WindowClosed)
+            {
                 _window.close();
-            
-            if (auto event = Event::create_from_sf_event(sf_event); event)
-				_event_func(event.value());
+                return;
+            }
+
+			_event_func(ev);
         }
 
         auto delta_time = delta_clock.restart().asMicroseconds();
         _update_func(delta_time);
 
-        _window.clear(static_cast<sf::Color>(clear_color));
+        _window.clear();
 
         Line lines[] = {
             Line{ { 2.0f, 2.0f }, { 2.0f, 1000.0f } },
