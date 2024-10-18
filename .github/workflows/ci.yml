@@ -38,9 +38,9 @@ jobs:
     - name: Update Clang
       if: matrix.platform.name == 'Linux Clang'
       run: |
-          sudo apt install clang-19 
-          echo "CXX=clang-19" >> $GITHUB_ENV
-          echo "C=clang-19" >> $GITHUB_ENV
+          sudo apt install clang-18 
+          echo "CXX=clang++-18" >> $GITHUB_ENV
+          echo "C=clang-18" >> $GITHUB_ENV
 
     - name: Checkout
       uses: actions/checkout@v4
