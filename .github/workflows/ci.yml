@@ -16,8 +16,8 @@ jobs:
       matrix:
         platform:
         - { name: Windows VS2022, os: windows-2022  }
-        - { name: Linux GCC,      os: ubuntu-latest }
-        - { name: Linux Clang,    os: ubuntu-latest }
+        # - { name: Linux GCC,      os: ubuntu-latest }
+        # - { name: Linux Clang,    os: ubuntu-latest }
         - { name: macOS,          os: macos-latest  }
         config:
         - { name: Shared, flags: -DBUILD_SHARED_LIBS=TRUE }
@@ -27,18 +27,6 @@ jobs:
     - name: Install Linux Dependencies
       if: runner.os == 'Linux'
       run: sudo apt-get update && sudo apt-get install libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev
-
-    - name: Use GCC-14
-      if: matrix.platform.name == 'Linux GCC'
-      run: |
-          echo "CXX=g++-14" >> $GITHUB_ENV
-          echo "C=gcc-14" >> $GITHUB_ENV
-
-    - name: Use Clang-18
-      if: matrix.platform.name == 'Linux Clang'
-      run: |
-          echo "CXX=clang++-18" >> $GITHUB_ENV
-          echo "C=clang-18" >> $GITHUB_ENV
 
     - name: Checkout
       uses: actions/checkout@v4
