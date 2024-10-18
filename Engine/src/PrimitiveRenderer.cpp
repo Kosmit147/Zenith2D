@@ -20,20 +20,20 @@ void PrimitiveRenderer::draw(const Line& line, LineRenderingAlgorithm alg)
             m = (line.to.x - line.from.x) / (line.to.y - line.from.y);
             float x = line.from.x;
 
-            for (int y = line.from.y; y < line.to.y; y++)
+            for (int y = static_cast<int>(line.from.y); y < static_cast<int>(line.to.y); y++)
             {
                 x += m;
-                draw(Point2D{ std::round(x), (float)y });
+                draw(Point2D{ std::round(x), static_cast<float>(y) });
             }
         }
         else
         {
             float y = line.from.y;
 
-            for (int x = line.from.x; x < line.to.x; x++)
+            for (int x = static_cast<int>(line.from.x); x < static_cast<int>(line.to.x); x++)
             {
                 y += m;
-                draw(Point2D{ (float)x, std::round(y) });
+                draw(Point2D{ static_cast<float>(x), std::round(y) });
             }
         }
     }

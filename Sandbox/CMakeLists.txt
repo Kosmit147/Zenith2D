@@ -10,3 +10,5 @@ else()
 endif()
 
 target_compile_features(Sandbox PRIVATE cxx_std_23)
+target_compile_options(Sandbox PRIVATE ${COMPILE_WARNINGS})
+set_property(TARGET Sandbox PROPERTY COMPILE_WARNING_AS_ERROR ON)

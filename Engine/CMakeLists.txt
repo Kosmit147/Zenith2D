@@ -25,6 +25,8 @@ target_include_directories(Engine PRIVATE include/Engine)
 target_include_directories(Engine INTERFACE include)
 target_link_libraries(Engine PUBLIC sfml-graphics)
 target_compile_features(Engine PRIVATE cxx_std_23)
+target_compile_options(Engine PRIVATE ${COMPILE_WARNINGS})
+set_property(TARGET Engine PROPERTY COMPILE_WARNING_AS_ERROR ON)
 
 if(WIN32)
     add_custom_command(

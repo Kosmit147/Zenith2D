@@ -1,5 +1,7 @@
 #include "Key.h"
+
 #include <cstddef>
+
 static const char* key_names[] = {
     "Unknown",
     "A",

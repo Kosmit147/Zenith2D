@@ -29,5 +29,5 @@ void Logger::log(std::string_view message, LogSeverity severity) const
     }
 
     if ((log_target & LogTarget::File) && log_file_path)
-        append_to_file(log_file_path.value(), message);
+        append_to_file_with_newline(log_file_path.value(), message);
 }
