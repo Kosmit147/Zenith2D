@@ -1,7 +1,5 @@
 #include "Engine.h"
-
 #include <SFML/System/Time.hpp>
-
 #include <utility>
 
 Engine::Engine(const WindowParams& window_params, const OnInitFunc& init_func,
@@ -52,7 +50,8 @@ void Engine::run()
 
         _renderer.draw(Point2D{ 300.0f, 300.0f });
         _renderer.draw(lines);
-
+        _renderer.draw(Circle{ Point2D{ 100.0f, 100.0f }, 50.0f });
+        _renderer.draw(Ellipse{ Point2D{ 300.0f, 300.0f }, 50.0f, 80.0f });
         _window.display();
     }
 }

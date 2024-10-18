@@ -1,5 +1,4 @@
 #include "PrimitiveRenderer.h"
-
 #include <math.h>
 
 void PrimitiveRenderer::draw(Point2D point)
@@ -50,4 +49,51 @@ void PrimitiveRenderer::draw(std::span<Line> lines, LineRenderingAlgorithm alg)
 {
     for (const auto& line : lines)
         draw(line, alg);
+}
+
+void PrimitiveRenderer::draw(const Circle& circle)
+{
+    float a, step;
+    float x, y, xc, yc;
+    xc = circle.centerPoint.x;
+    yc = circle.centerPoint.y;
+    step = 1.0 / circle.R;
+    for (a = 0; a < M_PI / 4; a += step)
+    {
+        x = circle.R * std::cos(a);
+        y = circle.R * std::sin(a);
+
+        draw(Point2D{ xc + x + 0.5f, yc + y + 0.5f });
+        draw(Point2D{ yc + y + 0.5f, xc + x + 0.5f });
+        draw(Point2D{ xc - x + 0.5f, yc + y + 0.5f });
+        draw(Point2D{ yc - y + 0.5f, xc + x + 0.5f });
+        draw(Point2D{ xc - x + 0.5f, yc - y + 0.5f });
+        draw(Point2D{ yc - y + 0.5f, xc - x + 0.5f });
+        draw(Point2D{ yc + y + 0.5f, xc - x + 0.5f });
+        draw(Point2D{ xc + x + 0.5f, yc - y + 0.5f });
+    }
+}
+
+void PrimitiveRenderer::draw(const Ellipse& ellipse)
+{
+    float a, step;
+    float x, y, xc, yc;
+
+    xc = ellipse.centerPoint.x;
+    yc = ellipse.centerPoint.y;
+
+    if (ellipse.Rx > ellipse.Ry)
+        step = 1.0 / ellipse.Rx;
+    else
+        step = 1.0 / ellipse.Ry;
+
+    for (a = 0; a < M_PI / 2; a += step)
+    {
+        x = ellipse.Rx * std::cos(a);
+        y = ellipse.Ry * std::sin(a);
+        draw(Point2D{ xc + x, yc + y });
+        draw(Point2D{ xc - x, yc + y });
+        draw(Point2D{ xc - x, yc - y });
+        draw(Point2D{ xc + x, yc - y });
+    }
 }
