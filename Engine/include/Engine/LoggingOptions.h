@@ -30,12 +30,12 @@ constexpr inline LogTargetType operator|(LogTarget lhs, LogTarget rhs)
     return static_cast<LogTargetType>(lhs) | static_cast<LogTargetType>(rhs);
 }
 
-constexpr inline LogTargetType operator==(LogTarget lhs, LogTarget rhs)
+inline LogTargetType operator==(LogTarget lhs, LogTarget rhs)
 {
-    static_assert(false);
+    assert(false);
 }
 
-constexpr inline LogTargetType operator!=(LogTarget lhs, LogTarget rhs)
+inline LogTargetType operator!=(LogTarget lhs, LogTarget rhs)
 {
-    static_assert(false);
+    assert(false);
 }

@@ -159,4 +159,4 @@ constexpr auto key_from_sf_scancode(sf::Keyboard::Scancode code)
     return static_cast<Key>(code);
 }
 
-const char* key_to_string(Key key);
+const char* to_string(Key key);

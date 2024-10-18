@@ -2,9 +2,9 @@
 
 #include "FileIo.h"
 
-Logger::Logger(LogTarget log_target, const std::filesystem::path& log_file_path = "") : log_target(log_target)
+Logger::Logger(LogTarget log_target, const std::filesystem::path& log_file_path) : log_target(log_target)
 {
-    if (std::filesystem::exists(log_file_path))
+    if (!log_file_path.empty())
         this->log_file_path = log_file_path;
     else
         this->log_file_path = {};

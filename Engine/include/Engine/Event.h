@@ -4,7 +4,6 @@
 
 #include <cassert>
 #include <optional>
-#include <variant>
 
 #include "Key.h"
 
@@ -27,14 +26,14 @@ public:
 
     inline auto type() const { return _type; }
 
-    inline const KeyEvent& key_event() const
+    inline auto& key_event() const
     {
         assert(_type == EventType::KeyPressed || _type == EventType::KeyReleased);
         return _key_event;
     }
 
 private:
-    inline Event(EventType event_type) : _type(event_type), _dummy() {}
+    inline Event(EventType event_type) : _type(event_type), _dummy(false) {}
     inline Event(EventType event_type, KeyEvent key_event) : _type(event_type), _key_event(key_event) {}
 
 private:
@@ -42,7 +41,7 @@ private:
 
     union
     {
-        std::monostate _dummy;
+        bool _dummy;
         KeyEvent _key_event;
     };
 };

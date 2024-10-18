@@ -4,8 +4,8 @@
 
 #include <span>
 
-#include "Window.h"
 #include "Geometry.h"
+#include "Window.h"
 
 enum class LineRenderingAlgorithm
 {

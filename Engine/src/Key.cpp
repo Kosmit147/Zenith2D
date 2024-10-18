@@ -150,7 +150,7 @@ static const char* key_names[] = {
     "LaunchMediaSelect",
 };
 
-const char* key_to_string(Key key)
+const char* to_string(Key key)
 {
     return key_names[static_cast<size_t>(key) + 1];
 }

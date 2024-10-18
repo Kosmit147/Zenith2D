@@ -6,14 +6,13 @@ void PrimitiveRenderer::draw(Point2D point)
 {
     sf::RectangleShape drawable;
     sf::Vertex vertex({ point.x, point.y }, sf::Color::Green);
-    _window->draw(&vertex, 1, sf::Points);
+    _window->sf_window().draw(&vertex, 1, sf::Points);
 }
 
 void PrimitiveRenderer::draw(const Line& line, LineRenderingAlgorithm alg)
 {
     if (alg == LineRenderingAlgorithm::Incremental)
     {
-
         float m = (line.to.y - line.from.y) / (line.to.x - line.from.x);
 
         if (m > 1.0f)
@@ -43,12 +42,12 @@ void PrimitiveRenderer::draw(const Line& line, LineRenderingAlgorithm alg)
         sf::Vertex drawable[] = { sf::Vertex(sf::Vector2f(line.from.x, line.from.y)),
                                   sf::Vertex(sf::Vector2f(line.to.x, line.to.y)) };
 
-        _window->draw(drawable, 2, sf::Lines);
+        _window->sf_window().draw(drawable, 2, sf::Lines);
     }
 }
 
 void PrimitiveRenderer::draw(std::span<Line> lines, LineRenderingAlgorithm alg)
 {
-    for (auto& line : lines)
+    for (const auto& line : lines)
         draw(line, alg);
 }
