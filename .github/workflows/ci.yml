@@ -28,17 +28,15 @@ jobs:
       if: runner.os == 'Linux'
       run: sudo apt-get update && sudo apt-get install libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev
 
-    - name: Update GCC
+    - name: Use GCC-14
       if: matrix.platform.name == 'Linux GCC'
       run: |
-          sudo apt install gcc-14 g++-14
           echo "CXX=g++-14" >> $GITHUB_ENV
           echo "C=gcc-14" >> $GITHUB_ENV
 
-    - name: Update Clang
+    - name: Use Clang-18
       if: matrix.platform.name == 'Linux Clang'
       run: |
-          sudo apt install clang-18 
           echo "CXX=clang++-18" >> $GITHUB_ENV
           echo "C=clang-18" >> $GITHUB_ENV
 
