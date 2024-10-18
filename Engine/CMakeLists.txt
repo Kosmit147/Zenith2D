@@ -20,6 +20,7 @@ add_library(Engine
     "src/Logger.cpp"
     "src/PrimitiveRenderer.cpp"
     "src/Window.cpp"
+    "src/Helpers.cpp"
 )
 target_include_directories(Engine PRIVATE include/Engine)
 target_include_directories(Engine INTERFACE include)
