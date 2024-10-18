@@ -6,7 +6,7 @@
 
 Engine::Engine(const WindowParams& window_params, const OnInitFunc& init_func,
                const OnUpdateFunc& update_func, const OnEventFunc& event_func)
-    : _window(window_params), _init_func(init_func), _update_func(update_func), _event_func(event_func),
+    : _init_func(init_func), _update_func(update_func), _event_func(event_func), _window(window_params),
       _logger(LogTarget::Console), _renderer(&_window)
 {
     _init_func();
@@ -14,8 +14,9 @@ Engine::Engine(const WindowParams& window_params, const OnInitFunc& init_func,
 
 Engine::Engine(const WindowParams& window_params, OnInitFunc&& init_func, OnUpdateFunc&& update_func,
                OnEventFunc&& event_func)
-    : _window(window_params), _init_func(std::move(init_func)), _update_func(std::move(update_func)),
-      _event_func(std::move(event_func)), _logger(LogTarget::Console), _renderer(&_window)
+    : _init_func(std::move(init_func)), _update_func(std::move(update_func)),
+      _event_func(std::move(event_func)), _window(window_params), _logger(LogTarget::Console),
+      _renderer(&_window)
 {
     _init_func();
 }
@@ -39,7 +40,7 @@ void Engine::run()
             _event_func(ev);
         }
 
-        auto delta_time = delta_clock.restart().asMicroseconds();
+        auto delta_time = static_cast<uint64_t>(delta_clock.restart().asMicroseconds());
         _update_func(delta_time);
 
         _window.clear();

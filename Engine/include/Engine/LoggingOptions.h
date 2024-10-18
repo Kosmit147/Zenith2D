@@ -1,6 +1,5 @@
 #pragma once
 
-#include <cassert>
 #include <cstdint>
 
 enum class LogSeverity
@@ -12,7 +11,7 @@ enum class LogSeverity
 
 using LogTargetType = uint32_t;
 
-enum class LogTarget : LogTargetType 
+enum class LogTarget : LogTargetType
 {
     None = 0,
     Console = 1 << 0,
@@ -30,12 +29,5 @@ constexpr inline LogTargetType operator|(LogTarget lhs, LogTarget rhs)
     return static_cast<LogTargetType>(lhs) | static_cast<LogTargetType>(rhs);
 }
 
-inline LogTargetType operator==(LogTarget lhs, LogTarget rhs)
-{
-    assert(false);
-}
-
-inline LogTargetType operator!=(LogTarget lhs, LogTarget rhs)
-{
-    assert(false);
-}
+LogTargetType operator==(LogTarget, LogTarget) = delete;
+LogTargetType operator!=(LogTarget, LogTarget) = delete;

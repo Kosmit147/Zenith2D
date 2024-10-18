@@ -29,6 +29,8 @@ static void on_event(const Event& e)
         std::println("{} key released.", to_string(key_event.key));
     }
     break;
+    default:
+        break;
     }
 }
 
@@ -43,8 +45,8 @@ int main()
 
     Engine e{ window_params, on_init, on_update, on_event };
     e.logger().log_target = LogTarget::ConsoleAndFile;
-    e.logger().log_file_path = "../test.txt";
-    e.logger().log("XDDDD", LogSeverity::Error);
+    e.logger().log_file_path = "../log.txt";
+    e.logger().log("Logger Test", LogSeverity::Error);
     e.window().clear_color = Color::Black;
     e.run();
 }
