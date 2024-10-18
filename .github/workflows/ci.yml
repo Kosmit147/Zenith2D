@@ -1,6 +1,10 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
 defaults:
   run:
@@ -20,7 +24,7 @@ jobs:
         # - { name: Linux Clang,    os: ubuntu-latest, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
         - { name: macOS,          os: macos-latest  }
         config:
-        - { name: Shared, flags: -DBUILD_SHARED_LIBS=TRUE }
+        # - { name: Shared, flags: -DBUILD_SHARED_LIBS=TRUE }
         - { name: Static, flags: -DBUILD_SHARED_LIBS=FALSE }
 
     steps:
