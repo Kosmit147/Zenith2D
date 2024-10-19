@@ -7,7 +7,7 @@
 Engine::Engine(const WindowParams& window_params, const OnInitFunc& init_func,
                const OnUpdateFunc& update_func, const OnEventFunc& event_func)
     : _init_func(init_func), _update_func(update_func), _event_func(event_func), _window(window_params),
-      _logger(LogTarget::Console), _renderer(&_window)
+      _logger(LogTarget::Console)
 {
     _init_func();
 }
@@ -15,8 +15,7 @@ Engine::Engine(const WindowParams& window_params, const OnInitFunc& init_func,
 Engine::Engine(const WindowParams& window_params, OnInitFunc&& init_func, OnUpdateFunc&& update_func,
                OnEventFunc&& event_func)
     : _init_func(std::move(init_func)), _update_func(std::move(update_func)),
-      _event_func(std::move(event_func)), _window(window_params), _logger(LogTarget::Console),
-      _renderer(&_window)
+      _event_func(std::move(event_func)), _window(window_params), _logger(LogTarget::Console)
 {
     _init_func();
 }
@@ -27,7 +26,9 @@ void Engine::run()
 
     while (_window.is_open())
     {
-        for (auto event = _window.poll_event(); event;)
+        _window.clear();
+
+        while (auto event = _window.poll_event())
         {
             const auto& ev = event.value();
 
@@ -41,18 +42,7 @@ void Engine::run()
         }
 
         auto delta_time = static_cast<uint64_t>(delta_clock.restart().asMicroseconds());
-        _update_func(delta_time);
-
-        _window.clear();
-
-        Line lines[] = {
-            Line{ { 2.0f, 2.0f }, { 2.0f, 1000.0f } },
-            Line{ { 2.0f, 1000.0f }, { 150.0f, 600.0f } },
-            Line{ { 150.0f, 600.0f }, { 1000.0f, 27.0f } },
-        };
-
-        _renderer.draw(Point2D{ 300.0f, 300.0f });
-        _renderer.draw(lines);
+        _update_func(_window.renderer(), _logger, delta_time);
 
         _window.display();
     }

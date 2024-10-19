@@ -2,14 +2,6 @@
 
 #include "FileIo.h"
 
-Logger::Logger(LogTarget log_target, const std::filesystem::path& log_file_path) : log_target(log_target)
-{
-    if (!log_file_path.empty())
-        this->log_file_path = log_file_path;
-    else
-        this->log_file_path = {};
-}
-
 void Logger::log(std::string_view message, LogSeverity severity) const
 {
     if (log_target & LogTarget::Console)
@@ -17,17 +9,29 @@ void Logger::log(std::string_view message, LogSeverity severity) const
         switch (severity)
         {
         case LogSeverity::Notification:
-            log_notification("{}", message);
+            print_notification("{}", message);
             break;
         case LogSeverity::Warning:
-            log_warning("{}", message);
+            print_warning("{}", message);
             break;
         case LogSeverity::Error:
-            log_error("{}", message);
+            print_error("{}", message);
             break;
         }
     }
 
-    if ((log_target & LogTarget::File) && log_file_path)
-        append_to_file_with_newline(log_file_path.value(), message);
+    if (log_target & LogTarget::File)
+    {
+        if (!log_file_path.empty())
+        {
+            auto success = append_to_file_with_newline(log_file_path, message);
+
+            if (!success)
+                print_error("Failed to write to log file: {}.", log_file_path.string());
+        }
+        else
+        {
+            print_error("Log file path not set.");
+        }
+    }
 }
