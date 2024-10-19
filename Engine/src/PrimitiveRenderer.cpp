@@ -58,12 +58,12 @@ void PrimitiveRenderer::draw_line_incremental(const Line& line, const Color& col
 
         float x = start_point.x;
         int32_t y = static_cast<int32_t>(start_point.y);
+        auto end_y = static_cast<int32_t>(end_point.y);
 
-        for (size_t i = 0; y < end_point.y; i++)
+        for (; y <= end_y; y++)
         {
             x += slope;
             draw(Point2D{ x, static_cast<float>(y) }, color);
-            y++;
         }
     }
     else
@@ -73,13 +73,13 @@ void PrimitiveRenderer::draw_line_incremental(const Line& line, const Color& col
             std::minmax(line.from, line.to, [](auto& from, auto& to) { return from.x < to.x; });
 
         int32_t x = static_cast<int32_t>(start_point.x);
+        auto end_x = static_cast<int32_t>(end_point.x);
         float y = start_point.y;
 
-        for (size_t i = 0; x < end_point.x; i++)
+        for (; x <= end_x; x++)
         {
             y += slope;
             draw(Point2D{ static_cast<float>(x), y }, color);
-            x++;
         }
     }
 }
