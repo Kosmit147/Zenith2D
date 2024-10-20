@@ -1,16 +1,19 @@
 #include "PrimitiveRenderer.h"
-#include <math.h>
 
-void PrimitiveRenderer::draw(Point2D point)
+#include <algorithm>
+#include <cmath>
+#include <numbers>
+
+void PrimitiveRenderer::draw(Point2D point, const Color& color)
 {
     sf::RectangleShape drawable;
-    sf::Vertex vertex({ point.x, point.y }, sf::Color::Green);
+    sf::Vertex vertex({ point.x, point.y }, static_cast<sf::Color>(color));
     _window->sf_window().draw(&vertex, 1, sf::Points);
 }
 
-void PrimitiveRenderer::draw(const Line& line, LineRenderingAlgorithm alg)
+void PrimitiveRenderer::draw(const Line& line, const Color& color, RenderingAlgorithm alg)
 {
-    if (alg == LineRenderingAlgorithm::Incremental)
+    if (alg == RenderingAlgorithm::Custom)
     {
         float m = (line.to.y - line.from.y) / (line.to.x - line.from.x);
 
@@ -36,64 +39,59 @@ void PrimitiveRenderer::draw(const Line& line, LineRenderingAlgorithm alg)
             }
         }
     }
-    else if (alg == LineRenderingAlgorithm::Default)
+    else if (alg == RenderingAlgorithm::SFML)
     {
-        sf::Vertex drawable[] = { sf::Vertex(sf::Vector2f(line.from.x, line.from.y)),
-                                  sf::Vertex(sf::Vector2f(line.to.x, line.to.y)) };
+        sf::Vertex drawable[] = {
+            sf::Vertex{ static_cast<sf::Vector2f>(line.from), static_cast<sf::Color>(color) },
+            sf::Vertex{ static_cast<sf::Vector2f>(line.to), static_cast<sf::Color>(color) }
+        };
 
         _window->sf_window().draw(drawable, 2, sf::Lines);
     }
 }
 
-void PrimitiveRenderer::draw(std::span<Line> lines, LineRenderingAlgorithm alg)
+void PrimitiveRenderer::draw(std::span<Line> lines, const Color& color, RenderingAlgorithm alg)
 {
     for (const auto& line : lines)
-        draw(line, alg);
+        draw(line, color, alg);
 }
 
-void PrimitiveRenderer::draw(const Circle& circle)
+void PrimitiveRenderer::draw(const Circle& circle, const Color& color, [[maybe_unused]] RenderingAlgorithm alg)
 {
-    float a, step;
-    float x, y, xc, yc;
-    xc = circle.centerPoint.x;
-    yc = circle.centerPoint.y;
-    step = 1.0 / circle.R;
-    for (a = 0; a < M_PI / 4; a += step)
-    {
-        x = circle.R * std::cos(a);
-        y = circle.R * std::sin(a);
+    float xc = circle.center.x;
+    float yc = circle.center.y;
+    float step = 1.0f / circle.radius;
 
-        draw(Point2D{ xc + x + 0.5f, yc + y + 0.5f });
-        draw(Point2D{ yc + y + 0.5f, xc + x + 0.5f });
-        draw(Point2D{ xc - x + 0.5f, yc + y + 0.5f });
-        draw(Point2D{ yc - y + 0.5f, xc + x + 0.5f });
-        draw(Point2D{ xc - x + 0.5f, yc - y + 0.5f });
-        draw(Point2D{ yc - y + 0.5f, xc - x + 0.5f });
-        draw(Point2D{ yc + y + 0.5f, xc - x + 0.5f });
-        draw(Point2D{ xc + x + 0.5f, yc - y + 0.5f });
+    for (float alpha = 0; alpha < std::numbers::pi / 4.0f; alpha += step)
+    {
+        float x = circle.radius * std::cos(alpha);
+        float y = circle.radius * std::sin(alpha);
+
+        draw(Point2D{ xc + x, yc + y }, color);
+        draw(Point2D{ xc + x, yc - y }, color);
+        draw(Point2D{ xc - x, yc + y }, color);
+        draw(Point2D{ xc - x, yc - y }, color);
+        draw(Point2D{ xc + y, yc + x }, color);
+        draw(Point2D{ xc + y, yc - x }, color);
+        draw(Point2D{ xc - y, yc + x }, color);
+        draw(Point2D{ xc - y, yc - x }, color);
     }
 }
 
-void PrimitiveRenderer::draw(const Ellipse& ellipse)
+void PrimitiveRenderer::draw(const Ellipse& ellipse, const Color& color, [[maybe_unused]] RenderingAlgorithm alg)
 {
-    float a, step;
-    float x, y, xc, yc;
+    float xc = ellipse.center.x;
+    float yc = ellipse.center.y;
+    float step = 1.0f / std::max(ellipse.radius_x, ellipse.radius_y);
 
-    xc = ellipse.centerPoint.x;
-    yc = ellipse.centerPoint.y;
-
-    if (ellipse.Rx > ellipse.Ry)
-        step = 1.0 / ellipse.Rx;
-    else
-        step = 1.0 / ellipse.Ry;
-
-    for (a = 0; a < M_PI / 2; a += step)
+    for (float alpha = 0; alpha < std::numbers::pi / 2.0f; alpha += step)
     {
-        x = ellipse.Rx * std::cos(a);
-        y = ellipse.Ry * std::sin(a);
-        draw(Point2D{ xc + x, yc + y });
-        draw(Point2D{ xc - x, yc + y });
-        draw(Point2D{ xc - x, yc - y });
-        draw(Point2D{ xc + x, yc - y });
+        float x = ellipse.radius_x * std::cos(alpha);
+        float y = ellipse.radius_y * std::sin(alpha);
+
+        draw(Point2D{ xc + x, yc + y }, color);
+        draw(Point2D{ xc + x, yc - y }, color);
+        draw(Point2D{ xc - x, yc + y }, color);
+        draw(Point2D{ xc - x, yc - y }, color);
     }
 }

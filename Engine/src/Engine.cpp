@@ -24,7 +24,7 @@ void Engine::run()
 
     while (_window.is_open())
     {
-        for (auto event = _window.poll_event(); event;)
+        while (auto event = _window.poll_event())
         {
             const auto& ev = event.value();
 
@@ -50,8 +50,9 @@ void Engine::run()
 
         _renderer.draw(Point2D{ 300.0f, 300.0f });
         _renderer.draw(lines);
-        _renderer.draw(Circle{ Point2D{ 100.0f, 100.0f }, 50.0f });
-        _renderer.draw(Ellipse{ Point2D{ 300.0f, 300.0f }, 50.0f, 80.0f });
+        _renderer.draw(Circle{ Point2D{ 100.0f, 100.0f }, 50.0f }, Color::Magenta);
+        _renderer.draw(Ellipse{ Point2D{ 300.0f, 300.0f }, 50.0f, 80.0f }, Color::Cyan);
+        _renderer.draw(Ellipse{ Point2D{ 300.0f, 300.0f }, 80.0f, 50.0f }, Color::Cyan);
         _window.display();
     }
 }
