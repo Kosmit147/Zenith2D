@@ -13,6 +13,7 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 add_library(Engine
+    "src/EllipseShape.cpp"
     "src/Engine.cpp"
     "src/Event.cpp"
     "src/FileIo.cpp"
