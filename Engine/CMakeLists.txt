@@ -17,7 +17,7 @@ add_library(Engine
     "src/Engine.cpp"
     "src/Event.cpp"
     "src/FileIo.cpp"
-    "src/Key.cpp"
+    "src/Input.cpp"
     "src/Logger.cpp"
     "src/PrimitiveRenderer.cpp"
     "src/Window.cpp"

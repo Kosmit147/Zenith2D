@@ -34,6 +34,7 @@ void Engine::run()
 
             if (ev.type() == EventType::WindowClosed)
             {
+                _event_func(_logger, ev);
                 _window.close();
                 return;
             }

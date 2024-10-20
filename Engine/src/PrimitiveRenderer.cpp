@@ -28,7 +28,7 @@ void PrimitiveRenderer::draw(const Line& line, const Color& color, RenderingAlgo
     }
 }
 
-void PrimitiveRenderer::draw(std::span<Line> lines, const Color& color, RenderingAlgorithm alg)
+void PrimitiveRenderer::draw(std::span<const Line> lines, const Color& color, RenderingAlgorithm alg)
 {
     for (const auto& line : lines)
         draw(line, color, alg);

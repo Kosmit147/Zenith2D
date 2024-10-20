@@ -23,7 +23,7 @@ public:
     void draw(Point2D point, const Color& color = Color::White);
     void draw(const Line& line, const Color& color = Color::White,
               RenderingAlgorithm alg = RenderingAlgorithm::SFML);
-    void draw(std::span<Line> lines, const Color& color = Color::White,
+    void draw(std::span<const Line> lines, const Color& color = Color::White,
               RenderingAlgorithm alg = RenderingAlgorithm::SFML);
     void draw(const Circle& circle, const Color& color = Color::White,
               RenderingAlgorithm alg = RenderingAlgorithm::SFML);
