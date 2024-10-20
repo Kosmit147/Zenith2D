@@ -6,7 +6,8 @@
 
 #include "Color.h"
 #include "Geometry.h"
-#include "Window.h"
+
+class Window;
 
 enum class RenderingAlgorithm
 {
@@ -31,4 +32,8 @@ public:
 
 private:
     Window* _window;
+
+private:
+    void draw_line_sfml(const Line& line, const Color& color);
+    void draw_line_custom(const Line& line, const Color& color);
 };

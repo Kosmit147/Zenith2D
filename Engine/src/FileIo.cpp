@@ -53,3 +53,18 @@ bool append_to_file(const std::filesystem::path& path, std::string_view content)
 
     return true;
 }
+
+bool append_to_file_with_newline(const std::filesystem::path& path, std::string_view content)
+{
+    std::ofstream file(path, std::ios::app);
+
+    if (!file.good()) [[unlikely]]
+        return false;
+
+    file << content.data() << '\n';
+
+    if (!file.good()) [[unlikely]]
+        return false;
+
+    return true;
+}

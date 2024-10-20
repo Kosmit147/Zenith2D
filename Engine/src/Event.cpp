@@ -18,6 +18,9 @@ std::optional<Event> Event::create_from_sf_event(const sf::Event& event)
     case sf::Event::KeyReleased:
         ret = { EventType::KeyReleased, KeyEvent{ .key = key_from_sf_scancode(event.key.scancode) } };
         break;
+    default:
+        // TODO: handle all switch cases
+        break;
     }
 
     return ret;

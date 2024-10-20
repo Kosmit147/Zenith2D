@@ -31,7 +31,8 @@ struct Circle
     explicit constexpr operator Ellipse() const { return Ellipse{ center, radius, radius }; }
 };
 
-// wtf
+// TODO
+// wtf is this
 // bool lines_intersect(const Line& first_line, const Line& second_line)
 // {
 //     int s1 = first_line.from.x * second_line.from.y + second_line.from.x * second_line.to.y
