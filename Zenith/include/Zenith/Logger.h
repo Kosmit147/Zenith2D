@@ -18,6 +18,12 @@ inline auto white = "\x1b[37m";
 inline auto reset = "\x1b[0m";
 } // namespace ansi_colors
 
+struct LoggerSpec
+{
+    LogTarget target = LogTarget::Console;
+    std::filesystem::path log_file_path = "";
+};
+
 class Logger
 {
 public:
@@ -25,12 +31,14 @@ public:
     std::filesystem::path log_file_path;
 
 public:
+    inline Logger() : log_target(LogTarget::Console), log_file_path("") {}
+    inline Logger(const LoggerSpec& spec) : log_target(spec.target), log_file_path(spec.log_file_path) {}
+    inline Logger(LoggerSpec&& spec) : log_target(spec.target), log_file_path(std::move(spec.log_file_path))
+    {}
     inline Logger(LogTarget log_target) : log_target(log_target), log_file_path("") {}
-
     inline Logger(LogTarget log_target, const std::filesystem::path& log_file_path)
         : log_target(log_target), log_file_path(log_file_path)
     {}
-
     inline Logger(LogTarget log_target, std::filesystem::path&& log_file_path)
         : log_target(log_target), log_file_path(std::move(log_file_path))
     {}

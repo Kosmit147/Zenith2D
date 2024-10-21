@@ -1,7 +1,5 @@
 #include "Input.h"
 
-#include <cstddef>
-
 namespace zth {
 
 static const char* key_names[] = {
@@ -156,7 +154,7 @@ static const char* key_names[] = {
 
 const char* to_string(Key key)
 {
-    return key_names[static_cast<size_t>(key) + 1];
+    return key_names[static_cast<usize>(key) + 1];
 }
 
 const char* to_string(MouseButton button)

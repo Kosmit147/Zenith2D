@@ -1,7 +1,8 @@
 #pragma once
 
 #include <chrono>
-#include <cstddef>
+
+#include "Typedefs.h"
 
 namespace zth {
 
@@ -12,7 +13,7 @@ public:
 
     inline void reset() { _start = std::chrono::high_resolution_clock::now(); }
 
-    inline size_t elapsed_ns() const
+    inline usize elapsed_ns() const
     {
         auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
             std::chrono::high_resolution_clock::now() - _start);

@@ -3,10 +3,10 @@
 #include <SFML/Window/Event.hpp>
 
 #include <cassert>
-#include <cstdint>
 #include <optional>
 
 #include "Input.h"
+#include "Typedefs.h"
 
 namespace zth {
 
@@ -17,8 +17,8 @@ struct KeyEvent
 
 struct ResizeEvent
 {
-    uint32_t width;
-    uint32_t height;
+    u32 width;
+    u32 height;
 };
 
 struct MouseScrollEvent

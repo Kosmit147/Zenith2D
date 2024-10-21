@@ -1,11 +1,13 @@
 #include "PrimitiveRenderer.h"
 
+#include <SFML/Graphics.hpp>
+
 #include <algorithm>
 #include <cmath>
-#include <cstddef>
 #include <numbers>
 
 #include "EllipseShape.h"
+#include "Typedefs.h"
 #include "Window.h"
 
 namespace zth {
@@ -86,8 +88,8 @@ void PrimitiveRenderer::draw_line_custom(const Line& line, const Color& color)
             std::minmax(line.from, line.to, [](auto& from, auto& to) { return from.y < to.y; });
 
         float x = start_point.x;
-        int32_t y = static_cast<int32_t>(start_point.y);
-        auto end_y = static_cast<int32_t>(end_point.y);
+        i32 y = static_cast<i32>(start_point.y);
+        i32 end_y = static_cast<i32>(end_point.y);
 
         for (; y <= end_y; y++)
         {
@@ -101,8 +103,8 @@ void PrimitiveRenderer::draw_line_custom(const Line& line, const Color& color)
         const auto& [start_point, end_point] =
             std::minmax(line.from, line.to, [](auto& from, auto& to) { return from.x < to.x; });
 
-        int32_t x = static_cast<int32_t>(start_point.x);
-        auto end_x = static_cast<int32_t>(end_point.x);
+        i32 x = static_cast<i32>(start_point.x);
+        i32 end_x = static_cast<i32>(end_point.x);
         float y = start_point.y;
 
         for (; x <= end_x; x++)

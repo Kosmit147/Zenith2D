@@ -2,14 +2,14 @@
 
 #include <SFML/Window/Keyboard.hpp>
 
-#include <cstdint>
+#include "Typedefs.h"
 
 namespace zth {
 
 struct CursorPos
 {
-    int32_t x;
-    int32_t y;
+    i32 x;
+    i32 y;
 };
 
 enum class MouseButton
