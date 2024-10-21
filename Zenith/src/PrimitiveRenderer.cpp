@@ -33,6 +33,19 @@ void PrimitiveRenderer::draw(std::span<const Line> lines, const Color& color, Re
         draw(line, color, alg);
 }
 
+void PrimitiveRenderer::draw_closed_lines(std::span<const Line> lines, const Color& color,
+                                          RenderingAlgorithm alg)
+{
+    for (const auto& line : lines)
+        draw(line, color, alg);
+
+    if (lines.size() < 2)
+        return;
+
+    Line closing_line{ lines.front().from, lines.back().to };
+    draw(closing_line, color, alg);
+}
+
 void PrimitiveRenderer::draw(const Circle& circle, const Color& color, RenderingAlgorithm alg)
 {
     switch (alg)

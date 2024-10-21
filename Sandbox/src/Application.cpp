@@ -40,7 +40,7 @@ void Application::on_update(zth::u64 delta_time)
     };
 
     renderer.draw(zth::Point2D{ 300.0f, 300.0f }, zth::Color::Magenta);
-    renderer.draw(lines, zth::Color::Green, zth::RenderingAlgorithm::Custom);
+    renderer.draw_closed_lines(lines, zth::Color::Green, zth::RenderingAlgorithm::Custom);
     renderer.draw(zth::Circle{ zth::Point2D{ 100.0f, 100.0f }, 50.0f }, zth::Color::Magenta,
                   zth::RenderingAlgorithm::Custom);
     renderer.draw(zth::Circle{ zth::Point2D{ 600.0f, 600.0f }, 50.0f }, zth::Color::Magenta,
