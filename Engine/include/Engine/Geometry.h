@@ -4,7 +4,7 @@
 
 struct Point2D;
 
-struct Vector2
+struct Vec2
 {
     float x;
     float y;
@@ -18,7 +18,7 @@ struct Point2D
     float x;
     float y;
 
-    constexpr operator Vector2() const;
+    constexpr operator Vec2() const;
     explicit inline operator sf::Vector2f() const;
 
     constexpr Point2D operator+(const Point2D& other) const;
@@ -45,7 +45,7 @@ struct Line
 struct Ellipse
 {
     Point2D center;
-    Vector2 radius;
+    Vec2 radius;
 };
 
 struct Circle

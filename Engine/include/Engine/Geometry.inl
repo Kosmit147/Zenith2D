@@ -1,14 +1,14 @@
-constexpr Vector2::operator Point2D() const
+constexpr Vec2::operator Point2D() const
 {
     return { .x = x, .y = y };
 }
 
-inline Vector2::operator sf::Vector2f() const
+inline Vec2::operator sf::Vector2f() const
 {
     return sf::Vector2f{ x, y };
 }
 
-constexpr Point2D::operator Vector2() const
+constexpr Point2D::operator Vec2() const
 {
     return { .x = x, .y = y };
 }
