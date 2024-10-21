@@ -21,8 +21,8 @@ static void on_update(PrimitiveRenderer& renderer, Logger& logger, uint64_t delt
     renderer.draw(lines, Color::Green);
     renderer.draw(Circle{ Point2D{ 100.0f, 100.0f }, 50.0f }, Color::Magenta);
     renderer.draw(Circle{ Point2D{ 600.0f, 600.0f }, 50.0f }, Color::Magenta);
-    renderer.draw(Ellipse{ Point2D{ 300.0f, 300.0f }, 50.0f, 80.0f }, Color::Cyan);
-    renderer.draw(Ellipse{ Point2D{ 300.0f, 300.0f }, 80.0f, 30.0f }, Color::Cyan);
+    renderer.draw(Ellipse{ Point2D{ 300.0f, 300.0f }, { 50.0f, 80.0f } }, Color::Cyan);
+    renderer.draw(Ellipse{ Point2D{ 300.0f, 300.0f }, { 80.0f, 30.0f } }, Color::Cyan);
 }
 
 static void on_event(Logger& logger, const Event& e)
