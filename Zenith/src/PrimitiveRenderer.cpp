@@ -90,7 +90,7 @@ void PrimitiveRenderer::draw_line_custom(const Line& line, const Color& color)
         assert(y <= end_y);
 
         std::vector<sf::Vertex> vertices;
-        vertices.reserve(end_y - y + 1);
+        vertices.reserve(static_cast<usize>(end_y - y + 1));
 
         for (; y <= end_y; y++)
         {
@@ -112,7 +112,7 @@ void PrimitiveRenderer::draw_line_custom(const Line& line, const Color& color)
         assert(x <= end_x);
 
         std::vector<sf::Vertex> vertices;
-        vertices.reserve(end_x - x + 1);
+        vertices.reserve(static_cast<usize>(end_x - x + 1));
 
         for (; x <= end_x; x++)
         {
