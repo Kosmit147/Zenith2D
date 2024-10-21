@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstdint>
+#include "Typedefs.h"
 
 namespace zth {
 
@@ -11,7 +11,7 @@ enum class LogSeverity
     Error,
 };
 
-using LogTargetType = uint32_t;
+using LogTargetType = i32;
 
 enum class LogTarget : LogTargetType
 {

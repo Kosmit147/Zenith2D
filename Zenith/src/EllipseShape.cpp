@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <cstddef>
 #include <numbers>
 
 namespace zth {
@@ -28,10 +27,10 @@ void EllipseShape::setRadius(const sf::Vector2f& radius)
 
 void EllipseShape::updatePointCount()
 {
-    _pointCount = static_cast<size_t>(std::ceil(std::max(_radius.x, _radius.y)));
+    _pointCount = static_cast<std::size_t>(std::ceil(std::max(_radius.x, _radius.y)));
 }
 
-sf::Vector2f EllipseShape::getPoint(size_t index) const
+sf::Vector2f EllipseShape::getPoint(std::size_t index) const
 {
     constexpr auto pi = std::numbers::pi_v<float>;
 

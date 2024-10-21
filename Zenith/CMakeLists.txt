@@ -14,8 +14,8 @@ FetchContent_MakeAvailable(SFML)
 
 add_library(
     Zenith
+    "src/Application.cpp"
     "src/EllipseShape.cpp"
-    "src/Engine.cpp"
     "src/Event.cpp"
     "src/FileIo.cpp"
     "src/Input.cpp"

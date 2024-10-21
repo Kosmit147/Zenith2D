@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics/Shape.hpp>
 
+#include <cstddef>
+
 #include "Geometry.h"
 
 namespace zth {
@@ -17,15 +19,15 @@ public:
     void setRadius(const sf::Vector2f& radius);
 
     inline auto& getRadius() const { return _radius; }
-    inline virtual size_t getPointCount() const override { return _pointCount; }
+    inline virtual std::size_t getPointCount() const override { return _pointCount; }
 
     void updatePointCount();
 
-    virtual sf::Vector2f getPoint(size_t index) const override;
+    virtual sf::Vector2f getPoint(std::size_t index) const override;
 
 private:
     sf::Vector2f _radius;
-    size_t _pointCount;
+    std::size_t _pointCount;
 };
 
 } // namespace zth

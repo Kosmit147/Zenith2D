@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.28)
 project(Sandbox LANGUAGES CXX)
 
-add_executable(Sandbox "src/main.cpp")
+add_executable(
+	Sandbox
+	"src/Application.cpp"
+	"src/main.cpp"
+)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*")
 	target_link_libraries(Sandbox PRIVATE Zenith -lstdc++exp)
