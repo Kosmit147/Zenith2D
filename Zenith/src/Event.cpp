@@ -1,5 +1,7 @@
 #include "Event.h"
 
+namespace zth {
+
 std::optional<Event> Event::create_from_sf_event(const sf::Event& event)
 {
     std::optional<Event> ret = {};
@@ -88,3 +90,5 @@ std::optional<Event> Event::create_from_sf_event(const sf::Event& event)
 
     return ret;
 }
+
+} // namespace zth

@@ -2,6 +2,8 @@
 
 #include <SFML/System/Vector2.hpp>
 
+namespace zth {
+
 struct Point2D;
 
 struct Vec2
@@ -81,5 +83,7 @@ struct Circle
 //     else
 //         return false;
 // }
+
+} // namespace zth
 
 #include "Geometry.inl"

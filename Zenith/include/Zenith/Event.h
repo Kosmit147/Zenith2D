@@ -8,6 +8,8 @@
 
 #include "Input.h"
 
+namespace zth {
+
 struct KeyEvent
 {
     Key key;
@@ -118,3 +120,5 @@ private:
         MouseMoveEvent _mouse_move_event;
     };
 };
+
+} // namespace zth

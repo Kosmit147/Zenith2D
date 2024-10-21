@@ -4,6 +4,8 @@
 
 #include <utility>
 
+namespace zth {
+
 Engine::Engine(const WindowParams& window_params, const OnInitFunc& init_func,
                const OnUpdateFunc& update_func, const OnEventFunc& event_func)
     : _init_func(init_func), _update_func(update_func), _event_func(event_func), _window(window_params),
@@ -48,3 +50,5 @@ void Engine::run()
         _window.display();
     }
 }
+
+} // namespace zth

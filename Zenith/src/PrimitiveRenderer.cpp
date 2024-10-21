@@ -8,6 +8,8 @@
 #include "EllipseShape.h"
 #include "Window.h"
 
+namespace zth {
+
 void PrimitiveRenderer::draw(Point2D point, const Color& color)
 {
     sf::RectangleShape drawable;
@@ -174,3 +176,5 @@ void PrimitiveRenderer::draw_ellipse_custom(const Ellipse& ellipse, const Color&
         draw(Point2D{ xc - x, yc - y }, color);
     }
 }
+
+} // namespace zth

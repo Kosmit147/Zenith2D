@@ -4,6 +4,8 @@
 
 #include "Geometry.h"
 
+namespace zth {
+
 class EllipseShape : public sf::Shape
 {
 public:
@@ -25,3 +27,5 @@ private:
     sf::Vector2f _radius;
     size_t _pointCount;
 };
+
+} // namespace zth

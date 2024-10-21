@@ -1,5 +1,7 @@
 #include "Window.h"
 
+namespace zth {
+
 static inline uint32_t get_window_style(const WindowParams& params)
 {
     if (params.fullscreen)
@@ -26,3 +28,5 @@ std::optional<Event> Window::poll_event()
 
     return {};
 }
+
+} // namespace zth

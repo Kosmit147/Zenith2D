@@ -4,6 +4,8 @@
 
 #include <cstdint>
 
+namespace zth {
+
 struct Color
 {
     uint8_t r;
@@ -33,3 +35,5 @@ inline const Color Color::Yellow = { 255, 255, 0, 255 };
 inline const Color Color::Magenta = { 255, 0, 255, 255 };
 inline const Color Color::Cyan = { 0, 255, 255, 255 };
 inline const Color Color::Transparent = { 0, 0, 0, 0 };
+
+} // namespace zth

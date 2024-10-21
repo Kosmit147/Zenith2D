@@ -9,6 +9,8 @@
 
 #include "LoggingOptions.h"
 
+namespace zth {
+
 namespace ansi_colors {
 inline auto red = "\x1b[31m";
 inline auto yellow = "\x1b[33m";
@@ -110,3 +112,5 @@ private:
         log(severity, message);
     }
 };
+
+} // namespace zth

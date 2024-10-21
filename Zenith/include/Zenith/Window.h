@@ -9,6 +9,8 @@
 #include "Event.h"
 #include "PrimitiveRenderer.h"
 
+namespace zth {
+
 struct Resolution
 {
     uint32_t width;
@@ -51,3 +53,5 @@ private:
     sf::RenderWindow _sf_window;
     PrimitiveRenderer _renderer;
 };
+
+} // namespace zth

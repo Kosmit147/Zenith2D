@@ -2,6 +2,8 @@
 
 #include <cstddef>
 
+namespace zth {
+
 static const char* key_names[] = {
     "Unknown",
     "A",
@@ -161,3 +163,5 @@ const char* to_string(MouseButton button)
 {
     return button == MouseButton::Left ? "Left" : "Right";
 }
+
+} // namespace zth

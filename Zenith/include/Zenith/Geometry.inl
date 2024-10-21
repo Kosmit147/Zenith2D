@@ -1,3 +1,5 @@
+namespace zth {
+
 constexpr Vec2::operator Point2D() const
 {
     return { .x = x, .y = y };
@@ -76,3 +78,5 @@ constexpr Circle::operator Ellipse() const
 {
     return Ellipse{ center, { radius, radius } };
 }
+
+} // namespace zth

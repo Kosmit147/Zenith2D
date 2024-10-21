@@ -4,6 +4,8 @@
 
 #include <cstdint>
 
+namespace zth {
+
 struct CursorPos
 {
     int32_t x;
@@ -175,3 +177,5 @@ constexpr auto key_from_sf_scancode(sf::Keyboard::Scancode code)
 
 const char* to_string(Key key);
 const char* to_string(MouseButton button);
+
+} // namespace zth
