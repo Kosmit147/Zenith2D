@@ -1,9 +1,5 @@
 #include "EllipseShape.h"
 
-#include <algorithm>
-#include <cmath>
-#include <numbers>
-
 namespace zth {
 
 EllipseShape::EllipseShape(const sf::Vector2f& radius) : _radius(radius)

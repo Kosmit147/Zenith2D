@@ -2,10 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <algorithm>
-#include <cmath>
-#include <numbers>
-
 #include "EllipseShape.h"
 #include "Typedefs.h"
 #include "Window.h"
