@@ -33,7 +33,7 @@ sf::Vector2f EllipseShape::getPoint(size_t index) const
 {
     constexpr auto pi = std::numbers::pi_v<float>;
 
-    float angle = index * 2.0f * pi / getPointCount() - pi / 2.0f;
+    float angle = static_cast<float>(index) * 2.0f * pi / static_cast<float>(getPointCount()) - pi / 2.0f;
     float x = std::cos(angle) * _radius.x;
     float y = std::sin(angle) * _radius.y;
 

@@ -125,10 +125,12 @@ void PrimitiveRenderer::draw_circle_sfml(const Circle& circle, const Color& colo
 
 void PrimitiveRenderer::draw_circle_custom(const Circle& circle, const Color& color)
 {
+    constexpr auto pi = std::numbers::pi_v<float>;
+
     auto [xc, yc] = circle.center;
     float step = 1.0f / circle.radius;
 
-    for (float alpha = 0; alpha < std::numbers::pi / 4.0f; alpha += step)
+    for (float alpha = 0; alpha < pi / 4.0f; alpha += step)
     {
         float x = circle.radius * std::cos(alpha);
         float y = circle.radius * std::sin(alpha);
@@ -156,10 +158,12 @@ void PrimitiveRenderer::draw_ellipse_sfml(const Ellipse& ellipse, const Color& c
 
 void PrimitiveRenderer::draw_ellipse_custom(const Ellipse& ellipse, const Color& color)
 {
+    constexpr auto pi = std::numbers::pi_v<float>;
+
     auto [xc, yc] = ellipse.center;
     float step = 1.0f / std::max(ellipse.radius.x, ellipse.radius.y);
 
-    for (float alpha = 0; alpha < std::numbers::pi / 2.0f; alpha += step)
+    for (float alpha = 0; alpha < pi / 2.0f; alpha += step)
     {
         float x = ellipse.radius.x * std::cos(alpha);
         float y = ellipse.radius.y * std::sin(alpha);

@@ -74,5 +74,5 @@ constexpr bool Point2D::operator==(const Point2D& other) const
 
 constexpr Circle::operator Ellipse() const
 {
-    return Ellipse{ center, radius, radius };
+    return Ellipse{ center, { radius, radius } };
 }
