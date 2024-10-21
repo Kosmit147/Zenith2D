@@ -2,7 +2,7 @@
 
 #include <SFML/Window/Keyboard.hpp>
 
-#include "Typedefs.h"
+#include "Typedefs.hpp"
 
 namespace zth {
 

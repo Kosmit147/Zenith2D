@@ -7,7 +7,7 @@
 #include <string_view>
 #include <utility>
 
-#include "LoggingOptions.h"
+#include "LoggingOptions.hpp"
 
 namespace zth {
 

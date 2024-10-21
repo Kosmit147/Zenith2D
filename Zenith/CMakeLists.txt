@@ -28,6 +28,7 @@ target_include_directories(Zenith INTERFACE include)
 target_link_libraries(Zenith PUBLIC sfml-graphics)
 target_compile_features(Zenith PRIVATE cxx_std_23)
 target_compile_options(Zenith PRIVATE ${COMPILE_WARNINGS})
+target_precompile_headers(Zenith PRIVATE "src/pch.hpp")
 set_property(TARGET Zenith PROPERTY COMPILE_WARNING_AS_ERROR ON)
 
 if(WIN32)

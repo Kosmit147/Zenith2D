@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Event.h"
-#include "Logger.h"
-#include "Typedefs.h"
-#include "Window.h"
+#include "Event.hpp"
+#include "Logger.hpp"
+#include "Typedefs.hpp"
+#include "Window.hpp"
 
 namespace zth {
 

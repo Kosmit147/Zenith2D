@@ -1,4 +1,4 @@
-#include "Application.h"
+#include "Application.hpp"
 
 static const zth::ApplicationSpec spec = {
 	.window_spec = {

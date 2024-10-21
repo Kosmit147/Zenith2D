@@ -1,8 +1,4 @@
-#include "EllipseShape.h"
-
-#include <algorithm>
-#include <cmath>
-#include <numbers>
+#include "EllipseShape.hpp"
 
 namespace zth {
 
