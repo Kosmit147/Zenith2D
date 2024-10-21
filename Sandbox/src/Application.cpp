@@ -36,14 +36,19 @@ void Application::on_update(zth::u64 delta_time)
         { { 2.0f, 2.0f }, { 2.0f, 1000.0f } },
         { { 2.0f, 1000.0f }, { 150.0f, 600.0f } },
         { { 150.0f, 600.0f }, { 1000.0f, 27.0f } },
+        { { 1000.0f, 27.0f }, { 1600.0f, 100.0f } },
     };
 
     renderer.draw(zth::Point2D{ 300.0f, 300.0f }, zth::Color::Magenta);
-    renderer.draw(lines, zth::Color::Green);
-    renderer.draw(zth::Circle{ zth::Point2D{ 100.0f, 100.0f }, 50.0f }, zth::Color::Magenta);
-    renderer.draw(zth::Circle{ zth::Point2D{ 600.0f, 600.0f }, 50.0f }, zth::Color::Magenta);
-    renderer.draw(zth::Ellipse{ zth::Point2D{ 300.0f, 300.0f }, { 50.0f, 80.0f } }, zth::Color::Cyan);
-    renderer.draw(zth::Ellipse{ zth::Point2D{ 300.0f, 300.0f }, { 80.0f, 30.0f } }, zth::Color::Cyan);
+    renderer.draw(lines, zth::Color::Green, zth::RenderingAlgorithm::Custom);
+    renderer.draw(zth::Circle{ zth::Point2D{ 100.0f, 100.0f }, 50.0f }, zth::Color::Magenta,
+                  zth::RenderingAlgorithm::Custom);
+    renderer.draw(zth::Circle{ zth::Point2D{ 600.0f, 600.0f }, 50.0f }, zth::Color::Magenta,
+                  zth::RenderingAlgorithm::Custom);
+    renderer.draw(zth::Ellipse{ zth::Point2D{ 300.0f, 300.0f }, { 50.0f, 80.0f } }, zth::Color::Cyan,
+                  zth::RenderingAlgorithm::Custom);
+    renderer.draw(zth::Ellipse{ zth::Point2D{ 300.0f, 300.0f }, { 80.0f, 30.0f } }, zth::Color::Cyan,
+                  zth::RenderingAlgorithm::Custom);
 }
 
 void Application::on_event(const zth::Event& event)
