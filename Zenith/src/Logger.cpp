@@ -2,6 +2,8 @@
 
 #include "FileIo.h"
 
+namespace zth {
+
 void Logger::log(LogSeverity severity, std::string_view message) const
 {
     if (log_target & LogTarget::Console)
@@ -35,3 +37,5 @@ void Logger::log(LogSeverity severity, std::string_view message) const
         }
     }
 }
+
+} // namespace zth

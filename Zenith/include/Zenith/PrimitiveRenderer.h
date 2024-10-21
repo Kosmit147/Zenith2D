@@ -7,6 +7,8 @@
 #include "Color.h"
 #include "Geometry.h"
 
+namespace zth {
+
 class Window;
 
 enum class RenderingAlgorithm
@@ -41,3 +43,5 @@ private:
     void draw_ellipse_sfml(const Ellipse& ellipse, const Color& color);
     void draw_ellipse_custom(const Ellipse& ellipse, const Color& color);
 };
+
+} // namespace zth

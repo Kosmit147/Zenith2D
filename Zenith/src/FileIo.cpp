@@ -3,6 +3,8 @@
 #include <fstream>
 #include <utility>
 
+namespace zth {
+
 std::optional<std::stringstream> read_from_file(const std::filesystem::path& path)
 {
     if (!std::filesystem::exists(path)) [[unlikely]]
@@ -68,3 +70,5 @@ bool append_to_file_with_newline(const std::filesystem::path& path, std::string_
 
     return true;
 }
+
+} // namespace zth

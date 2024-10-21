@@ -5,6 +5,8 @@
 #include <cstddef>
 #include <numbers>
 
+namespace zth {
+
 EllipseShape::EllipseShape(const sf::Vector2f& radius) : _radius(radius)
 {
     updatePointCount();
@@ -39,3 +41,5 @@ sf::Vector2f EllipseShape::getPoint(size_t index) const
 
     return sf::Vector2f(_radius.x + x, _radius.y + y);
 }
+
+} // namespace zth

@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+namespace zth {
+
 enum class LogSeverity
 {
     Notification,
@@ -31,3 +33,5 @@ constexpr inline LogTargetType operator|(LogTarget lhs, LogTarget rhs)
 
 LogTargetType operator==(LogTarget, LogTarget) = delete;
 LogTargetType operator!=(LogTarget, LogTarget) = delete;
+
+} // namespace zth

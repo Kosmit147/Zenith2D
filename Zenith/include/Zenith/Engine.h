@@ -8,6 +8,8 @@
 #include "PrimitiveRenderer.h"
 #include "Window.h"
 
+namespace zth {
+
 using OnInitFunc = std::function<void(Logger&)>;
 using OnUpdateFunc = std::function<void(PrimitiveRenderer&, Logger&, uint64_t)>;
 using OnEventFunc = std::function<void(Logger&, const Event&)>;
@@ -35,3 +37,5 @@ private:
     Window _window;
     Logger _logger;
 };
+
+} // namespace zth

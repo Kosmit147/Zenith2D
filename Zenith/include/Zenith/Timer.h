@@ -3,6 +3,8 @@
 #include <chrono>
 #include <cstddef>
 
+namespace zth {
+
 class Timer
 {
 public:
@@ -22,3 +24,5 @@ public:
 private:
     std::chrono::time_point<std::chrono::high_resolution_clock> _start;
 };
+
+} // namespace zth
