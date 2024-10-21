@@ -25,6 +25,8 @@ public:
               RenderingAlgorithm alg = RenderingAlgorithm::SFML);
     void draw(std::span<const Line> lines, const Color& color = Color::White,
               RenderingAlgorithm alg = RenderingAlgorithm::SFML);
+    void draw_closed_lines(std::span<const Line> lines, const Color& color = Color::White,
+                           RenderingAlgorithm alg = RenderingAlgorithm::SFML);
     void draw(const Circle& circle, const Color& color = Color::White,
               RenderingAlgorithm alg = RenderingAlgorithm::SFML);
     void draw(const Ellipse& ellipse, const Color& color = Color::White,
