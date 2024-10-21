@@ -2,8 +2,8 @@
 
 #include <span>
 
-#include "Color.h"
-#include "Geometry.h"
+#include "Color.hpp"
+#include "Geometry.hpp"
 
 namespace zth {
 

@@ -1,10 +1,10 @@
-#include "PrimitiveRenderer.h"
+#include "PrimitiveRenderer.hpp"
 
 #include <SFML/Graphics.hpp>
 
-#include "EllipseShape.h"
-#include "Typedefs.h"
-#include "Window.h"
+#include "EllipseShape.hpp"
+#include "Typedefs.hpp"
+#include "Window.hpp"
 
 namespace zth {
 

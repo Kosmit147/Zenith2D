@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics/Color.hpp>
 
-#include "Typedefs.h"
+#include "Typedefs.hpp"
 
 namespace zth {
 

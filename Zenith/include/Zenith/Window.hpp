@@ -4,10 +4,10 @@
 
 #include <optional>
 
-#include "Color.h"
-#include "Event.h"
-#include "PrimitiveRenderer.h"
-#include "Typedefs.h"
+#include "Color.hpp"
+#include "Event.hpp"
+#include "PrimitiveRenderer.hpp"
+#include "Typedefs.hpp"
 
 namespace zth {
 

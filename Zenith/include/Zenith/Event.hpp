@@ -5,8 +5,8 @@
 #include <cassert>
 #include <optional>
 
-#include "Input.h"
-#include "Typedefs.h"
+#include "Input.hpp"
+#include "Typedefs.hpp"
 
 namespace zth {
 

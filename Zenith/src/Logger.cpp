@@ -1,6 +1,6 @@
-#include "Logger.h"
+#include "Logger.hpp"
 
-#include "FileIo.h"
+#include "FileIo.hpp"
 
 namespace zth {
 
