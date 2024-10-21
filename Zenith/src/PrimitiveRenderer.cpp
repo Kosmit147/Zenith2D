@@ -46,6 +46,12 @@ void PrimitiveRenderer::draw_closed_lines(std::span<const Line> lines, const Col
     draw(closing_line, color, alg);
 }
 
+void PrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Color& color = Color::White,
+                                     RenderingAlgorithm alg = RenderingAlgorithm::SFML)
+{
+    // TODO
+}
+
 void PrimitiveRenderer::draw(const Circle& circle, const Color& color, RenderingAlgorithm alg)
 {
     switch (alg)
