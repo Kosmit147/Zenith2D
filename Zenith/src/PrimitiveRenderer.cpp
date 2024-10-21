@@ -10,7 +10,6 @@ namespace zth {
 
 void PrimitiveRenderer::draw(Point2D point, const Color& color)
 {
-    sf::RectangleShape drawable;
     sf::Vertex vertex(static_cast<sf::Vector2f>(point), static_cast<sf::Color>(color));
     _window->sf_window().draw(&vertex, 1, sf::Points);
 }
@@ -72,6 +71,8 @@ void PrimitiveRenderer::draw_line_sfml(const Line& line, const Color& color)
 
 void PrimitiveRenderer::draw_line_custom(const Line& line, const Color& color)
 {
+    const auto sf_color = static_cast<sf::Color>(color);
+
     auto [delta_x, delta_y] = line.to - line.from;
     float slope = delta_y / delta_x;
 
@@ -81,33 +82,45 @@ void PrimitiveRenderer::draw_line_custom(const Line& line, const Color& color)
         slope = 1.0f / slope;
 
         const auto& [start_point, end_point] =
-            std::minmax(line.from, line.to, [](auto& from, auto& to) { return from.y < to.y; });
+            std::minmax(line.from, line.to, [](auto& from, auto& to) { return from.y <= to.y; });
 
         float x = start_point.x;
         i32 y = static_cast<i32>(start_point.y);
         i32 end_y = static_cast<i32>(end_point.y);
+        assert(y <= end_y);
+
+        std::vector<sf::Vertex> vertices;
+        vertices.reserve(end_y - y + 1);
 
         for (; y <= end_y; y++)
         {
             x += slope;
-            draw(Point2D{ x, static_cast<float>(y) }, color);
+            vertices.emplace_back(sf::Vector2f{ x, static_cast<float>(y) }, sf_color);
         }
+
+        _window->sf_window().draw(vertices.data(), vertices.size(), sf::Points);
     }
     else
     {
         // we're drawing a point for every x coord and calculating the appropriate y coord
         const auto& [start_point, end_point] =
-            std::minmax(line.from, line.to, [](auto& from, auto& to) { return from.x < to.x; });
+            std::minmax(line.from, line.to, [](auto& from, auto& to) { return from.x <= to.x; });
 
         i32 x = static_cast<i32>(start_point.x);
         i32 end_x = static_cast<i32>(end_point.x);
         float y = start_point.y;
+        assert(x <= end_x);
+
+        std::vector<sf::Vertex> vertices;
+        vertices.reserve(end_x - x + 1);
 
         for (; x <= end_x; x++)
         {
             y += slope;
-            draw(Point2D{ static_cast<float>(x), y }, color);
+            vertices.emplace_back(sf::Vector2f{ static_cast<float>(x), y }, sf_color);
         }
+
+        _window->sf_window().draw(vertices.data(), vertices.size(), sf::Points);
     }
 }
 
@@ -126,6 +139,7 @@ void PrimitiveRenderer::draw_circle_sfml(const Circle& circle, const Color& colo
 void PrimitiveRenderer::draw_circle_custom(const Circle& circle, const Color& color)
 {
     constexpr auto pi = std::numbers::pi_v<float>;
+    const auto sf_color = static_cast<sf::Color>(color);
 
     auto [xc, yc] = circle.center;
     float step = 1.0f / circle.radius;
@@ -135,14 +149,14 @@ void PrimitiveRenderer::draw_circle_custom(const Circle& circle, const Color& co
         float x = circle.radius * std::cos(alpha);
         float y = circle.radius * std::sin(alpha);
 
-        draw(Point2D{ xc + x, yc + y }, color);
-        draw(Point2D{ xc + x, yc - y }, color);
-        draw(Point2D{ xc - x, yc + y }, color);
-        draw(Point2D{ xc - x, yc - y }, color);
-        draw(Point2D{ xc + y, yc + x }, color);
-        draw(Point2D{ xc + y, yc - x }, color);
-        draw(Point2D{ xc - y, yc + x }, color);
-        draw(Point2D{ xc - y, yc - x }, color);
+        std::array<sf::Vertex, 8> vertices = {
+            sf::Vertex{ { xc + x, yc + y }, sf_color }, sf::Vertex{ { xc + x, yc - y }, sf_color },
+            sf::Vertex{ { xc - x, yc + y }, sf_color }, sf::Vertex{ { xc - x, yc - y }, sf_color },
+            sf::Vertex{ { xc + y, yc + x }, sf_color }, sf::Vertex{ { xc + y, yc - x }, sf_color },
+            sf::Vertex{ { xc - y, yc + x }, sf_color }, sf::Vertex{ { xc - y, yc - x }, sf_color },
+        };
+
+        _window->sf_window().draw(vertices.data(), vertices.size(), sf::Points);
     }
 }
 
@@ -159,6 +173,7 @@ void PrimitiveRenderer::draw_ellipse_sfml(const Ellipse& ellipse, const Color& c
 void PrimitiveRenderer::draw_ellipse_custom(const Ellipse& ellipse, const Color& color)
 {
     constexpr auto pi = std::numbers::pi_v<float>;
+    const auto sf_color = static_cast<sf::Color>(color);
 
     auto [xc, yc] = ellipse.center;
     float step = 1.0f / std::max(ellipse.radius.x, ellipse.radius.y);
@@ -168,10 +183,14 @@ void PrimitiveRenderer::draw_ellipse_custom(const Ellipse& ellipse, const Color&
         float x = ellipse.radius.x * std::cos(alpha);
         float y = ellipse.radius.y * std::sin(alpha);
 
-        draw(Point2D{ xc + x, yc + y }, color);
-        draw(Point2D{ xc + x, yc - y }, color);
-        draw(Point2D{ xc - x, yc + y }, color);
-        draw(Point2D{ xc - x, yc - y }, color);
+        std::array<sf::Vertex, 4> vertices = {
+            sf::Vertex{ { xc + x, yc + y }, sf_color },
+            sf::Vertex{ { xc + x, yc - y }, sf_color },
+            sf::Vertex{ { xc - x, yc + y }, sf_color },
+            sf::Vertex{ { xc - x, yc - y }, sf_color },
+        };
+
+        _window->sf_window().draw(vertices.data(), vertices.size(), sf::Points);
     }
 }
 
