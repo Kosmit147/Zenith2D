@@ -28,8 +28,8 @@ struct Point2D
 
     constexpr Point2D& operator+=(const Point2D& other);
     constexpr Point2D& operator-=(const Point2D& other);
-    template<typename T> constexpr Point2D& operator*(T val);
-    template<typename T> constexpr Point2D& operator/(T val);
+    template<typename T> constexpr Point2D& operator*=(T val);
+    template<typename T> constexpr Point2D& operator/=(T val);
 
     constexpr Point2D operator-() const;
 

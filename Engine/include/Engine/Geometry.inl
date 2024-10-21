@@ -50,13 +50,13 @@ constexpr Point2D& Point2D::operator-=(const Point2D& other)
     return *this;
 }
 
-template<typename T> constexpr Point2D& Point2D::operator*(T val)
+template<typename T> constexpr Point2D& Point2D::operator*=(T val)
 {
     *this = *this * val;
     return *this;
 }
 
-template<typename T> constexpr Point2D& Point2D::operator/(T val)
+template<typename T> constexpr Point2D& Point2D::operator/=(T val)
 {
     *this = *this / val;
     return *this;
