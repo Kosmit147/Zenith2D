@@ -2,6 +2,20 @@
 
 #include <SFML/Window/Keyboard.hpp>
 
+#include <cstdint>
+
+struct CursorPos
+{
+    int32_t x;
+    int32_t y;
+};
+
+enum class MouseButton
+{
+    Left,
+    Right,
+};
+
 enum class Key
 {
     // Make sure the list is consistent with key_names array
@@ -160,3 +174,4 @@ constexpr auto key_from_sf_scancode(sf::Keyboard::Scancode code)
 }
 
 const char* to_string(Key key);
+const char* to_string(MouseButton button);

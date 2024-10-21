@@ -9,7 +9,7 @@ Engine::Engine(const WindowParams& window_params, const OnInitFunc& init_func,
     : _init_func(init_func), _update_func(update_func), _event_func(event_func), _window(window_params),
       _logger(LogTarget::Console)
 {
-    _init_func();
+    _init_func(_logger);
 }
 
 Engine::Engine(const WindowParams& window_params, OnInitFunc&& init_func, OnUpdateFunc&& update_func,
@@ -17,7 +17,7 @@ Engine::Engine(const WindowParams& window_params, OnInitFunc&& init_func, OnUpda
     : _init_func(std::move(init_func)), _update_func(std::move(update_func)),
       _event_func(std::move(event_func)), _window(window_params), _logger(LogTarget::Console)
 {
-    _init_func();
+    _init_func(_logger);
 }
 
 void Engine::run()
@@ -34,11 +34,12 @@ void Engine::run()
 
             if (ev.type() == EventType::WindowClosed)
             {
+                _event_func(_logger, ev);
                 _window.close();
                 return;
             }
 
-            _event_func(ev);
+            _event_func(_logger, ev);
         }
 
         auto delta_time = static_cast<uint64_t>(delta_clock.restart().asMicroseconds());

@@ -2,20 +2,20 @@
 
 #include "FileIo.h"
 
-void Logger::log(std::string_view message, LogSeverity severity) const
+void Logger::log(LogSeverity severity, std::string_view message) const
 {
     if (log_target & LogTarget::Console)
     {
         switch (severity)
         {
         case LogSeverity::Notification:
-            print_notification("{}", message);
+            print_notification(message);
             break;
         case LogSeverity::Warning:
-            print_warning("{}", message);
+            print_warning(message);
             break;
         case LogSeverity::Error:
-            print_error("{}", message);
+            print_error(message);
             break;
         }
     }

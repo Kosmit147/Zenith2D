@@ -15,6 +15,7 @@ if (CMAKE_BUILD_TYPE MATCHES "Debug")
     add_compile_definitions(_DEBUG)
 elseif(CMAKE_BUILD_TYPE MATCHES "Release" OR CMAKE_BUILD_TYPE MATCHES "MinSizeRel" OR CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo")
     add_compile_definitions(_RELEASE)
+    add_compile_definitions(NDEBUG)
 endif()
 
 get_compile_warnings(COMPILE_WARNINGS)

@@ -1,4 +1,4 @@
-#include "Key.h"
+#include "Input.h"
 
 #include <cstddef>
 
@@ -155,4 +155,9 @@ static const char* key_names[] = {
 const char* to_string(Key key)
 {
     return key_names[static_cast<size_t>(key) + 1];
+}
+
+const char* to_string(MouseButton button)
+{
+    return button == MouseButton::Left ? "Left" : "Right";
 }

@@ -8,9 +8,9 @@
 #include "PrimitiveRenderer.h"
 #include "Window.h"
 
-using OnInitFunc = std::function<void()>;
+using OnInitFunc = std::function<void(Logger&)>;
 using OnUpdateFunc = std::function<void(PrimitiveRenderer&, Logger&, uint64_t)>;
-using OnEventFunc = std::function<void(const Event&)>;
+using OnEventFunc = std::function<void(Logger&, const Event&)>;
 
 class Engine
 {

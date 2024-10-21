@@ -13,10 +13,11 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 add_library(Engine
+    "src/EllipseShape.cpp"
     "src/Engine.cpp"
     "src/Event.cpp"
     "src/FileIo.cpp"
-    "src/Key.cpp"
+    "src/Input.cpp"
     "src/Logger.cpp"
     "src/PrimitiveRenderer.cpp"
     "src/Window.cpp"
