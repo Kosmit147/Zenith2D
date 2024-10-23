@@ -48,8 +48,7 @@ std::optional<Event> Event::create_from_sf_event(const sf::Event& event)
     break;
     case sf::Event::MouseButtonPressed:
     {
-        MouseButton button =
-            event.mouseButton.button == sf::Mouse::Left ? MouseButton::Left : MouseButton::Right;
+        MouseButton button = event.mouseButton.button == sf::Mouse::Left ? MouseButton::Left : MouseButton::Right;
         CursorPos cursor_pos{ event.mouseButton.x, event.mouseButton.y };
 
         ret = { EventType::MouseButtonPressed, MouseButtonEvent{ button, cursor_pos } };
@@ -57,8 +56,7 @@ std::optional<Event> Event::create_from_sf_event(const sf::Event& event)
     break;
     case sf::Event::MouseButtonReleased:
     {
-        MouseButton button =
-            event.mouseButton.button == sf::Mouse::Left ? MouseButton::Left : MouseButton::Right;
+        MouseButton button = event.mouseButton.button == sf::Mouse::Left ? MouseButton::Left : MouseButton::Right;
         CursorPos cursor_pos{ event.mouseButton.x, event.mouseButton.y };
 
         ret = { EventType::MouseButtonReleased, MouseButtonEvent{ button, cursor_pos } };

@@ -93,9 +93,7 @@ public:
 
 private:
     inline Event(EventType event_type) : _type(event_type), _dummy(false) {}
-    inline Event(EventType event_type, ResizeEvent resize_event)
-        : _type(event_type), _resize_event(resize_event)
-    {}
+    inline Event(EventType event_type, ResizeEvent resize_event) : _type(event_type), _resize_event(resize_event) {}
     inline Event(EventType event_type, KeyEvent key_event) : _type(event_type), _key_event(key_event) {}
     inline Event(EventType event_type, MouseScrollEvent mouse_scroll_event)
         : _type(event_type), _mouse_scroll_event(mouse_scroll_event)
