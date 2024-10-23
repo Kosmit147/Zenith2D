@@ -28,6 +28,6 @@ SpaceAfterTemplateKeyword: false
 AllowShortBlocksOnASingleLine: Empty
 AllowShortFunctionsOnASingleLine: Inline
 
-ColumnLimit: 110
+ColumnLimit: 120
 MaxEmptyLinesToKeep: 1
 InsertNewlineAtEOF: true
