@@ -15,8 +15,8 @@ public:
 
     inline usize elapsed_ns() const
     {
-        auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
-            std::chrono::high_resolution_clock::now() - _start);
+        auto ns =
+            std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - _start);
         return ns.count();
     }
 

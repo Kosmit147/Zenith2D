@@ -16,9 +16,7 @@ struct ApplicationSpec
 class Application
 {
 public:
-    inline Application(const ApplicationSpec& spec = {})
-        : _window(spec.window_spec), _logger(spec.logger_spec)
-    {}
+    inline Application(const ApplicationSpec& spec = {}) : _window(spec.window_spec), _logger(spec.logger_spec) {}
 
     virtual inline ~Application(){};
 
