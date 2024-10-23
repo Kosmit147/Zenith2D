@@ -28,7 +28,6 @@
 #include <vector>
 
 #include <algorithm>
-#include <cmath>
 #include <compare>
 #include <numbers>
 #include <numeric>
