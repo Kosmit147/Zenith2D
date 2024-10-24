@@ -37,6 +37,7 @@ protected:
     inline auto& logger() const { return _logger; }
 
 private:
+    // should probably be protected
     Window _window;
     Logger _logger;
 };

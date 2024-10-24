@@ -46,8 +46,8 @@ public:
     inline void display() { _sf_window.display(); }
     inline void close() { _sf_window.close(); }
 
-    // TODO: drawing api
-
+    // TODO: renderer api
+    // TODO: sf_window api
     inline auto& sf_window() { return _sf_window; }
     inline auto& sf_window() const { return _sf_window; }
     inline auto& renderer() { return _renderer; }
