@@ -40,7 +40,7 @@ void Application::on_update(zth::u64 delta_time)
     };
 
     renderer.draw_point(zth::Point2D{ 300.0f, 300.0f }, zth::Color::Magenta);
-    renderer.draw_closed_lines(lines, zth::Color::Green, zth::RenderingAlgorithm::Custom);
+    renderer.draw_closed_lines(lines, zth::Color::Green);
     renderer.draw_filled_circle(zth::Circle{ zth::Point2D{ 100.0f, 100.0f }, 50.0f }, zth::Color::Magenta,
                                 zth::Color::Magenta);
     renderer.draw_filled_circle(zth::Circle{ zth::Point2D{ 600.0f, 600.0f }, 50.0f }, zth::Color::Magenta,
@@ -72,8 +72,8 @@ void Application::on_update(zth::u64 delta_time)
         },
     };
 
-    renderer.draw_polygon(polygon, zth::Color::Green, zth::RenderingAlgorithm::SFML);
-    renderer.draw_filled_polygon(polygon_lines, zth::Color::Blue, zth::Color::Blue, zth::RenderingAlgorithm::SFML);
+    renderer.draw_polygon(polygon, zth::Color::Green);
+    renderer.draw_filled_polygon(polygon_lines, zth::Color::Blue, zth::Color::Blue);
 
     static constexpr zth::Rect rect = { .position = { 1500.0f, 800.0f }, .size = { 200.0f, 200.0f } };
 
