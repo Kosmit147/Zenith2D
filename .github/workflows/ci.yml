@@ -33,10 +33,10 @@ jobs:
       if: runner.os == 'Linux'
       run: sudo apt-get update && sudo apt-get install libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev
 
-    - name: Add GCC to path on Windows
-      if: matrix.platform.name == 'Windows GCC'
-      # run: $env:PATH = "C:\msys64\ucrt64\bin;C:\msys64\usr\bin;$env:PATH"
-      run: set PATH=%PATH%;C:\msys64\ucrt64\bin;C:\msys64\usr\bin;
+    # - name: Add GCC to path on Windows
+    #   if: matrix.platform.name == 'Windows GCC'
+    #   # run: $env:PATH = "C:\msys64\ucrt64\bin;C:\msys64\usr\bin;$env:PATH"
+    #   run: set PATH=%PATH%;C:\msys64\ucrt64\bin;C:\msys64\usr\bin;
 
     - name: Checkout
       uses: actions/checkout@v4
