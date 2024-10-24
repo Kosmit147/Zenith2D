@@ -37,6 +37,9 @@ jobs:
     #   if: matrix.platform.name == 'Windows GCC'
     #   # run: $env:PATH = "C:\msys64\ucrt64\bin;C:\msys64\usr\bin;$env:PATH"
     #   run: set PATH=%PATH%;C:\msys64\ucrt64\bin;C:\msys64\usr\bin;
+    - name: Update GCC on Windows
+      if: matrix.platform.name == 'Windows GCC'
+      run: C:\msys64\usr\bin\bash -lc 'pacman --noconfirm -Syuu'
 
     - name: Checkout
       uses: actions/checkout@v4
