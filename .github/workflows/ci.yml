@@ -35,7 +35,8 @@ jobs:
 
     - name: Add GCC to path on Windows
       if: matrix.platform.name == 'Windows GCC'
-      run: $env:PATH = "C:\msys64\ucrt64\bin;C:\msys64\usr\bin;$env:PATH"
+      # run: $env:PATH = "C:\msys64\ucrt64\bin;C:\msys64\usr\bin;$env:PATH"
+      run: set PATH=%PATH%;C:\msys64\ucrt64\bin;C:\msys64\usr\bin;
 
     - name: Checkout
       uses: actions/checkout@v4
