@@ -39,16 +39,52 @@ void Application::on_update(zth::u64 delta_time)
         { { 1000.0f, 27.0f }, { 1600.0f, 100.0f } },
     };
 
-    renderer.draw(zth::Point2D{ 300.0f, 300.0f }, zth::Color::Magenta);
+    renderer.draw_point(zth::Point2D{ 300.0f, 300.0f }, zth::Color::Magenta);
     renderer.draw_closed_lines(lines, zth::Color::Green, zth::RenderingAlgorithm::Custom);
-    renderer.draw(zth::Circle{ zth::Point2D{ 100.0f, 100.0f }, 50.0f }, zth::Color::Magenta,
-                  zth::RenderingAlgorithm::Custom);
-    renderer.draw(zth::Circle{ zth::Point2D{ 600.0f, 600.0f }, 50.0f }, zth::Color::Magenta,
-                  zth::RenderingAlgorithm::Custom);
-    renderer.draw(zth::Ellipse{ zth::Point2D{ 300.0f, 300.0f }, { 50.0f, 80.0f } }, zth::Color::Cyan,
-                  zth::RenderingAlgorithm::Custom);
-    renderer.draw(zth::Ellipse{ zth::Point2D{ 300.0f, 300.0f }, { 80.0f, 30.0f } }, zth::Color::Cyan,
-                  zth::RenderingAlgorithm::Custom);
+    renderer.draw_filled_circle(zth::Circle{ zth::Point2D{ 100.0f, 100.0f }, 50.0f }, zth::Color::Magenta,
+                                zth::Color::Magenta);
+    renderer.draw_filled_circle(zth::Circle{ zth::Point2D{ 600.0f, 600.0f }, 50.0f }, zth::Color::Magenta,
+                                zth::Color::Magenta);
+    renderer.draw_filled_ellipse(zth::Ellipse{ zth::Point2D{ 300.0f, 300.0f }, { 50.0f, 80.0f } }, zth::Color::Cyan,
+                                 zth::Color::Cyan);
+    renderer.draw_filled_ellipse(zth::Ellipse{ zth::Point2D{ 300.0f, 300.0f }, { 80.0f, 30.0f } }, zth::Color::Cyan,
+                                 zth::Color::Cyan);
+
+    static constexpr zth::Point2D polygon[] = {
+        { 1300.0f, 450.0f },
+        { 1500.0f, 450.0f },
+        { 1400.0f, 400.0f },
+        // { 1100.0f, 600.0f },
+    };
+
+    static constexpr zth::Line polygon_lines[] = {
+        {
+            { 1000.0f, 500.0f },
+            { 1200.0f, 500.0f },
+        },
+        {
+            { 1200.0f, 500.0f },
+            { 1100.0f, 450.0f },
+        },
+        {
+            { 1100.0f, 450.0f },
+            { 1000.0f, 500.0f },
+        },
+    };
+
+    renderer.draw_polygon(polygon, zth::Color::Green, zth::RenderingAlgorithm::SFML);
+    renderer.draw_filled_polygon(polygon_lines, zth::Color::Blue, zth::Color::Blue, zth::RenderingAlgorithm::SFML);
+
+    static constexpr zth::Rect rect = { .position = { 1500.0f, 800.0f }, .size = { 200.0f, 200.0f } };
+
+    renderer.draw_filled_rect(rect, zth::Color::Blue, zth::Color::White);
+
+    static constexpr zth::Point2D polygon_points[] = {
+        { 1000.0f, 700.0f },  { 1400.0f, 500.0f }, { 1100.0f, 950.0f },
+        { 1000.0f, 1000.0f }, { 900.0f, 950.0f },  { 900.0f, 850.0f },
+    };
+
+    renderer.draw_filled_polygon(polygon_points, zth::Color::White, zth::Color::Red);
 }
 
 void Application::on_event(const zth::Event& event)
@@ -58,8 +94,7 @@ void Application::on_event(const zth::Event& event)
     case zth::EventType::WindowResized:
     {
         auto& resize_event = event.resize_event();
-        logger().print_notification("Window resized. New size: ({}, {}).", resize_event.width,
-                                    resize_event.height);
+        logger().print_notification("Window resized. New size: ({}, {}).", resize_event.width, resize_event.height);
     }
     break;
     case zth::EventType::LostFocus:
@@ -88,8 +123,7 @@ void Application::on_event(const zth::Event& event)
     {
         auto& scroll_event = event.mouse_scroll_event();
         auto [pos_x, pos_y] = scroll_event.cursor_pos;
-        logger().print_notification("Mouse scrolled: {}. Cursor pos: ({}, {}).", scroll_event.delta, pos_x,
-                                    pos_y);
+        logger().print_notification("Mouse scrolled: {}. Cursor pos: ({}, {}).", scroll_event.delta, pos_x, pos_y);
     }
     break;
     case zth::EventType::MouseButtonPressed:
