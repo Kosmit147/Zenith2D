@@ -18,57 +18,49 @@ enum class RenderingAlgorithm
 class PrimitiveRenderer
 {
 public:
+    RenderingAlgorithm rendering_algorithm = RenderingAlgorithm::SFML;
+
+public:
     inline PrimitiveRenderer(Window& window) : _window(window) {}
 
     void draw_point(Point2D point, const Color& color = Color::White);
 
-    void draw_line(const Point2D& from, const Point2D& to, const Color& color = Color::White,
-                   RenderingAlgorithm alg = RenderingAlgorithm::SFML);
+    void draw_line(const Point2D& from, const Point2D& to, const Color& color = Color::White);
 
-    void draw_line(const Line& line, const Color& color = Color::White,
-                   RenderingAlgorithm alg = RenderingAlgorithm::SFML);
+    void draw_line(const Line& line, const Color& color = Color::White);
 
-    void draw_lines(std::span<const Point2D> points, const Color& color = Color::White,
-                    RenderingAlgorithm alg = RenderingAlgorithm::SFML);
+    void draw_lines(std::span<const Point2D> points, const Color& color = Color::White);
 
-    void draw_lines(std::span<const Line> lines, const Color& color = Color::White,
-                    RenderingAlgorithm alg = RenderingAlgorithm::SFML);
+    void draw_lines(std::span<const Line> lines, const Color& color = Color::White);
 
-    void draw_closed_lines(std::span<const Point2D> points, const Color& color = Color::White,
-                           RenderingAlgorithm alg = RenderingAlgorithm::SFML);
+    void draw_closed_lines(std::span<const Point2D> points, const Color& color = Color::White);
 
-    void draw_closed_lines(std::span<const Line> lines, const Color& color = Color::White,
-                           RenderingAlgorithm alg = RenderingAlgorithm::SFML);
+    void draw_closed_lines(std::span<const Line> lines, const Color& color = Color::White);
 
-    void draw_rect(const Rect& rect, const Color& color = Color::White,
-                   RenderingAlgorithm alg = RenderingAlgorithm::SFML);
+    void draw_rect(const Rect& rect, const Color& color = Color::White);
 
     void draw_filled_rect(const Rect& rect, const Color& outline_color = Color::White,
-                          const Color& fill_color = Color::Black, RenderingAlgorithm alg = RenderingAlgorithm::SFML);
+                          const Color& fill_color = Color::Black);
 
-    void draw_polygon(std::span<const Point2D> points, const Color& color = Color::White,
-                      RenderingAlgorithm alg = RenderingAlgorithm::SFML);
+    void draw_polygon(std::span<const Point2D> points, const Color& color = Color::White);
 
-    void draw_polygon(std::span<const Line> lines, const Color& color = Color::White,
-                      RenderingAlgorithm alg = RenderingAlgorithm::SFML);
+    void draw_polygon(std::span<const Line> lines, const Color& color = Color::White);
 
     void draw_filled_polygon(std::span<const Point2D> points, const Color& outline_color = Color::White,
-                             const Color& fill_color = Color::Black, RenderingAlgorithm alg = RenderingAlgorithm::SFML);
+                             const Color& fill_color = Color::Black);
 
     void draw_filled_polygon(std::span<const Line> lines, const Color& outline_color = Color::White,
-                             const Color& fill_color = Color::Black, RenderingAlgorithm alg = RenderingAlgorithm::SFML);
+                             const Color& fill_color = Color::Black);
 
-    void draw_circle(const Circle& circle, const Color& color = Color::White,
-                     RenderingAlgorithm alg = RenderingAlgorithm::SFML);
+    void draw_circle(const Circle& circle, const Color& color = Color::White);
 
     void draw_filled_circle(const Circle& circle, const Color& outline_color = Color::White,
-                            const Color& fill_color = Color::Black, RenderingAlgorithm alg = RenderingAlgorithm::SFML);
+                            const Color& fill_color = Color::Black);
 
-    void draw_ellipse(const Ellipse& ellipse, const Color& color = Color::White,
-                      RenderingAlgorithm alg = RenderingAlgorithm::SFML);
+    void draw_ellipse(const Ellipse& ellipse, const Color& color = Color::White);
 
     void draw_filled_ellipse(const Ellipse& ellipse, const Color& outline_color = Color::White,
-                             const Color& fill_color = Color::Black, RenderingAlgorithm alg = RenderingAlgorithm::SFML);
+                             const Color& fill_color = Color::Black);
 
 private:
     Window& _window;

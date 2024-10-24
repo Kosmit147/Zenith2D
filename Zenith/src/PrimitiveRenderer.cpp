@@ -14,9 +14,9 @@ void PrimitiveRenderer::draw_point(Point2D point, const Color& color)
     _window.sf_window().draw(&vertex, 1, sf::Points);
 }
 
-void PrimitiveRenderer::draw_line(const Point2D& from, const Point2D& to, const Color& color, RenderingAlgorithm alg)
+void PrimitiveRenderer::draw_line(const Point2D& from, const Point2D& to, const Color& color)
 {
-    switch (alg)
+    switch (rendering_algorithm)
     {
     case RenderingAlgorithm::SFML:
         draw_line_sfml(from, to, color);
@@ -27,55 +27,55 @@ void PrimitiveRenderer::draw_line(const Point2D& from, const Point2D& to, const 
     }
 }
 
-void PrimitiveRenderer::draw_line(const Line& line, const Color& color, RenderingAlgorithm alg)
+void PrimitiveRenderer::draw_line(const Line& line, const Color& color)
 {
-    draw_line(line.from, line.to, color, alg);
+    draw_line(line.from, line.to, color);
 }
 
-void PrimitiveRenderer::draw_lines(std::span<const Point2D> points, const Color& color, RenderingAlgorithm alg)
+void PrimitiveRenderer::draw_lines(std::span<const Point2D> points, const Color& color)
 {
     const auto lines = points | std::views::adjacent<2>;
     for (const auto& [from, to] : lines)
-        draw_line(from, to, color, alg);
+        draw_line(from, to, color);
 }
 
-void PrimitiveRenderer::draw_lines(std::span<const Line> lines, const Color& color, RenderingAlgorithm alg)
+void PrimitiveRenderer::draw_lines(std::span<const Line> lines, const Color& color)
 {
     for (const auto& line : lines)
-        draw_line(line, color, alg);
+        draw_line(line, color);
 }
 
-void PrimitiveRenderer::draw_closed_lines(std::span<const Point2D> points, const Color& color, RenderingAlgorithm alg)
+void PrimitiveRenderer::draw_closed_lines(std::span<const Point2D> points, const Color& color)
 {
     if (points.size() < 2)
         return;
 
     const auto lines = points | std::views::adjacent<2>;
     for (const auto& [from, to] : lines)
-        draw_line(from, to, color, alg);
+        draw_line(from, to, color);
 
     if (points.size() < 3)
         return;
 
     Line closing_line{ points.front(), points.back() };
-    draw_line(closing_line, color, alg);
+    draw_line(closing_line, color);
 }
 
-void PrimitiveRenderer::draw_closed_lines(std::span<const Line> lines, const Color& color, RenderingAlgorithm alg)
+void PrimitiveRenderer::draw_closed_lines(std::span<const Line> lines, const Color& color)
 {
     for (auto& line : lines)
-        draw_line(line, color, alg);
+        draw_line(line, color);
 
     if (lines.size() < 2)
         return;
 
     Line closing_line{ lines.front().from, lines.back().to };
-    draw_line(closing_line, color, alg);
+    draw_line(closing_line, color);
 }
 
-void PrimitiveRenderer::draw_rect(const Rect& rect, const Color& color, RenderingAlgorithm alg)
+void PrimitiveRenderer::draw_rect(const Rect& rect, const Color& color)
 {
-    switch (alg)
+    switch (rendering_algorithm)
     {
     case RenderingAlgorithm::SFML:
         draw_rect_sfml(rect, color);
@@ -86,10 +86,9 @@ void PrimitiveRenderer::draw_rect(const Rect& rect, const Color& color, Renderin
     }
 }
 
-void PrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& outline_color, const Color& fill_color,
-                                         RenderingAlgorithm alg)
+void PrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& outline_color, const Color& fill_color)
 {
-    switch (alg)
+    switch (rendering_algorithm)
     {
     case RenderingAlgorithm::SFML:
         draw_rect_sfml(rect, outline_color, fill_color);
@@ -141,7 +140,7 @@ static bool is_a_valid_polygon(std::span<const Line> lines)
     return true;
 }
 
-void PrimitiveRenderer::draw_polygon(std::span<const Point2D> points, const Color& color, RenderingAlgorithm alg)
+void PrimitiveRenderer::draw_polygon(std::span<const Point2D> points, const Color& color)
 {
     if (points.size() < 2)
         return;
@@ -149,7 +148,7 @@ void PrimitiveRenderer::draw_polygon(std::span<const Point2D> points, const Colo
     if (!is_a_valid_polygon(points))
         return;
 
-    switch (alg)
+    switch (rendering_algorithm)
     {
     case RenderingAlgorithm::SFML:
         draw_polygon_sfml(points, color);
@@ -160,7 +159,7 @@ void PrimitiveRenderer::draw_polygon(std::span<const Point2D> points, const Colo
     }
 }
 
-void PrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Color& color, RenderingAlgorithm alg)
+void PrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Color& color)
 {
     if (lines.size() == 0)
         return;
@@ -168,7 +167,7 @@ void PrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Color& c
     if (!is_a_valid_polygon(lines))
         return;
 
-    switch (alg)
+    switch (rendering_algorithm)
     {
     case RenderingAlgorithm::SFML:
         draw_polygon_sfml(lines, color);
@@ -180,7 +179,7 @@ void PrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Color& c
 }
 
 void PrimitiveRenderer::draw_filled_polygon(std::span<const Point2D> points, const Color& outline_color,
-                                            const Color& fill_color, RenderingAlgorithm alg)
+                                            const Color& fill_color)
 {
     if (points.size() < 2)
         return;
@@ -188,7 +187,7 @@ void PrimitiveRenderer::draw_filled_polygon(std::span<const Point2D> points, con
     if (!is_a_valid_polygon(points))
         return;
 
-    switch (alg)
+    switch (rendering_algorithm)
     {
     case RenderingAlgorithm::SFML:
         draw_polygon_sfml(points, outline_color, fill_color);
@@ -200,7 +199,7 @@ void PrimitiveRenderer::draw_filled_polygon(std::span<const Point2D> points, con
 }
 
 void PrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const Color& outline_color,
-                                            const Color& fill_color, RenderingAlgorithm alg)
+                                            const Color& fill_color)
 {
     if (lines.size() == 0)
         return;
@@ -208,7 +207,7 @@ void PrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const C
     if (!is_a_valid_polygon(lines))
         return;
 
-    switch (alg)
+    switch (rendering_algorithm)
     {
     case RenderingAlgorithm::SFML:
         draw_polygon_sfml(lines, outline_color, fill_color);
@@ -219,9 +218,9 @@ void PrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const C
     }
 }
 
-void PrimitiveRenderer::draw_circle(const Circle& circle, const Color& color, RenderingAlgorithm alg)
+void PrimitiveRenderer::draw_circle(const Circle& circle, const Color& color)
 {
-    switch (alg)
+    switch (rendering_algorithm)
     {
     case RenderingAlgorithm::SFML:
         draw_circle_sfml(circle, color);
@@ -232,10 +231,9 @@ void PrimitiveRenderer::draw_circle(const Circle& circle, const Color& color, Re
     }
 }
 
-void PrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& outline_color, const Color& fill_color,
-                                           RenderingAlgorithm alg)
+void PrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& outline_color, const Color& fill_color)
 {
-    switch (alg)
+    switch (rendering_algorithm)
     {
     case RenderingAlgorithm::SFML:
         draw_circle_sfml(circle, outline_color, fill_color);
@@ -246,9 +244,9 @@ void PrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& ou
     }
 }
 
-void PrimitiveRenderer::draw_ellipse(const Ellipse& ellipse, const Color& color, RenderingAlgorithm alg)
+void PrimitiveRenderer::draw_ellipse(const Ellipse& ellipse, const Color& color)
 {
-    switch (alg)
+    switch (rendering_algorithm)
     {
     case RenderingAlgorithm::SFML:
         draw_ellipse_sfml(ellipse, color);
@@ -259,10 +257,9 @@ void PrimitiveRenderer::draw_ellipse(const Ellipse& ellipse, const Color& color,
     }
 }
 
-void PrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const Color& outline_color, const Color& fill_color,
-                                            RenderingAlgorithm alg)
+void PrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const Color& outline_color, const Color& fill_color)
 {
-    switch (alg)
+    switch (rendering_algorithm)
     {
     case RenderingAlgorithm::SFML:
         draw_ellipse_sfml(ellipse, outline_color, fill_color);
