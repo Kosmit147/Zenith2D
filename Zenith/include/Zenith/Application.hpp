@@ -18,6 +18,8 @@ class Application
 public:
     inline Application(const ApplicationSpec& spec = {}) : _window(spec.window_spec), _logger(spec.logger_spec) {}
 
+    Application(const Application& other) = delete;
+
     virtual inline ~Application(){};
 
     virtual inline void on_update([[maybe_unused]] u64 delta_time){};

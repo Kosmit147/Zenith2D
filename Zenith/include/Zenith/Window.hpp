@@ -35,6 +35,8 @@ public:
 public:
     Window(const WindowSpec& spec);
 
+    Window(const Window& other) = delete;
+
     inline bool is_open() const { return _sf_window.isOpen(); }
     inline void clear() { _sf_window.clear(static_cast<sf::Color>(clear_color)); }
     inline void clear(const Color& color) { _sf_window.clear(static_cast<sf::Color>(color)); }

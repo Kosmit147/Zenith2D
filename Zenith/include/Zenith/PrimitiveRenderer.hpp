@@ -23,6 +23,8 @@ public:
 public:
     inline PrimitiveRenderer(Window& window) : _window(window) {}
 
+    PrimitiveRenderer(const Window& other) = delete;
+
     void draw_point(Point2D point, const Color& color = Color::White);
 
     void draw_line(const Point2D& from, const Point2D& to, const Color& color = Color::White);
