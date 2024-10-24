@@ -34,9 +34,13 @@ void PrimitiveRenderer::draw_line(const Line& line, const Color& color, Renderin
 
 void PrimitiveRenderer::draw_lines(std::span<const Point2D> points, const Color& color, RenderingAlgorithm alg)
 {
-    const auto lines = points | std::views::adjacent<2>;
-    for (const auto& [from, to] : lines)
+    // clang 15.0.0 doesn't support std::views::adjacent
+    for (const auto& line : points | std::views::slide(2))
+    {
+        auto& from = line[0];
+        auto& to = line[1];
         draw_line(from, to, color, alg);
+    }
 }
 
 void PrimitiveRenderer::draw_lines(std::span<const Line> lines, const Color& color, RenderingAlgorithm alg)
@@ -50,9 +54,13 @@ void PrimitiveRenderer::draw_closed_lines(std::span<const Point2D> points, const
     if (points.size() < 2)
         return;
 
-    const auto lines = points | std::views::adjacent<2>;
-    for (const auto& [from, to] : lines)
+    // clang 15.0.0 doesn't support std::views::adjacent
+    for (const auto& line : points | std::views::slide(2))
+    {
+        auto& from = line[0];
+        auto& to = line[1];
         draw_line(from, to, color, alg);
+    }
 
     if (points.size() < 3)
         return;
