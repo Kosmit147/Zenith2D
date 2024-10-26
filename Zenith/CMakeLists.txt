@@ -21,6 +21,7 @@ add_library(
     "src/Input.cpp"
     "src/Logger.cpp"
     "src/PrimitiveRenderer.cpp"
+    "src/Texture.cpp"
     "src/Window.cpp"
 )
 target_include_directories(Zenith PRIVATE "include/Zenith")
