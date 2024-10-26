@@ -13,7 +13,7 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 add_library(
-    Zenith
+    Zenith STATIC
     "src/Application.cpp"
     "src/EllipseShape.cpp"
     "src/Event.cpp"
@@ -23,8 +23,8 @@ add_library(
     "src/PrimitiveRenderer.cpp"
     "src/Window.cpp"
 )
-target_include_directories(Zenith PRIVATE include/Zenith)
-target_include_directories(Zenith INTERFACE include)
+target_include_directories(Zenith PRIVATE "include/Zenith")
+target_include_directories(Zenith INTERFACE "include")
 target_link_libraries(Zenith PUBLIC sfml-graphics)
 target_compile_features(Zenith PRIVATE cxx_std_23)
 target_compile_options(Zenith PRIVATE ${COMPILE_WARNINGS})

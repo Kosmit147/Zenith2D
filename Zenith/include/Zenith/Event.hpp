@@ -57,8 +57,6 @@ enum class EventType
 class Event
 {
 public:
-    static std::optional<Event> create_from_sf_event(const sf::Event& event);
-
     auto type() const { return _type; }
 
     auto& key_event() const
@@ -92,6 +90,7 @@ public:
     }
 
 private:
+    static std::optional<Event> create_from_sf_event(const sf::Event& event);
     explicit Event(EventType event_type) : _type(event_type), _dummy(false) {}
     explicit Event(EventType event_type, ResizeEvent resize_event) : _type(event_type), _resize_event(resize_event) {}
     explicit Event(EventType event_type, KeyEvent key_event) : _type(event_type), _key_event(key_event) {}
@@ -117,6 +116,8 @@ private:
         MouseButtonEvent _mouse_button_event;
         MouseMoveEvent _mouse_move_event;
     };
+
+    friend class Window;
 };
 
 } // namespace zth
