@@ -22,10 +22,11 @@ public:
 
 public:
     explicit PrimitiveRenderer(Window& window) : _window(window) {}
-    ~PrimitiveRenderer() = default;
 
     PrimitiveRenderer(const PrimitiveRenderer&) = delete;
     PrimitiveRenderer(PrimitiveRenderer&&) = delete;
+
+    ~PrimitiveRenderer() = default;
 
     PrimitiveRenderer& operator=(const PrimitiveRenderer&) = delete;
     PrimitiveRenderer& operator=(PrimitiveRenderer&&) = delete;

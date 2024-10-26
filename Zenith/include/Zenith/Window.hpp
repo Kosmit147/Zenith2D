@@ -37,6 +37,7 @@ public:
 public:
     explicit Window(const WindowSpec& spec);
 
+    // TODO: some of these functions should not be accessible to the user of the engine
     bool is_open() const { return _sf_window.isOpen(); }
     void clear() { _sf_window.clear(static_cast<sf::Color>(clear_color)); }
     void clear(const Color& color) { _sf_window.clear(static_cast<sf::Color>(color)); }
@@ -46,10 +47,13 @@ public:
     void display() { _sf_window.display(); }
     void close() { _sf_window.close(); }
 
-    template<typename... Args> void draw(Args&&... args) { _sf_window.draw(std::forward<Args>(args)...); }
-
 private:
     sf::RenderWindow _sf_window;
+
+private:
+    template<typename... Args> void draw(Args&&... args) { _sf_window.draw(std::forward<Args>(args)...); }
+
+    friend class PrimitiveRenderer;
 };
 
 } // namespace zth
