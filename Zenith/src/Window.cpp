@@ -2,7 +2,7 @@
 
 namespace zth {
 
-static inline u32 get_window_style(const WindowSpec& spec)
+static u32 get_window_style(const WindowSpec& spec)
 {
     if (spec.fullscreen)
         return sf::Style::Default | sf::Style::Fullscreen;
@@ -11,10 +11,9 @@ static inline u32 get_window_style(const WindowSpec& spec)
 }
 
 Window::Window(const WindowSpec& spec)
-    : _sf_window(static_cast<sf::VideoMode>(spec.resolution), spec.title.data(), get_window_style(spec)),
-      _renderer(*this)
+    : _sf_window(static_cast<sf::VideoMode>(spec.resolution), spec.title.data(), get_window_style(spec))
 {
-    _sf_window.setFramerateLimit(spec.framerate_limit);
+    _sf_window.setFramerateLimit(spec.frame_rate_limit);
 }
 
 std::optional<Event> Window::poll_event()

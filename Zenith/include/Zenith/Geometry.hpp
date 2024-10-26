@@ -88,7 +88,7 @@ struct Circle
     Point2D center;
     float radius;
 
-    constexpr operator Ellipse() const;
+    explicit constexpr operator Ellipse() const;
 };
 
 constexpr bool lines_intersect(const Line& first_line, const Line& second_line);

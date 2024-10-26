@@ -16,30 +16,25 @@ struct ApplicationSpec
 class Application
 {
 public:
-    inline Application(const ApplicationSpec& spec = {}) : _window(spec.window_spec), _logger(spec.logger_spec) {}
+    explicit Application(const ApplicationSpec& spec = {}) : _window(spec.window_spec), _logger(spec.logger_spec) {}
 
-    Application(const Application& other) = delete;
+    Application(const Application&) = delete;
+    Application(Application&&) = delete;
 
-    virtual inline ~Application(){};
+    virtual ~Application() = default;
 
-    virtual inline void on_update([[maybe_unused]] u64 delta_time){};
-    virtual inline void on_event([[maybe_unused]] const zth::Event& event){};
+    Application& operator=(const Application&) = delete;
+    Application& operator=(Application&&) = delete;
 
     void run();
 
 protected:
-    // TODO: dont just return the window object
-    // create an API for the user
-    inline auto& window() { return _window; }
-    inline auto& window() const { return _window; }
-    // logger is fine for now
-    inline auto& logger() { return _logger; }
-    inline auto& logger() const { return _logger; }
-
-private:
-    // should probably be protected
     Window _window;
     Logger _logger;
+
+private:
+    virtual void on_update([[maybe_unused]] u64 delta_time) {}
+    virtual void on_event([[maybe_unused]] const Event& event) {}
 };
 
 } // namespace zth
