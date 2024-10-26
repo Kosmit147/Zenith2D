@@ -6,7 +6,7 @@ namespace zth {
 
 std::optional<std::stringstream> read_from_file(const std::filesystem::path& path)
 {
-    if (!std::filesystem::exists(path)) [[unlikely]]
+    if (!exists(path)) [[unlikely]]
         return {};
 
     std::ifstream file(path);
@@ -22,7 +22,7 @@ std::optional<std::stringstream> read_from_file(const std::filesystem::path& pat
     if (!stream.good()) [[unlikely]]
         return {};
 
-    return std::optional<std::stringstream>{ std::move(stream) };
+    return std::optional{ std::move(stream) };
 }
 
 bool write_to_file(const std::filesystem::path& path, std::string_view content)

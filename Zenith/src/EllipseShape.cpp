@@ -4,26 +4,21 @@ namespace zth {
 
 EllipseShape::EllipseShape(const sf::Vector2f& radius) : _radius(radius)
 {
-    updatePointCount();
+    update_point_count();
     update();
 }
 
-EllipseShape::EllipseShape(Ellipse ellipse) : _radius(ellipse.radius)
+EllipseShape::EllipseShape(const Ellipse& ellipse) : _radius(ellipse.radius)
 {
-    updatePointCount();
+    update_point_count();
     setPosition(static_cast<sf::Vector2f>(ellipse.center - ellipse.radius));
     update();
 }
 
-void EllipseShape::setRadius(const sf::Vector2f& radius)
+void EllipseShape::set_radius(const sf::Vector2f& radius)
 {
     _radius = radius;
     update();
-}
-
-void EllipseShape::updatePointCount()
-{
-    _pointCount = static_cast<std::size_t>(std::ceil(std::max(_radius.x, _radius.y)));
 }
 
 sf::Vector2f EllipseShape::getPoint(std::size_t index) const
@@ -34,7 +29,12 @@ sf::Vector2f EllipseShape::getPoint(std::size_t index) const
     float x = std::cos(angle) * _radius.x;
     float y = std::sin(angle) * _radius.y;
 
-    return sf::Vector2f(_radius.x + x, _radius.y + y);
+    return { _radius.x + x, _radius.y + y };
+}
+
+void EllipseShape::update_point_count()
+{
+    _point_count = static_cast<std::size_t>(std::ceil(std::max(_radius.x, _radius.y)));
 }
 
 } // namespace zth

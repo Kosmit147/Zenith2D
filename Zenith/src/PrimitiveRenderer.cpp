@@ -8,17 +8,17 @@
 
 namespace zth {
 
-void PrimitiveRenderer::draw_point(Point2D point, const Color& color)
+void PrimitiveRenderer::draw_point(Point2D point, const Color& color) const
 {
     sf::Vertex vertex(static_cast<sf::Vector2f>(point), static_cast<sf::Color>(color));
-    _window.sf_window().draw(&vertex, 1, sf::Points);
+    _window.draw(&vertex, 1, sf::Points);
 }
 
-void PrimitiveRenderer::draw_line(const Point2D& from, const Point2D& to, const Color& color)
+void PrimitiveRenderer::draw_line(const Point2D& from, const Point2D& to, const Color& color) const
 {
     switch (rendering_algorithm)
     {
-    case RenderingAlgorithm::SFML:
+    case RenderingAlgorithm::Sfml:
         draw_line_sfml(from, to, color);
         break;
     case RenderingAlgorithm::Custom:
@@ -27,32 +27,36 @@ void PrimitiveRenderer::draw_line(const Point2D& from, const Point2D& to, const 
     }
 }
 
-void PrimitiveRenderer::draw_line(const Line& line, const Color& color)
+void PrimitiveRenderer::draw_line(const Line& line, const Color& color) const
 {
     draw_line(line.from, line.to, color);
 }
 
-void PrimitiveRenderer::draw_lines(std::span<const Point2D> points, const Color& color)
+void PrimitiveRenderer::draw_lines(std::span<const Point2D> points, const Color& color) const
 {
-    const auto lines = points | std::views::adjacent<2>;
-    for (const auto& [from, to] : lines)
+    for (const auto line : points | std::views::adjacent<2>)
+    {
+        const auto& [from, to] = line;
         draw_line(from, to, color);
+    }
 }
 
-void PrimitiveRenderer::draw_lines(std::span<const Line> lines, const Color& color)
+void PrimitiveRenderer::draw_lines(std::span<const Line> lines, const Color& color) const
 {
     for (const auto& line : lines)
         draw_line(line, color);
 }
 
-void PrimitiveRenderer::draw_closed_lines(std::span<const Point2D> points, const Color& color)
+void PrimitiveRenderer::draw_closed_lines(std::span<const Point2D> points, const Color& color) const
 {
     if (points.size() < 2)
         return;
 
-    const auto lines = points | std::views::adjacent<2>;
-    for (const auto& [from, to] : lines)
+    for (const auto line : points | std::views::adjacent<2>)
+    {
+        const auto& [from, to] = line;
         draw_line(from, to, color);
+    }
 
     if (points.size() < 3)
         return;
@@ -61,7 +65,7 @@ void PrimitiveRenderer::draw_closed_lines(std::span<const Point2D> points, const
     draw_line(closing_line, color);
 }
 
-void PrimitiveRenderer::draw_closed_lines(std::span<const Line> lines, const Color& color)
+void PrimitiveRenderer::draw_closed_lines(std::span<const Line> lines, const Color& color) const
 {
     for (auto& line : lines)
         draw_line(line, color);
@@ -73,11 +77,11 @@ void PrimitiveRenderer::draw_closed_lines(std::span<const Line> lines, const Col
     draw_line(closing_line, color);
 }
 
-void PrimitiveRenderer::draw_rect(const Rect& rect, const Color& color)
+void PrimitiveRenderer::draw_rect(const Rect& rect, const Color& color) const
 {
     switch (rendering_algorithm)
     {
-    case RenderingAlgorithm::SFML:
+    case RenderingAlgorithm::Sfml:
         draw_rect_sfml(rect, color);
         break;
     case RenderingAlgorithm::Custom:
@@ -86,11 +90,11 @@ void PrimitiveRenderer::draw_rect(const Rect& rect, const Color& color)
     }
 }
 
-void PrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& outline_color, const Color& fill_color)
+void PrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& outline_color, const Color& fill_color) const
 {
     switch (rendering_algorithm)
     {
-    case RenderingAlgorithm::SFML:
+    case RenderingAlgorithm::Sfml:
         draw_rect_sfml(rect, outline_color, fill_color);
         break;
     case RenderingAlgorithm::Custom:
@@ -140,7 +144,7 @@ static bool is_a_valid_polygon(std::span<const Line> lines)
     return true;
 }
 
-void PrimitiveRenderer::draw_polygon(std::span<const Point2D> points, const Color& color)
+void PrimitiveRenderer::draw_polygon(std::span<const Point2D> points, const Color& color) const
 {
     if (points.size() < 2)
         return;
@@ -150,7 +154,7 @@ void PrimitiveRenderer::draw_polygon(std::span<const Point2D> points, const Colo
 
     switch (rendering_algorithm)
     {
-    case RenderingAlgorithm::SFML:
+    case RenderingAlgorithm::Sfml:
         draw_polygon_sfml(points, color);
         break;
     case RenderingAlgorithm::Custom:
@@ -159,9 +163,9 @@ void PrimitiveRenderer::draw_polygon(std::span<const Point2D> points, const Colo
     }
 }
 
-void PrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Color& color)
+void PrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Color& color) const
 {
-    if (lines.size() == 0)
+    if (lines.empty())
         return;
 
     if (!is_a_valid_polygon(lines))
@@ -169,7 +173,7 @@ void PrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Color& c
 
     switch (rendering_algorithm)
     {
-    case RenderingAlgorithm::SFML:
+    case RenderingAlgorithm::Sfml:
         draw_polygon_sfml(lines, color);
         break;
     case RenderingAlgorithm::Custom:
@@ -179,7 +183,7 @@ void PrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Color& c
 }
 
 void PrimitiveRenderer::draw_filled_polygon(std::span<const Point2D> points, const Color& outline_color,
-                                            const Color& fill_color)
+                                            const Color& fill_color) const
 {
     if (points.size() < 2)
         return;
@@ -189,7 +193,7 @@ void PrimitiveRenderer::draw_filled_polygon(std::span<const Point2D> points, con
 
     switch (rendering_algorithm)
     {
-    case RenderingAlgorithm::SFML:
+    case RenderingAlgorithm::Sfml:
         draw_polygon_sfml(points, outline_color, fill_color);
         break;
     case RenderingAlgorithm::Custom:
@@ -199,9 +203,9 @@ void PrimitiveRenderer::draw_filled_polygon(std::span<const Point2D> points, con
 }
 
 void PrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const Color& outline_color,
-                                            const Color& fill_color)
+                                            const Color& fill_color) const
 {
-    if (lines.size() == 0)
+    if (lines.empty())
         return;
 
     if (!is_a_valid_polygon(lines))
@@ -209,7 +213,7 @@ void PrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const C
 
     switch (rendering_algorithm)
     {
-    case RenderingAlgorithm::SFML:
+    case RenderingAlgorithm::Sfml:
         draw_polygon_sfml(lines, outline_color, fill_color);
         break;
     case RenderingAlgorithm::Custom:
@@ -218,11 +222,11 @@ void PrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const C
     }
 }
 
-void PrimitiveRenderer::draw_circle(const Circle& circle, const Color& color)
+void PrimitiveRenderer::draw_circle(const Circle& circle, const Color& color) const
 {
     switch (rendering_algorithm)
     {
-    case RenderingAlgorithm::SFML:
+    case RenderingAlgorithm::Sfml:
         draw_circle_sfml(circle, color);
         break;
     case RenderingAlgorithm::Custom:
@@ -231,11 +235,12 @@ void PrimitiveRenderer::draw_circle(const Circle& circle, const Color& color)
     }
 }
 
-void PrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& outline_color, const Color& fill_color)
+void PrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& outline_color,
+                                           const Color& fill_color) const
 {
     switch (rendering_algorithm)
     {
-    case RenderingAlgorithm::SFML:
+    case RenderingAlgorithm::Sfml:
         draw_circle_sfml(circle, outline_color, fill_color);
         break;
     case RenderingAlgorithm::Custom:
@@ -244,11 +249,11 @@ void PrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& ou
     }
 }
 
-void PrimitiveRenderer::draw_ellipse(const Ellipse& ellipse, const Color& color)
+void PrimitiveRenderer::draw_ellipse(const Ellipse& ellipse, const Color& color) const
 {
     switch (rendering_algorithm)
     {
-    case RenderingAlgorithm::SFML:
+    case RenderingAlgorithm::Sfml:
         draw_ellipse_sfml(ellipse, color);
         break;
     case RenderingAlgorithm::Custom:
@@ -257,11 +262,12 @@ void PrimitiveRenderer::draw_ellipse(const Ellipse& ellipse, const Color& color)
     }
 }
 
-void PrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const Color& outline_color, const Color& fill_color)
+void PrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const Color& outline_color,
+                                            const Color& fill_color) const
 {
     switch (rendering_algorithm)
     {
-    case RenderingAlgorithm::SFML:
+    case RenderingAlgorithm::Sfml:
         draw_ellipse_sfml(ellipse, outline_color, fill_color);
         break;
     case RenderingAlgorithm::Custom:
@@ -270,20 +276,20 @@ void PrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const Color&
     }
 }
 
-void PrimitiveRenderer::draw_line_sfml(const Point2D& from, const Point2D& to, const Color& color)
+void PrimitiveRenderer::draw_line_sfml(const Point2D& from, const Point2D& to, const Color& color) const
 {
     sf::Vertex sf_line[] = { sf::Vertex{ static_cast<sf::Vector2f>(from), static_cast<sf::Color>(color) },
                              sf::Vertex{ static_cast<sf::Vector2f>(to), static_cast<sf::Color>(color) } };
 
-    _window.sf_window().draw(sf_line, 2, sf::Lines);
+    _window.draw(sf_line, 2, sf::Lines);
 }
 
-void PrimitiveRenderer::draw_line_sfml(const Line& line, const Color& color)
+void PrimitiveRenderer::draw_line_sfml(const Line& line, const Color& color) const
 {
     draw_line_sfml(line.from, line.to, color);
 }
 
-void PrimitiveRenderer::draw_line_custom(const Point2D& from, const Point2D& to, const Color& color)
+void PrimitiveRenderer::draw_line_custom(const Point2D& from, const Point2D& to, const Color& color) const
 {
     const auto sf_color = static_cast<sf::Color>(color);
 
@@ -304,7 +310,7 @@ void PrimitiveRenderer::draw_line_custom(const Point2D& from, const Point2D& to,
         assert(y <= end_y);
 
         std::vector<sf::Vertex> vertices;
-        vertices.reserve(static_cast<usize>(end_y - y + 1));
+        vertices.reserve(end_y - y + 1);
 
         for (; y <= end_y; y++)
         {
@@ -312,7 +318,7 @@ void PrimitiveRenderer::draw_line_custom(const Point2D& from, const Point2D& to,
             vertices.emplace_back(sf::Vector2f{ x, static_cast<float>(y) }, sf_color);
         }
 
-        _window.sf_window().draw(vertices.data(), vertices.size(), sf::Points);
+        _window.draw(vertices.data(), vertices.size(), sf::Points);
     }
     else
     {
@@ -326,7 +332,7 @@ void PrimitiveRenderer::draw_line_custom(const Point2D& from, const Point2D& to,
         assert(x <= end_x);
 
         std::vector<sf::Vertex> vertices;
-        vertices.reserve(static_cast<usize>(end_x - x + 1));
+        vertices.reserve(end_x - x + 1);
 
         for (; x <= end_x; x++)
         {
@@ -334,16 +340,16 @@ void PrimitiveRenderer::draw_line_custom(const Point2D& from, const Point2D& to,
             vertices.emplace_back(sf::Vector2f{ static_cast<float>(x), y }, sf_color);
         }
 
-        _window.sf_window().draw(vertices.data(), vertices.size(), sf::Points);
+        _window.draw(vertices.data(), vertices.size(), sf::Points);
     }
 }
 
-void PrimitiveRenderer::draw_line_custom(const Line& line, const Color& color)
+void PrimitiveRenderer::draw_line_custom(const Line& line, const Color& color) const
 {
     draw_line_custom(line.from, line.to, color);
 }
 
-void PrimitiveRenderer::draw_rect_sfml(const Rect& rect, const Color& outline_color, const Color& fill_color)
+void PrimitiveRenderer::draw_rect_sfml(const Rect& rect, const Color& outline_color, const Color& fill_color) const
 {
     sf::RectangleShape sf_rectangle;
     sf_rectangle.setSize(static_cast<sf::Vector2f>(rect.size));
@@ -352,11 +358,11 @@ void PrimitiveRenderer::draw_rect_sfml(const Rect& rect, const Color& outline_co
     sf_rectangle.setFillColor(static_cast<sf::Color>(fill_color));
     sf_rectangle.setPosition(static_cast<sf::Vector2f>(rect.position));
 
-    _window.sf_window().draw(sf_rectangle);
+    _window.draw(sf_rectangle);
 }
 
 void PrimitiveRenderer::draw_polygon_sfml(std::span<const Point2D> points, const Color& outline_color,
-                                          const Color& fill_color)
+                                          const Color& fill_color) const
 {
     sf::ConvexShape sf_polygon;
     sf_polygon.setPointCount(points.size());
@@ -367,11 +373,11 @@ void PrimitiveRenderer::draw_polygon_sfml(std::span<const Point2D> points, const
     sf_polygon.setOutlineColor(static_cast<sf::Color>(outline_color));
     sf_polygon.setOutlineThickness(1);
     sf_polygon.setFillColor(static_cast<sf::Color>(fill_color));
-    _window.sf_window().draw(sf_polygon);
+    _window.draw(sf_polygon);
 }
 
 void PrimitiveRenderer::draw_polygon_sfml(std::span<const Line> lines, const Color& outline_color,
-                                          const Color& fill_color)
+                                          const Color& fill_color) const
 {
     sf::ConvexShape sf_polygon;
     sf_polygon.setPointCount(lines.size());
@@ -382,24 +388,25 @@ void PrimitiveRenderer::draw_polygon_sfml(std::span<const Line> lines, const Col
     sf_polygon.setOutlineColor(static_cast<sf::Color>(outline_color));
     sf_polygon.setOutlineThickness(1);
     sf_polygon.setFillColor(static_cast<sf::Color>(fill_color));
-    _window.sf_window().draw(sf_polygon);
+    _window.draw(sf_polygon);
 }
 
-void PrimitiveRenderer::draw_polygon_custom(std::span<const Point2D> points, const Color& outline_color)
+void PrimitiveRenderer::draw_polygon_custom(std::span<const Point2D> points, const Color& outline_color) const
 {
     (void)points;
     (void)outline_color;
     // TODO
 }
 
-void PrimitiveRenderer::draw_polygon_custom(std::span<const Line> lines, const Color& outline_color)
+void PrimitiveRenderer::draw_polygon_custom(std::span<const Line> lines, const Color& outline_color) const
 {
     (void)lines;
     (void)outline_color;
     // TODO
 }
 
-void PrimitiveRenderer::draw_circle_sfml(const Circle& circle, const Color& outline_color, const Color& fill_color)
+void PrimitiveRenderer::draw_circle_sfml(const Circle& circle, const Color& outline_color,
+                                         const Color& fill_color) const
 {
     sf::CircleShape sf_circle;
     sf_circle.setRadius(circle.radius);
@@ -408,10 +415,10 @@ void PrimitiveRenderer::draw_circle_sfml(const Circle& circle, const Color& outl
     sf_circle.setFillColor(static_cast<sf::Color>(fill_color));
     sf_circle.setPosition(static_cast<sf::Vector2f>(circle.center - Point2D{ circle.radius, circle.radius }));
 
-    _window.sf_window().draw(sf_circle);
+    _window.draw(sf_circle);
 }
 
-void PrimitiveRenderer::draw_circle_custom(const Circle& circle, const Color& color)
+void PrimitiveRenderer::draw_circle_custom(const Circle& circle, const Color& color) const
 {
     constexpr auto pi = std::numbers::pi_v<float>;
     const auto sf_color = static_cast<sf::Color>(color);
@@ -419,33 +426,35 @@ void PrimitiveRenderer::draw_circle_custom(const Circle& circle, const Color& co
     auto [xc, yc] = circle.center;
     float step = 1.0f / circle.radius;
 
+    // TODO: do something about floating-point loop counter
     for (float alpha = 0; alpha < pi / 4.0f; alpha += step)
     {
         float x = circle.radius * std::cos(alpha);
         float y = circle.radius * std::sin(alpha);
 
-        std::array<sf::Vertex, 8> vertices = {
+        std::array vertices = {
             sf::Vertex{ { xc + x, yc + y }, sf_color }, sf::Vertex{ { xc + x, yc - y }, sf_color },
             sf::Vertex{ { xc - x, yc + y }, sf_color }, sf::Vertex{ { xc - x, yc - y }, sf_color },
             sf::Vertex{ { xc + y, yc + x }, sf_color }, sf::Vertex{ { xc + y, yc - x }, sf_color },
             sf::Vertex{ { xc - y, yc + x }, sf_color }, sf::Vertex{ { xc - y, yc - x }, sf_color },
         };
 
-        _window.sf_window().draw(vertices.data(), vertices.size(), sf::Points);
+        _window.draw(vertices.data(), vertices.size(), sf::Points);
     }
 }
 
-void PrimitiveRenderer::draw_ellipse_sfml(const Ellipse& ellipse, const Color& outline_color, const Color& fill_color)
+void PrimitiveRenderer::draw_ellipse_sfml(const Ellipse& ellipse, const Color& outline_color,
+                                          const Color& fill_color) const
 {
     EllipseShape sf_ellipse(ellipse);
     sf_ellipse.setOutlineColor(static_cast<sf::Color>(outline_color));
     sf_ellipse.setOutlineThickness(1);
     sf_ellipse.setFillColor(static_cast<sf::Color>(fill_color));
 
-    _window.sf_window().draw(sf_ellipse);
+    _window.draw(sf_ellipse);
 }
 
-void PrimitiveRenderer::draw_ellipse_custom(const Ellipse& ellipse, const Color& color)
+void PrimitiveRenderer::draw_ellipse_custom(const Ellipse& ellipse, const Color& color) const
 {
     constexpr auto pi = std::numbers::pi_v<float>;
     const auto sf_color = static_cast<sf::Color>(color);
@@ -453,19 +462,20 @@ void PrimitiveRenderer::draw_ellipse_custom(const Ellipse& ellipse, const Color&
     auto [xc, yc] = ellipse.center;
     float step = 1.0f / std::max(ellipse.radius.x, ellipse.radius.y);
 
+    // TODO: do something about floating-point loop counter
     for (float alpha = 0; alpha < pi / 2.0f; alpha += step)
     {
         float x = ellipse.radius.x * std::cos(alpha);
         float y = ellipse.radius.y * std::sin(alpha);
 
-        std::array<sf::Vertex, 4> vertices = {
+        std::array vertices = {
             sf::Vertex{ { xc + x, yc + y }, sf_color },
             sf::Vertex{ { xc + x, yc - y }, sf_color },
             sf::Vertex{ { xc - x, yc + y }, sf_color },
             sf::Vertex{ { xc - x, yc - y }, sf_color },
         };
 
-        _window.sf_window().draw(vertices.data(), vertices.size(), sf::Points);
+        _window.draw(vertices.data(), vertices.size(), sf::Points);
     }
 }
 

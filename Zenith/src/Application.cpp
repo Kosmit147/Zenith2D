@@ -10,7 +10,7 @@ void Application::run()
 
     while (_window.is_open())
     {
-        auto delta_time = static_cast<u64>(delta_t_clock.restart().asMicroseconds());
+        const auto delta_time = static_cast<u64>(delta_t_clock.restart().asMicroseconds());
         _window.clear();
 
         while (auto event = _window.poll_event())
