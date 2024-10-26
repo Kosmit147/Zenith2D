@@ -21,12 +21,12 @@ enum class LogTarget : LogTargetType
     ConsoleAndFile = Console | File,
 };
 
-constexpr inline LogTargetType operator&(LogTarget lhs, LogTarget rhs)
+constexpr LogTargetType operator&(LogTarget lhs, LogTarget rhs)
 {
     return static_cast<LogTargetType>(lhs) & static_cast<LogTargetType>(rhs);
 }
 
-constexpr inline LogTargetType operator|(LogTarget lhs, LogTarget rhs)
+constexpr LogTargetType operator|(LogTarget lhs, LogTarget rhs)
 {
     return static_cast<LogTargetType>(lhs) | static_cast<LogTargetType>(rhs);
 }

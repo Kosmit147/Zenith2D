@@ -1,3 +1,5 @@
+#pragma once
+
 namespace zth {
 
 constexpr Vec2 Vec2::operator+(const Vec2& other) const
@@ -51,6 +53,7 @@ constexpr Vec2 Vec2::operator-() const
 
 constexpr bool Vec2::operator==(const Vec2& other) const
 {
+    // TODO: do something about the floating point comparison
     return x == other.x && y == other.y;
 }
 
@@ -130,6 +133,7 @@ constexpr Point2D Point2D::operator-() const
 
 constexpr bool Point2D::operator==(const Point2D& other) const
 {
+    // TODO: do something about the floating point comparison
     return x == other.x && y == other.y;
 }
 

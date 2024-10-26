@@ -13,27 +13,27 @@ struct Color
     u8 b;
     u8 a;
 
-    static const Color Black;
-    static const Color White;
-    static const Color Red;
-    static const Color Green;
-    static const Color Blue;
-    static const Color Yellow;
-    static const Color Magenta;
-    static const Color Cyan;
-    static const Color Transparent;
+    static const Color black;
+    static const Color white;
+    static const Color red;
+    static const Color green;
+    static const Color blue;
+    static const Color yellow;
+    static const Color magenta;
+    static const Color cyan;
+    static const Color transparent;
 
-    explicit inline operator sf::Color() const { return sf::Color{ r, g, b, a }; }
+    explicit operator sf::Color() const { return sf::Color{ r, g, b, a }; }
 };
 
-inline const Color Color::Black = { 0, 0, 0, 255 };
-inline const Color Color::White = { 255, 255, 255, 255 };
-inline const Color Color::Red = { 255, 0, 0, 255 };
-inline const Color Color::Green = { 0, 255, 0, 255 };
-inline const Color Color::Blue = { 0, 0, 255, 255 };
-inline const Color Color::Yellow = { 255, 255, 0, 255 };
-inline const Color Color::Magenta = { 255, 0, 255, 255 };
-inline const Color Color::Cyan = { 0, 255, 255, 255 };
-inline const Color Color::Transparent = { 0, 0, 0, 0 };
+inline const Color Color::black = { 0, 0, 0, 255 };
+inline const Color Color::white = { 255, 255, 255, 255 };
+inline const Color Color::red = { 255, 0, 0, 255 };
+inline const Color Color::green = { 0, 255, 0, 255 };
+inline const Color Color::blue = { 0, 0, 255, 255 };
+inline const Color Color::yellow = { 255, 255, 0, 255 };
+inline const Color Color::magenta = { 255, 0, 255, 255 };
+inline const Color Color::cyan = { 0, 255, 255, 255 };
+inline const Color Color::transparent = { 0, 0, 0, 0 };
 
 } // namespace zth

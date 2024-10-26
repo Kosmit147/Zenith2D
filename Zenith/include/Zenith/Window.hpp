@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <optional>
+#include <utility>
 
 #include "Color.hpp"
 #include "Event.hpp"
@@ -16,7 +17,7 @@ struct Resolution
     u32 width;
     u32 height;
 
-    explicit inline operator sf::VideoMode() const { return sf::VideoMode{ width, height }; }
+    explicit operator sf::VideoMode() const { return sf::VideoMode{ width, height }; }
 };
 
 struct WindowSpec
@@ -24,36 +25,31 @@ struct WindowSpec
     std::string_view title;
     Resolution resolution;
     bool fullscreen = false;
-    u32 framerate_limit = 60;
+    u32 frame_rate_limit = 60;
 };
 
 class Window
 {
 public:
-    Color clear_color = Color::Black;
+    Color clear_color = Color::black;
+    const PrimitiveRenderer primitive_renderer = PrimitiveRenderer{ *this };
 
 public:
-    Window(const WindowSpec& spec);
+    explicit Window(const WindowSpec& spec);
 
-    inline bool is_open() const { return _sf_window.isOpen(); }
-    inline void clear() { _sf_window.clear(static_cast<sf::Color>(clear_color)); }
-    inline void clear(const Color& color) { _sf_window.clear(static_cast<sf::Color>(color)); }
+    bool is_open() const { return _sf_window.isOpen(); }
+    void clear() { _sf_window.clear(static_cast<sf::Color>(clear_color)); }
+    void clear(const Color& color) { _sf_window.clear(static_cast<sf::Color>(color)); }
 
     std::optional<Event> poll_event();
 
-    inline void display() { _sf_window.display(); }
-    inline void close() { _sf_window.close(); }
+    void display() { _sf_window.display(); }
+    void close() { _sf_window.close(); }
 
-    // TODO: drawing api
-
-    inline auto& sf_window() { return _sf_window; }
-    inline auto& sf_window() const { return _sf_window; }
-    inline auto& renderer() { return _renderer; }
-    inline auto& renderer() const { return _renderer; }
+    template<typename... Args> void draw(Args&&... args) { _sf_window.draw(std::forward<Args>(args)...); }
 
 private:
     sf::RenderWindow _sf_window;
-    PrimitiveRenderer _renderer;
 };
 
 } // namespace zth
