@@ -91,16 +91,24 @@ public:
 
 private:
     static std::optional<Event> create_from_sf_event(const sf::Event& event);
+
     explicit Event(EventType event_type) : _type(event_type), _dummy(false) {}
-    explicit Event(EventType event_type, ResizeEvent resize_event) : _type(event_type), _resize_event(resize_event) {}
-    explicit Event(EventType event_type, KeyEvent key_event) : _type(event_type), _key_event(key_event) {}
-    explicit Event(EventType event_type, MouseScrollEvent mouse_scroll_event)
+
+    explicit Event(EventType event_type, const ResizeEvent& resize_event)
+        : _type(event_type), _resize_event(resize_event)
+    {}
+
+    explicit Event(EventType event_type, const KeyEvent& key_event) : _type(event_type), _key_event(key_event) {}
+
+    explicit Event(EventType event_type, const MouseScrollEvent& mouse_scroll_event)
         : _type(event_type), _mouse_scroll_event(mouse_scroll_event)
     {}
-    explicit Event(EventType event_type, MouseButtonEvent mouse_button_event)
+
+    explicit Event(EventType event_type, const MouseButtonEvent& mouse_button_event)
         : _type(event_type), _mouse_button_event(mouse_button_event)
     {}
-    explicit Event(EventType event_type, MouseMoveEvent mouse_move_event)
+
+    explicit Event(EventType event_type, const MouseMoveEvent& mouse_move_event)
         : _type(event_type), _mouse_move_event(mouse_move_event)
     {}
 
