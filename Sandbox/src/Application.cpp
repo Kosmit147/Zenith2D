@@ -17,7 +17,7 @@ Application::Application() : zth::Application(spec)
 {
     zth::Logger::print_notification("On init.");
     _logger.log_error("Logger Test: {}, {}, {}.", 1, 2, 3);
-    _window.clear_color = zth::Color::black;
+    _window.set_clear_color(zth::Color::black);
 }
 
 Application::~Application()
