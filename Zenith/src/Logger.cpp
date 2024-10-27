@@ -4,6 +4,22 @@
 
 namespace zth {
 
+Logger::Logger() : log_target(LogTarget::Console), log_file_path("") {}
+
+Logger::Logger(const LoggerSpec& spec) : log_target(spec.target), log_file_path(spec.log_file_path) {}
+
+Logger::Logger(LoggerSpec&& spec) : log_target(spec.target), log_file_path(std::move(spec.log_file_path)) {}
+
+Logger::Logger(LogTarget log_target) : log_target(log_target), log_file_path("") {}
+
+Logger::Logger(LogTarget log_target, const std::filesystem::path& log_file_path)
+    : log_target(log_target), log_file_path(log_file_path)
+{}
+
+Logger::Logger(LogTarget log_target, std::filesystem::path&& log_file_path)
+    : log_target(log_target), log_file_path(std::move(log_file_path))
+{}
+
 void Logger::log(LogSeverity severity, std::string_view message) const
 {
     if (log_target & LogTarget::Console)
