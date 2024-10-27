@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
+
 #include <span>
 
 #include "Color.hpp"
@@ -21,7 +23,7 @@ public:
     RenderingAlgorithm rendering_algorithm = RenderingAlgorithm::Sfml;
 
 public:
-    explicit PrimitiveRenderer(Window& window) : _window(window) {}
+    explicit PrimitiveRenderer(sf::RenderWindow& window) : _window(window) {}
 
     PrimitiveRenderer(const PrimitiveRenderer&) = delete;
     PrimitiveRenderer(PrimitiveRenderer&&) = delete;
@@ -71,7 +73,7 @@ public:
                              const Color& fill_color = Color::black) const;
 
 private:
-    Window& _window;
+    sf::RenderWindow& _window;
 
 private:
     void draw_line_sfml(const Point2D& from, const Point2D& to, const Color& color) const;
