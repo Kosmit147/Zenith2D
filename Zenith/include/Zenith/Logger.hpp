@@ -2,10 +2,7 @@
 
 #include <filesystem>
 #include <format>
-#include <iostream>
-#include <print>
 #include <string_view>
-#include <utility>
 
 #include "LoggingOptions.hpp"
 
@@ -31,84 +28,34 @@ public:
     std::filesystem::path log_file_path;
 
 public:
-    explicit Logger() : log_target(LogTarget::Console), log_file_path("") {}
-    explicit Logger(const LoggerSpec& spec) : log_target(spec.target), log_file_path(spec.log_file_path) {}
-    explicit Logger(LoggerSpec&& spec) : log_target(spec.target), log_file_path(std::move(spec.log_file_path)) {}
-    explicit Logger(LogTarget log_target) : log_target(log_target), log_file_path("") {}
-    explicit Logger(LogTarget log_target, const std::filesystem::path& log_file_path)
-        : log_target(log_target), log_file_path(log_file_path)
-    {}
-    explicit Logger(LogTarget log_target, std::filesystem::path&& log_file_path)
-        : log_target(log_target), log_file_path(std::move(log_file_path))
-    {}
+    explicit Logger();
+    explicit Logger(const LoggerSpec& spec);
+    explicit Logger(LoggerSpec&& spec);
+    explicit Logger(LogTarget log_target);
+    explicit Logger(LogTarget log_target, const std::filesystem::path& log_file_path);
+    explicit Logger(LogTarget log_target, std::filesystem::path&& log_file_path);
 
-    void log_notification(std::string_view message) const { log(LogSeverity::Notification, message); }
+    inline void log_notification(std::string_view message) const;
+    inline void log_warning(std::string_view message) const;
+    inline void log_error(std::string_view message) const;
+    template<typename... Args> void log_notification(std::format_string<Args...>&& format, Args&&... args) const;
+    template<typename... Args> void log_warning(std::format_string<Args...>&& format, Args&&... args) const;
+    template<typename... Args> void log_error(std::format_string<Args...>&& format, Args&&... args) const;
 
-    template<typename... Args> void log_notification(std::format_string<Args...>&& format, Args&&... args) const
-    {
-        log(LogSeverity::Notification, std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
-    }
-
-    void log_warning(std::string_view message) const { log(LogSeverity::Warning, message); }
-
-    template<typename... Args> void log_warning(std::format_string<Args...>&& format, Args&&... args) const
-    {
-        log(LogSeverity::Warning, std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
-    }
-
-    void log_error(std::string_view message) const { log(LogSeverity::Error, message); }
-
-    template<typename... Args> void log_error(std::format_string<Args...>&& format, Args&&... args) const
-    {
-        log(LogSeverity::Error, std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
-    }
-
-    static void print_notification(std::string_view message) { std::cout << message.data() << '\n'; }
-
-    template<typename... Args>
-    static void print_notification(std::format_string<Args...>&& format, Args&&... args)
-    {
-        std::println(std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
-    };
-
-    static void print_warning(std::string_view message)
-    {
-        std::cout << ansi_colors::yellow;
-        std::cout << message.data() << '\n';
-        std::cout << ansi_colors::reset;
-    }
-
-    template<typename... Args> static void print_warning(std::format_string<Args...>&& format, Args&&... args)
-    {
-        std::cout << ansi_colors::yellow;
-        std::println(std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
-        std::cout << ansi_colors::reset;
-    }
-
-    static void print_error(std::string_view message)
-    {
-        std::cout << ansi_colors::red;
-        std::cout << message.data() << '\n';
-        std::cout << ansi_colors::reset;
-    }
-
-    template<typename... Args> static void print_error(std::format_string<Args...>&& format, Args&&... args)
-    {
-        std::cout << ansi_colors::red;
-        std::println(stderr, std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
-        std::cout << ansi_colors::reset;
-    }
+    static inline void print_notification(std::string_view message);
+    static inline void print_warning(std::string_view message);
+    static inline void print_error(std::string_view message);
+    template<typename... Args> static void print_notification(std::format_string<Args...>&& format, Args&&... args);
+    template<typename... Args> static void print_warning(std::format_string<Args...>&& format, Args&&... args);
+    template<typename... Args> static void print_error(std::format_string<Args...>&& format, Args&&... args);
 
 private:
     void log(LogSeverity severity, std::string_view message) const;
 
     template<typename... Args>
-    void log(LogSeverity severity, std::format_string<Args...>&& format, Args&&... args) const
-    {
-        auto message = std::format(std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
-
-        log(severity, message);
-    }
+    void log(LogSeverity severity, std::format_string<Args...>&& format, Args&&... args) const;
 };
 
 } // namespace zth
+
+#include "Logger.inl"
