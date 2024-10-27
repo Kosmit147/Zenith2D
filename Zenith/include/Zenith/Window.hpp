@@ -33,7 +33,7 @@ class Window
 {
 public:
     Color clear_color = Color::black;
-    PrimitiveRenderer primitive_renderer = PrimitiveRenderer{ *this };
+    PrimitiveRenderer primitive_renderer = PrimitiveRenderer{ _sf_window };
 
 public:
     explicit Window(const WindowSpec& spec);
@@ -49,11 +49,6 @@ public:
 
 private:
     sf::RenderWindow _sf_window;
-
-private:
-    template<typename... Args> void draw(Args&&... args) { _sf_window.draw(std::forward<Args>(args)...); }
-
-    friend class PrimitiveRenderer;
 };
 
 // user of the engine interacts with the window through this class
