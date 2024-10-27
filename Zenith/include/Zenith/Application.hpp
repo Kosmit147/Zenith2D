@@ -16,7 +16,7 @@ struct ApplicationSpec
 class Application
 {
 public:
-    explicit Application(const ApplicationSpec& spec = {}) : _window(spec.window_spec), _logger(spec.logger_spec) {}
+    explicit Application(const ApplicationSpec& spec = {});
 
     Application(const Application&) = delete;
     Application(Application&&) = delete;
@@ -29,8 +29,11 @@ public:
     void run();
 
 protected:
-    Window _window;
+    WindowApi _window = WindowApi{ _internal_window };
     Logger _logger;
+
+private:
+    Window _internal_window;
 
 private:
     virtual void on_update([[maybe_unused]] u64 delta_time) {}

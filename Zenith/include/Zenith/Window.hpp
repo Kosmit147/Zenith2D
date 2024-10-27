@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <optional>
+#include <string>
 #include <utility>
 
 #include "Color.hpp"
@@ -22,7 +23,7 @@ struct Resolution
 
 struct WindowSpec
 {
-    std::string_view title;
+    std::string title;
     Resolution resolution;
     bool fullscreen = false;
     u32 frame_rate_limit = 60;
@@ -32,12 +33,11 @@ class Window
 {
 public:
     Color clear_color = Color::black;
-    const PrimitiveRenderer primitive_renderer = PrimitiveRenderer{ *this };
+    PrimitiveRenderer primitive_renderer = PrimitiveRenderer{ *this };
 
 public:
     explicit Window(const WindowSpec& spec);
 
-    // TODO: some of these functions should not be accessible to the user of the engine
     bool is_open() const { return _sf_window.isOpen(); }
     void clear() { _sf_window.clear(static_cast<sf::Color>(clear_color)); }
     void clear(const Color& color) { _sf_window.clear(static_cast<sf::Color>(color)); }
@@ -54,6 +54,32 @@ private:
     template<typename... Args> void draw(Args&&... args) { _sf_window.draw(std::forward<Args>(args)...); }
 
     friend class PrimitiveRenderer;
+};
+
+// user of the engine interacts with the window through this class
+class WindowApi
+{
+private:
+    Window& _window;
+
+public:
+    PrimitiveRenderer& primitive_renderer;
+
+    explicit WindowApi(Window& window) : _window(window), primitive_renderer(_window.primitive_renderer) {}
+
+    WindowApi(const WindowApi&) = delete;
+    WindowApi(WindowApi&&) = delete;
+
+    ~WindowApi() = default;
+
+    WindowApi& operator=(const WindowApi&) = delete;
+    WindowApi& operator=(WindowApi&&) = delete;
+
+    void set_clear_color(Color color) const { _window.clear_color = color; }
+    void clear() const { _window.clear(); }
+    void clear(const Color& color) const { _window.clear(color); }
+
+    bool is_open() const { return _window.is_open(); }
 };
 
 } // namespace zth

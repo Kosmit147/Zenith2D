@@ -4,23 +4,25 @@
 
 namespace zth {
 
+Application::Application(const ApplicationSpec& spec) : _logger(spec.logger_spec), _internal_window(spec.window_spec) {}
+
 void Application::run()
 {
     sf::Clock delta_t_clock;
 
-    while (_window.is_open())
+    while (_internal_window.is_open())
     {
         const auto delta_time = static_cast<u64>(delta_t_clock.restart().asMicroseconds());
-        _window.clear();
+        _internal_window.clear();
 
-        while (auto event = _window.poll_event())
+        while (auto event = _internal_window.poll_event())
         {
             const auto& ev = event.value();
 
             if (ev.type() == EventType::WindowClosed)
             {
                 on_event(ev);
-                _window.close();
+                _internal_window.close();
                 return;
             }
 
@@ -28,7 +30,7 @@ void Application::run()
         }
 
         on_update(delta_time);
-        _window.display();
+        _internal_window.display();
     }
 }
 

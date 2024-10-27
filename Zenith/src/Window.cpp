@@ -11,7 +11,7 @@ static u32 get_window_style(const WindowSpec& spec)
 }
 
 Window::Window(const WindowSpec& spec)
-    : _sf_window(static_cast<sf::VideoMode>(spec.resolution), spec.title.data(), get_window_style(spec))
+    : _sf_window(static_cast<sf::VideoMode>(spec.resolution), spec.title, get_window_style(spec))
 {
     _sf_window.setFramerateLimit(spec.frame_rate_limit);
 }
