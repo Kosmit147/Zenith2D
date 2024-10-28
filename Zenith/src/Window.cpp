@@ -20,7 +20,7 @@ std::optional<Event> Window::poll_event()
 {
     for (auto sf_event = sf::Event{}; _sf_window.pollEvent(sf_event);)
     {
-        if (auto ev = Event::create_from_sf_event(sf_event); ev)
+        if (auto ev = Event::create_from_sf_event(sf_event))
             return ev;
     }
 
