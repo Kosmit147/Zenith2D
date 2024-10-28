@@ -74,6 +74,7 @@ public:
 
 private:
     sf::RenderWindow& _window;
+    sf::RenderTarget* _render_target = &_window;
 
 private:
     void draw_line_sfml(const Point2D& from, const Point2D& to, const Color& color) const;
@@ -86,6 +87,8 @@ private:
 
     void draw_rect_sfml(const Rect& rect, const Color& outline_color,
                         const Color& fill_color = Color::transparent) const;
+
+    void draw_rect_custom(const Rect& rect, const Color& outline_color) const;
 
     void draw_polygon_sfml(std::span<const Point2D> points, const Color& outline_color,
                            const Color& fill_color = Color::transparent) const;

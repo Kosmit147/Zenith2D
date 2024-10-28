@@ -31,60 +31,65 @@ void Application::on_update(const zth::u64 delta_time)
     // logger().print_notification("On Update with delta time: {} microseconds.", delta_time);
 
     auto& renderer = _window.primitive_renderer;
+    renderer.rendering_algorithm = zth::RenderingAlgorithm::Custom;
 
-    static constexpr zth::Line lines[] = {
-        { { 2.0f, 2.0f }, { 2.0f, 1000.0f } },
-        { { 2.0f, 1000.0f }, { 150.0f, 600.0f } },
-        { { 150.0f, 600.0f }, { 1000.0f, 27.0f } },
-        { { 1000.0f, 27.0f }, { 1600.0f, 100.0f } },
-    };
+    static constexpr zth::Rect rect = { .position = { 1500.0f, 100.0f }, .size = { 200.0f, 200.0f } };
 
-    renderer.draw_point(zth::Point2D{ 300.0f, 300.0f }, zth::Color::magenta);
-    renderer.draw_closed_lines(lines, zth::Color::green);
-    renderer.draw_filled_circle(zth::Circle{ zth::Point2D{ 100.0f, 100.0f }, 50.0f }, zth::Color::magenta,
-                                zth::Color::magenta);
-    renderer.draw_filled_circle(zth::Circle{ zth::Point2D{ 600.0f, 600.0f }, 50.0f }, zth::Color::magenta,
-                                zth::Color::magenta);
-    renderer.draw_filled_ellipse(zth::Ellipse{ zth::Point2D{ 300.0f, 300.0f }, { 50.0f, 80.0f } }, zth::Color::cyan,
-                                 zth::Color::cyan);
-    renderer.draw_filled_ellipse(zth::Ellipse{ zth::Point2D{ 300.0f, 300.0f }, { 80.0f, 30.0f } }, zth::Color::cyan,
-                                 zth::Color::cyan);
+    renderer.draw_rect(rect);
 
-    static constexpr zth::Point2D polygon[] = {
-        { 1300.0f, 450.0f },
-        { 1500.0f, 450.0f },
-        { 1400.0f, 400.0f },
-        // { 1100.0f, 600.0f },
-    };
+    // static constexpr zth::Line lines[] = {
+    //     { { 2.0f, 2.0f }, { 2.0f, 1000.0f } },
+    //     { { 2.0f, 1000.0f }, { 150.0f, 600.0f } },
+    //     { { 150.0f, 600.0f }, { 1000.0f, 27.0f } },
+    //     { { 1000.0f, 27.0f }, { 1600.0f, 100.0f } },
+    // };
 
-    static constexpr zth::Line polygon_lines[] = {
-        {
-            { 1000.0f, 500.0f },
-            { 1200.0f, 500.0f },
-        },
-        {
-            { 1200.0f, 500.0f },
-            { 1100.0f, 450.0f },
-        },
-        {
-            { 1100.0f, 450.0f },
-            { 1000.0f, 500.0f },
-        },
-    };
+    // renderer.draw_point(zth::Point2D{ 300.0f, 300.0f }, zth::Color::magenta);
+    // renderer.draw_closed_lines(lines, zth::Color::green);
+    // renderer.draw_filled_circle(zth::Circle{ zth::Point2D{ 100.0f, 100.0f }, 50.0f }, zth::Color::magenta,
+    //                             zth::Color::magenta);
+    // renderer.draw_filled_circle(zth::Circle{ zth::Point2D{ 600.0f, 600.0f }, 50.0f }, zth::Color::magenta,
+    //                             zth::Color::magenta);
+    // renderer.draw_filled_ellipse(zth::Ellipse{ zth::Point2D{ 300.0f, 300.0f }, { 50.0f, 80.0f } }, zth::Color::cyan,
+    //                              zth::Color::cyan);
+    // renderer.draw_filled_ellipse(zth::Ellipse{ zth::Point2D{ 300.0f, 300.0f }, { 80.0f, 30.0f } }, zth::Color::cyan,
+    //                              zth::Color::cyan);
 
-    renderer.draw_polygon(polygon, zth::Color::green);
-    renderer.draw_filled_polygon(polygon_lines, zth::Color::blue, zth::Color::blue);
+    // static constexpr zth::Point2D polygon[] = {
+    //     { 1300.0f, 450.0f },
+    //     { 1500.0f, 450.0f },
+    //     { 1400.0f, 400.0f },
+    //     // { 1100.0f, 600.0f },
+    // };
 
-    static constexpr zth::Rect rect = { .position = { 1500.0f, 800.0f }, .size = { 200.0f, 200.0f } };
+    // static constexpr zth::Line polygon_lines[] = {
+    //     {
+    //         { 1000.0f, 500.0f },
+    //         { 1200.0f, 500.0f },
+    //     },
+    //     {
+    //         { 1200.0f, 500.0f },
+    //         { 1100.0f, 450.0f },
+    //     },
+    //     {
+    //         { 1100.0f, 450.0f },
+    //         { 1000.0f, 500.0f },
+    //     },
+    // };
 
-    renderer.draw_filled_rect(rect, zth::Color::blue, zth::Color::white);
+    // renderer.draw_polygon(polygon, zth::Color::green);
+    // renderer.draw_filled_polygon(polygon_lines, zth::Color::blue, zth::Color::blue);
 
-    static constexpr zth::Point2D polygon_points[] = {
-        { 1000.0f, 700.0f },  { 1400.0f, 500.0f }, { 1100.0f, 950.0f },
-        { 1000.0f, 1000.0f }, { 900.0f, 950.0f },  { 900.0f, 850.0f },
-    };
+    // static constexpr zth::Rect rect = { .position = { 1500.0f, 800.0f }, .size = { 200.0f, 200.0f } };
 
-    renderer.draw_filled_polygon(polygon_points, zth::Color::white, zth::Color::red);
+    // renderer.draw_filled_rect(rect, zth::Color::blue, zth::Color::white);
+
+    // static constexpr zth::Point2D polygon_points[] = {
+    //     { 1000.0f, 700.0f },  { 1400.0f, 500.0f }, { 1100.0f, 950.0f },
+    //     { 1000.0f, 1000.0f }, { 900.0f, 950.0f },  { 900.0f, 850.0f },
+    // };
+
+    // renderer.draw_filled_polygon(polygon_points, zth::Color::white, zth::Color::red);
 }
 
 void Application::on_event(const zth::Event& event)

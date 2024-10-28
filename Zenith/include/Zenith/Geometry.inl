@@ -73,6 +73,11 @@ constexpr Size::operator Vec2() const
     return Vec2{ width, height };
 }
 
+constexpr Size::operator Point2D() const
+{
+    return Point2D{ width, height };
+}
+
 inline Size::operator sf::Vector2f() const
 {
     return sf::Vector2f{ width, height };
@@ -134,6 +139,11 @@ constexpr Point2D::operator Vec2() const
     return Vec2{ x, y };
 }
 
+constexpr Point2D::operator Size() const
+{
+    return Size{ x, y };
+}
+
 inline Point2D::operator sf::Vector2f() const
 {
     return sf::Vector2f{ x, y };
@@ -157,6 +167,19 @@ constexpr bool Line::intersects(const Line& other) const
         return true;
     else
         return false;
+}
+
+constexpr std::array<Point2D, 4> Rect::points() const
+{
+    auto [x1, y1] = position;
+    auto [x2, y2] = position + size;
+
+    return {
+        Point2D{ x1, y1 },
+        Point2D{ x2, y1 },
+        Point2D{ x2, y2 },
+        Point2D{ x1, y2 },
+    };
 }
 
 constexpr Circle::operator Ellipse() const

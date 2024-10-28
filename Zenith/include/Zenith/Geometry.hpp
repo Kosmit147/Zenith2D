@@ -2,6 +2,8 @@
 
 #include <SFML/System/Vector2.hpp>
 
+#include <array>
+
 namespace zth {
 
 struct Size;
@@ -37,6 +39,7 @@ struct Size
     float height;
 
     constexpr operator Vec2() const;
+    constexpr operator Point2D() const;
     explicit inline operator sf::Vector2f() const;
 };
 
@@ -60,6 +63,7 @@ struct Point2D
     constexpr bool operator==(const Point2D& other) const;
 
     constexpr operator Vec2() const;
+    constexpr operator Size() const;
     explicit inline operator sf::Vector2f() const;
 };
 
@@ -75,6 +79,8 @@ struct Rect
 {
     Point2D position;
     Size size;
+
+    constexpr std::array<Point2D, 4> points() const;
 };
 
 struct Ellipse
