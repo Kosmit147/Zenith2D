@@ -67,8 +67,8 @@ public:
 
     ~WindowApi() = default;
 
-    WindowApi& operator=(const WindowApi&) = delete;
-    WindowApi& operator=(WindowApi&&) = delete;
+    auto operator=(const WindowApi&) = delete;
+    auto operator=(WindowApi&&) = delete;
 
     void set_clear_color(Color color) const { _window.clear_color = color; }
     void clear() const { _window.clear(); }

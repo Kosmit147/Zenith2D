@@ -24,26 +24,22 @@ constexpr Vec2 Vec2::operator/(float val) const
 
 constexpr Vec2& Vec2::operator+=(const Vec2& other)
 {
-    *this = *this + other;
-    return *this;
+    return *this = *this + other;
 }
 
 constexpr Vec2& Vec2::operator-=(const Vec2& other)
 {
-    *this = *this - other;
-    return *this;
+    return *this = *this - other;
 }
 
 constexpr Vec2& Vec2::operator*=(float val)
 {
-    *this = *this * val;
-    return *this;
+    return *this = *this * val;
 }
 
 constexpr Vec2& Vec2::operator/=(float val)
 {
-    *this = *this / val;
-    return *this;
+    return *this = *this / val;
 }
 
 constexpr Vec2 Vec2::operator-() const
@@ -104,26 +100,22 @@ constexpr Point2D Point2D::operator/(float val) const
 
 constexpr Point2D& Point2D::operator+=(const Point2D& other)
 {
-    *this = *this + other;
-    return *this;
+    return *this = *this + other;
 }
 
 constexpr Point2D& Point2D::operator-=(const Point2D& other)
 {
-    *this = *this - other;
-    return *this;
+    return *this = *this - other;
 }
 
 constexpr Point2D& Point2D::operator*=(float val)
 {
-    *this = *this * val;
-    return *this;
+    return *this = *this * val;
 }
 
 constexpr Point2D& Point2D::operator/=(float val)
 {
-    *this = *this / val;
-    return *this;
+    return *this = *this / val;
 }
 
 constexpr Point2D Point2D::operator-() const

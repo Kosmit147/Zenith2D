@@ -4,9 +4,10 @@ project(Zenith LANGUAGES CXX)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
 include(FetchContent)
+
 FetchContent_Declare(SFML
     GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 2.6.x
+    GIT_TAG 2.6.x # update if needed
     GIT_SHALLOW ON
     EXCLUDE_FROM_ALL
     SYSTEM)
@@ -24,9 +25,9 @@ add_library(
     "src/Texture.cpp"
     "src/Window.cpp"
 )
+target_link_libraries(Zenith PUBLIC sfml-graphics)
 target_include_directories(Zenith PRIVATE "include/Zenith")
 target_include_directories(Zenith INTERFACE "include")
-target_link_libraries(Zenith PUBLIC sfml-graphics)
 target_compile_features(Zenith PRIVATE cxx_std_23)
 target_compile_options(Zenith PRIVATE ${COMPILE_WARNINGS})
 target_precompile_headers(Zenith PRIVATE "src/pch.hpp")

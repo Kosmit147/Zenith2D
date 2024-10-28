@@ -4,7 +4,7 @@
 #include <format>
 #include <string_view>
 
-#include "LoggingOptions.hpp"
+#include "EnumFlags.hpp"
 
 namespace zth {
 
@@ -14,6 +14,23 @@ inline auto yellow = "\x1b[33m";
 inline auto white = "\x1b[37m";
 inline auto reset = "\x1b[0m";
 } // namespace ansi_colors
+
+enum class LogSeverity
+{
+    Notification,
+    Warning,
+    Error,
+};
+
+enum class LogTarget
+{
+    None = 0,
+    Console = 1 << 0,
+    File = 1 << 1,
+    ConsoleAndFile = Console | File,
+};
+
+ZTH_MAKE_ENUM_FLAGS(LogTarget);
 
 struct LoggerSpec
 {

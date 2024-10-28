@@ -30,8 +30,8 @@ public:
 
     ~PrimitiveRenderer() = default;
 
-    PrimitiveRenderer& operator=(const PrimitiveRenderer&) = delete;
-    PrimitiveRenderer& operator=(PrimitiveRenderer&&) = delete;
+    auto operator=(const PrimitiveRenderer&) = delete;
+    auto operator=(PrimitiveRenderer&&) = delete;
 
     void draw_point(Point2D point, const Color& color = Color::white) const;
 

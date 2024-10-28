@@ -23,8 +23,8 @@ public:
 
     virtual ~Application() = default;
 
-    Application& operator=(const Application&) = delete;
-    Application& operator=(Application&&) = delete;
+    auto operator=(const Application&) = delete;
+    auto operator=(Application&&) = delete;
 
     void run();
 

@@ -22,7 +22,7 @@ Logger::Logger(LogTarget log_target, std::filesystem::path&& log_file_path)
 
 void Logger::log(LogSeverity severity, std::string_view message) const
 {
-    if (log_target & LogTarget::Console)
+    if (has_flag(log_target, LogTarget::Console))
     {
         switch (severity)
         {
@@ -38,7 +38,7 @@ void Logger::log(LogSeverity severity, std::string_view message) const
         }
     }
 
-    if (log_target & LogTarget::File)
+    if (has_flag(log_target, LogTarget::File))
     {
         if (!log_file_path.empty())
         {
