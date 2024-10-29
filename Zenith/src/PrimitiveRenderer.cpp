@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <stack>
+
 #include "EllipseShape.hpp"
 #include "Typedefs.hpp"
 #include "Window.hpp"
@@ -11,7 +13,7 @@ namespace zth {
 void PrimitiveRenderer::draw_point(Point2D point, const Color& color) const
 {
     sf::Vertex vertex(static_cast<sf::Vector2f>(point), static_cast<sf::Color>(color));
-    _render_target->draw(&vertex, 1, sf::Points);
+    _window.draw(&vertex, 1, sf::Points);
 }
 
 void PrimitiveRenderer::draw_line(const Point2D& from, const Point2D& to, const Color& color) const
@@ -183,7 +185,7 @@ void PrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Color& c
 }
 
 void PrimitiveRenderer::draw_filled_polygon(std::span<const Point2D> points, const Color& outline_color,
-                                            const Color& fill_color) const
+                                            const Color& fill_color)
 {
     if (points.size() < 2)
         return;
@@ -197,13 +199,13 @@ void PrimitiveRenderer::draw_filled_polygon(std::span<const Point2D> points, con
         draw_polygon_sfml(points, outline_color, fill_color);
         break;
     case RenderingAlgorithm::Custom:
-        // TODO
+        draw_filled_polygon_custom(points, outline_color, fill_color);
         break;
     }
 }
 
 void PrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const Color& outline_color,
-                                            const Color& fill_color) const
+                                            const Color& fill_color)
 {
     if (lines.empty())
         return;
@@ -217,7 +219,7 @@ void PrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const C
         draw_polygon_sfml(lines, outline_color, fill_color);
         break;
     case RenderingAlgorithm::Custom:
-        // TODO
+        draw_filled_polygon_custom(lines, outline_color, fill_color);
         break;
     }
 }
@@ -281,7 +283,7 @@ void PrimitiveRenderer::draw_line_sfml(const Point2D& from, const Point2D& to, c
     sf::Vertex sf_line[] = { sf::Vertex{ static_cast<sf::Vector2f>(from), static_cast<sf::Color>(color) },
                              sf::Vertex{ static_cast<sf::Vector2f>(to), static_cast<sf::Color>(color) } };
 
-    _render_target->draw(sf_line, 2, sf::Lines);
+    _window.draw(sf_line, 2, sf::Lines);
 }
 
 void PrimitiveRenderer::draw_line_sfml(const Line& line, const Color& color) const
@@ -318,7 +320,7 @@ void PrimitiveRenderer::draw_line_custom(const Point2D& from, const Point2D& to,
             vertices.emplace_back(sf::Vector2f{ x, static_cast<float>(y) }, sf_color);
         }
 
-        _render_target->draw(vertices.data(), vertices.size(), sf::Points);
+        _window.draw(vertices.data(), vertices.size(), sf::Points);
     }
     else
     {
@@ -340,7 +342,7 @@ void PrimitiveRenderer::draw_line_custom(const Point2D& from, const Point2D& to,
             vertices.emplace_back(sf::Vector2f{ static_cast<float>(x), y }, sf_color);
         }
 
-        _render_target->draw(vertices.data(), vertices.size(), sf::Points);
+        _window.draw(vertices.data(), vertices.size(), sf::Points);
     }
 }
 
@@ -358,7 +360,7 @@ void PrimitiveRenderer::draw_rect_sfml(const Rect& rect, const Color& outline_co
     sf_rectangle.setFillColor(static_cast<sf::Color>(fill_color));
     sf_rectangle.setPosition(static_cast<sf::Vector2f>(rect.position));
 
-    _render_target->draw(sf_rectangle);
+    _window.draw(sf_rectangle);
 }
 
 void PrimitiveRenderer::draw_rect_custom(const Rect& rect, const Color& outline_color) const
@@ -383,7 +385,7 @@ void PrimitiveRenderer::draw_polygon_sfml(std::span<const Point2D> points, const
     sf_polygon.setOutlineColor(static_cast<sf::Color>(outline_color));
     sf_polygon.setOutlineThickness(1);
     sf_polygon.setFillColor(static_cast<sf::Color>(fill_color));
-    _render_target->draw(sf_polygon);
+    _window.draw(sf_polygon);
 }
 
 void PrimitiveRenderer::draw_polygon_sfml(std::span<const Line> lines, const Color& outline_color,
@@ -398,7 +400,7 @@ void PrimitiveRenderer::draw_polygon_sfml(std::span<const Line> lines, const Col
     sf_polygon.setOutlineColor(static_cast<sf::Color>(outline_color));
     sf_polygon.setOutlineThickness(1);
     sf_polygon.setFillColor(static_cast<sf::Color>(fill_color));
-    _render_target->draw(sf_polygon);
+    _window.draw(sf_polygon);
 }
 
 void PrimitiveRenderer::draw_polygon_custom(std::span<const Point2D> points, const Color& outline_color) const
@@ -408,12 +410,58 @@ void PrimitiveRenderer::draw_polygon_custom(std::span<const Point2D> points, con
         const auto& [from, to] = line;
         draw_line_custom(from, to, outline_color);
     }
+
+    if (points.size() < 3)
+        return;
+
+    draw_line_custom(points.back(), points.front(), outline_color);
 }
 
 void PrimitiveRenderer::draw_polygon_custom(std::span<const Line> lines, const Color& outline_color) const
 {
     for (const auto& line : lines)
         draw_line_custom(line, outline_color);
+}
+
+void PrimitiveRenderer::draw_filled_polygon_custom(std::span<const Point2D> points, const Color& outline_color,
+                                                   const Color& fill_color)
+{
+    const auto window_size = _window.getSize();
+
+    sf::Image image;
+    image.create(window_size.x, window_size.y, static_cast<sf::Color>(Color::transparent));
+
+    draw_lines_on_image(image, points, outline_color);
+
+    // TODO: figure out a better way to find the seed
+    auto seed = std::reduce(points.begin(), points.end(), Point2D{ 0, 0 }) / static_cast<float>(points.size());
+
+    switch (fill_algorithm)
+    {
+    case FillAlgorithm::BoundaryFill:
+        boundary_fill(image, seed, outline_color, fill_color);
+        break;
+    case FillAlgorithm::FloodFill:
+        flood_fill(image, seed, outline_color, Color::transparent);
+        break;
+    }
+
+    sf::Texture texture;
+
+    if (!texture.loadFromImage(image))
+        return;
+
+    sf::Sprite sprite(texture);
+    _window.draw(sprite);
+}
+
+void PrimitiveRenderer::draw_filled_polygon_custom(std::span<const Line> lines, const Color& outline_color,
+                                                   const Color& fill_color)
+{
+    (void)lines;
+    (void)outline_color;
+    (void)fill_color;
+    // TODO
 }
 
 void PrimitiveRenderer::draw_circle_sfml(const Circle& circle, const Color& outline_color,
@@ -426,7 +474,7 @@ void PrimitiveRenderer::draw_circle_sfml(const Circle& circle, const Color& outl
     sf_circle.setFillColor(static_cast<sf::Color>(fill_color));
     sf_circle.setPosition(static_cast<sf::Vector2f>(circle.center - Point2D{ circle.radius, circle.radius }));
 
-    _render_target->draw(sf_circle);
+    _window.draw(sf_circle);
 }
 
 void PrimitiveRenderer::draw_circle_custom(const Circle& circle, const Color& color) const
@@ -450,7 +498,7 @@ void PrimitiveRenderer::draw_circle_custom(const Circle& circle, const Color& co
             sf::Vertex{ { xc - y, yc + x }, sf_color }, sf::Vertex{ { xc - y, yc - x }, sf_color },
         };
 
-        _render_target->draw(vertices.data(), vertices.size(), sf::Points);
+        _window.draw(vertices.data(), vertices.size(), sf::Points);
     }
 }
 
@@ -462,7 +510,7 @@ void PrimitiveRenderer::draw_ellipse_sfml(const Ellipse& ellipse, const Color& o
     sf_ellipse.setOutlineThickness(1);
     sf_ellipse.setFillColor(static_cast<sf::Color>(fill_color));
 
-    _render_target->draw(sf_ellipse);
+    _window.draw(sf_ellipse);
 }
 
 void PrimitiveRenderer::draw_ellipse_custom(const Ellipse& ellipse, const Color& color) const
@@ -486,7 +534,160 @@ void PrimitiveRenderer::draw_ellipse_custom(const Ellipse& ellipse, const Color&
             sf::Vertex{ { xc - x, yc - y }, sf_color },
         };
 
-        _render_target->draw(vertices.data(), vertices.size(), sf::Points);
+        _window.draw(vertices.data(), vertices.size(), sf::Points);
+    }
+}
+
+void PrimitiveRenderer::draw_line_on_image(sf::Image& image, const Point2D& from, const Point2D& to, const Color& color)
+{
+    // TODO: this code is copied from draw_line_custom function; refactor
+    const auto sf_color = static_cast<sf::Color>(color);
+
+    auto [delta_x, delta_y] = to - from;
+    float slope = delta_y / delta_x;
+
+    if (slope > 1.0f || slope < -1.0f)
+    {
+        // we're drawing a point for every y coord and calculating the corresponding x coord
+        slope = 1.0f / slope;
+
+        const auto& [start_point, end_point] =
+            std::minmax(from, to, [](auto& from, auto& to) { return from.y <= to.y; });
+
+        float x = start_point.x;
+        i32 y = static_cast<i32>(start_point.y);
+        i32 end_y = static_cast<i32>(end_point.y);
+        assert(y <= end_y);
+
+        for (; y <= end_y; y++)
+        {
+            x += slope;
+            image.setPixel(static_cast<u32>(x), y, sf_color);
+        }
+    }
+    else
+    {
+        // we're drawing a point for every x coord and calculating the corresponding y coord
+        const auto& [start_point, end_point] =
+            std::minmax(from, to, [](auto& from, auto& to) { return from.x <= to.x; });
+
+        i32 x = static_cast<i32>(start_point.x);
+        i32 end_x = static_cast<i32>(end_point.x);
+        float y = start_point.y;
+        assert(x <= end_x);
+
+        for (; x <= end_x; x++)
+        {
+            y += slope;
+            image.setPixel(x, static_cast<u32>(y), sf_color);
+        }
+    }
+}
+
+void PrimitiveRenderer::draw_line_on_image(sf::Image& image, const Line& line, const Color& color)
+{
+    draw_line_on_image(image, line.from, line.to, color);
+}
+
+void PrimitiveRenderer::draw_lines_on_image(sf::Image& image, std::span<const Point2D> points, const Color& color)
+{
+    for (const auto line : points | std::views::adjacent<2>)
+    {
+        const auto& [from, to] = line;
+        draw_line_on_image(image, from, to, color);
+    }
+
+    if (points.size() < 3)
+        return;
+
+    draw_line_on_image(image, points.back(), points.front(), color);
+}
+
+void PrimitiveRenderer::draw_lines_on_image(sf::Image& image, std::span<const Line> lines, const Color& color)
+{
+    for (const auto& line : lines)
+        draw_line_on_image(image, line, color);
+}
+
+void PrimitiveRenderer::boundary_fill(sf::Image& image, const Point2D& seed, const Color& border_color,
+                                      const Color& fill_color)
+{
+    struct Point
+    {
+        u32 x;
+        u32 y;
+    };
+
+    std::stack<Point> stack;
+    stack.emplace(static_cast<u32>(seed.x), static_cast<u32>(seed.y));
+
+    auto push_if_valid = [&](u32 x, u32 y) {
+        auto image_size = image.getSize();
+        if (x > 0 && x < image_size.x && y > 0 && y < image_size.y)
+            stack.push({ x, y });
+    };
+
+    while (!stack.empty())
+    {
+        auto x = stack.top().x;
+        auto y = stack.top().y;
+        stack.pop();
+
+        auto pixel_color = image.getPixel(x, y);
+
+        if (pixel_color == static_cast<sf::Color>(fill_color))
+            continue;
+
+        if (pixel_color == static_cast<sf::Color>(border_color))
+            continue;
+
+        image.setPixel(x, y, static_cast<sf::Color>(fill_color));
+
+        push_if_valid(x, y - 1);
+        push_if_valid(x + 1, y);
+        push_if_valid(x, y + 1);
+        push_if_valid(x - 1, y);
+    }
+}
+
+void PrimitiveRenderer::flood_fill(sf::Image& image, const Point2D& seed, const Color& fill_color,
+                                   const Color& background_color)
+{
+    struct Point
+    {
+        u32 x;
+        u32 y;
+    };
+
+    std::stack<Point> stack;
+    stack.emplace(static_cast<u32>(seed.x), static_cast<u32>(seed.y));
+
+    auto push_if_valid = [&](u32 x, u32 y) {
+        auto image_size = image.getSize();
+        if (x > 0 && x < image_size.x && y > 0 && y < image_size.y)
+            stack.push({ x, y });
+    };
+
+    while (!stack.empty())
+    {
+        auto x = stack.top().x;
+        auto y = stack.top().y;
+        stack.pop();
+
+        auto pixel_color = image.getPixel(x, y);
+
+        if (pixel_color == static_cast<sf::Color>(fill_color))
+            continue;
+
+        if (pixel_color != static_cast<sf::Color>(background_color))
+            continue;
+
+        image.setPixel(x, y, static_cast<sf::Color>(fill_color));
+
+        push_if_valid(x, y - 1);
+        push_if_valid(x + 1, y);
+        push_if_valid(x, y + 1);
+        push_if_valid(x - 1, y);
     }
 }
 

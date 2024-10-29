@@ -17,10 +17,17 @@ enum class RenderingAlgorithm
     Custom,
 };
 
+enum class FillAlgorithm
+{
+    BoundaryFill,
+    FloodFill,
+};
+
 class PrimitiveRenderer
 {
 public:
     RenderingAlgorithm rendering_algorithm = RenderingAlgorithm::Sfml;
+    FillAlgorithm fill_algorithm = FillAlgorithm::BoundaryFill;
 
 public:
     explicit PrimitiveRenderer(sf::RenderWindow& window) : _window(window) {}
@@ -57,10 +64,10 @@ public:
     void draw_polygon(std::span<const Line> lines, const Color& color = Color::white) const;
 
     void draw_filled_polygon(std::span<const Point2D> points, const Color& outline_color = Color::white,
-                             const Color& fill_color = Color::black) const;
+                             const Color& fill_color = Color::black);
 
     void draw_filled_polygon(std::span<const Line> lines, const Color& outline_color = Color::white,
-                             const Color& fill_color = Color::black) const;
+                             const Color& fill_color = Color::black);
 
     void draw_circle(const Circle& circle, const Color& color = Color::white) const;
 
@@ -74,7 +81,6 @@ public:
 
 private:
     sf::RenderWindow& _window;
-    sf::RenderTarget* _render_target = &_window;
 
 private:
     void draw_line_sfml(const Point2D& from, const Point2D& to, const Color& color) const;
@@ -100,6 +106,11 @@ private:
 
     void draw_polygon_custom(std::span<const Line> lines, const Color& outline_color) const;
 
+    void draw_filled_polygon_custom(std::span<const Point2D> points, const Color& outline_color,
+                                    const Color& fill_color);
+
+    void draw_filled_polygon_custom(std::span<const Line> lines, const Color& outline_color, const Color& fill_color);
+
     void draw_circle_sfml(const Circle& circle, const Color& outline_color,
                           const Color& fill_color = Color::transparent) const;
 
@@ -109,6 +120,20 @@ private:
                            const Color& fill_color = Color::transparent) const;
 
     void draw_ellipse_custom(const Ellipse& ellipse, const Color& color) const;
+
+    static void draw_line_on_image(sf::Image& image, const Point2D& from, const Point2D& to, const Color& color);
+
+    static void draw_line_on_image(sf::Image& image, const Line& line, const Color& color);
+
+    static void draw_lines_on_image(sf::Image& image, std::span<const Point2D> points, const Color& color);
+
+    static void draw_lines_on_image(sf::Image& image, std::span<const Line> lines, const Color& color);
+
+    static void boundary_fill(sf::Image& image, const Point2D& seed, const Color& border_color,
+                              const Color& fill_color);
+
+    static void flood_fill(sf::Image& image, const Point2D& seed, const Color& fill_color,
+                           const Color& background_color);
 };
 
 } // namespace zth
