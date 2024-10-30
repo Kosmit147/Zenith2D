@@ -44,12 +44,12 @@ void Application::on_update(const zth::u64 delta_time)
     // logger().print_notification("On Update with delta time: {} microseconds.", delta_time);
 
     auto& renderer = _window.primitive_renderer;
-    renderer.rendering_algorithm = zth::RenderingAlgorithm::Sfml;
+    renderer.rendering_algorithm = zth::RenderingAlgorithm::Custom;
     renderer.fill_algorithm = zth::FillAlgorithm::BoundaryFill;
 
     static constexpr zth::Rect rect1 = { .position = { 1500.0f, 100.0f }, .size = { 200.0f, 200.0f } };
 
-    renderer.draw_rect(rect1);
+    renderer.draw_filled_rect(rect1);
 
     static constexpr zth::Line lines[] = {
         { { 2.0f, 2.0f }, { 2.0f, 1000.0f } },
@@ -58,18 +58,18 @@ void Application::on_update(const zth::u64 delta_time)
         { { 1000.0f, 27.0f }, { 1600.0f, 100.0f } },
     };
 
-    renderer.draw_point(zth::Point2D{ 300.0f, 300.0f }, zth::Color::magenta);
+    renderer.draw_point(zth::Vec2f{ 300.0f, 300.0f }, zth::Color::magenta);
     renderer.draw_closed_lines(lines, zth::Color::green);
-    renderer.draw_filled_circle(zth::Circle{ zth::Point2D{ 100.0f, 100.0f }, 50.0f }, zth::Color::magenta,
+    renderer.draw_filled_circle(zth::Circle{ zth::Vec2f{ 100.0f, 100.0f }, 50.0f }, zth::Color::magenta,
                                 zth::Color::magenta);
-    renderer.draw_filled_circle(zth::Circle{ zth::Point2D{ 600.0f, 600.0f }, 50.0f }, zth::Color::magenta,
+    renderer.draw_filled_circle(zth::Circle{ zth::Vec2f{ 600.0f, 600.0f }, 50.0f }, zth::Color::magenta,
                                 zth::Color::magenta);
-    renderer.draw_filled_ellipse(zth::Ellipse{ zth::Point2D{ 300.0f, 300.0f }, { 50.0f, 80.0f } }, zth::Color::cyan,
+    renderer.draw_filled_ellipse(zth::Ellipse{ zth::Vec2f{ 300.0f, 300.0f }, { 50.0f, 80.0f } }, zth::Color::cyan,
                                  zth::Color::cyan);
-    renderer.draw_filled_ellipse(zth::Ellipse{ zth::Point2D{ 300.0f, 300.0f }, { 80.0f, 30.0f } }, zth::Color::cyan,
+    renderer.draw_filled_ellipse(zth::Ellipse{ zth::Vec2f{ 300.0f, 300.0f }, { 80.0f, 30.0f } }, zth::Color::cyan,
                                  zth::Color::cyan);
 
-    static constexpr zth::Point2D polygon_points1[] = {
+    static constexpr zth::Vec2f polygon_points1[] = {
         { 1300.0f, 450.0f },
         { 1500.0f, 450.0f },
         { 1400.0f, 400.0f },
@@ -98,7 +98,7 @@ void Application::on_update(const zth::u64 delta_time)
 
     renderer.draw_filled_rect(rect2, zth::Color::blue, zth::Color::white);
 
-    static constexpr zth::Point2D polygon_points2[] = {
+    static constexpr zth::Vec2f polygon_points2[] = {
         { 1000.0f, 700.0f },  { 1400.0f, 500.0f }, { 1100.0f, 950.0f },
         { 1000.0f, 1000.0f }, { 900.0f, 950.0f },  { 900.0f, 850.0f },
     };
