@@ -16,14 +16,14 @@ FetchContent_MakeAvailable(SFML)
 add_library(
     Zenith STATIC
     "src/Application.cpp"
-    "src/CustomRenderer.cpp"
+    "src/CustomPrimitiveRenderer.cpp"
     "src/EllipseShape.cpp"
     "src/Event.cpp"
     "src/FileIo.cpp"
     "src/Input.cpp"
     "src/Logger.cpp"
     "src/PrimitiveRenderer.cpp"
-    "src/SfmlRenderer.cpp"
+    "src/SfmlPrimitiveRenderer.cpp"
     "src/Texture.cpp"
     "src/Window.cpp"
 )

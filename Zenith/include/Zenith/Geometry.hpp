@@ -3,7 +3,6 @@
 #include <SFML/System/Vector2.hpp>
 
 #include <array>
-#include <type_traits>
 
 #include "Typedefs.hpp"
 
@@ -14,9 +13,9 @@ template<typename T> struct Vec2
     T x;
     T y;
 
-    Vec2() = default;
-    Vec2(T x, T y) : x(x), y(y) {}
-    explicit Vec2(const sf::Vector2<T>& vec) : x(vec.x), y(vec.y) {}
+    constexpr Vec2() = default;
+    constexpr Vec2(T x, T y) : x(x), y(y) {}
+    explicit constexpr Vec2(const sf::Vector2<T>& vec) : x(vec.x), y(vec.y) {}
 
     constexpr Vec2 operator+(const Vec2& other) const;
     constexpr Vec2 operator-(const Vec2& other) const;
@@ -32,6 +31,7 @@ template<typename T> struct Vec2
 
     constexpr auto operator<=>(const Vec2& other) const = default;
 
+    template<typename Other> constexpr explicit operator Vec2<Other>() const;
     constexpr explicit operator sf::Vector2<T>() const;
 };
 

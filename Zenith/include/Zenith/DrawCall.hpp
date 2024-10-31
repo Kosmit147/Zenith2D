@@ -8,12 +8,11 @@ namespace zth {
 
 struct DrawCall
 {
-    std::vector<sf::Vertex> vertices;
-    sf::PrimitiveType mode;
+    std::vector<sf::Vertex> vertices = {};
 
-    void execute(sf::RenderTarget& target)
+    void execute(sf::RenderTarget& render_target, sf::PrimitiveType mode)
     {
-        target.draw(vertices.data(), vertices.size(), mode);
+        render_target.draw(vertices.data(), vertices.size(), mode);
         clear();
     }
 

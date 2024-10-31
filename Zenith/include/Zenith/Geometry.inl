@@ -47,6 +47,11 @@ template<typename T> constexpr Vec2<T> Vec2<T>::operator-() const
     return { -x, -y };
 }
 
+template<typename T> template<typename Other> constexpr Vec2<T>::operator Vec2<Other>() const
+{
+    return Vec2<Other>{ static_cast<Other>(x), static_cast<Other>(y) };
+}
+
 template<typename T> constexpr Vec2<T>::operator sf::Vector2<T>() const
 {
     return sf::Vector2<T>{ x, y };
