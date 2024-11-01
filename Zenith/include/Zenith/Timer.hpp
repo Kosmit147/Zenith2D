@@ -17,7 +17,7 @@ public:
     {
         auto ns =
             std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - _start);
-        return ns.count();
+        return static_cast<usize>(ns.count());
     }
 
     double elapsed_ms() const { return static_cast<double>(elapsed_ns()) / 1000.0 / 1000.0; }

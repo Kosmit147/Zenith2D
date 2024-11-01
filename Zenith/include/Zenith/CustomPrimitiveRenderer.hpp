@@ -42,13 +42,13 @@ public:
 
     void draw_polygon(std::span<const Vec2f> points, const Color& color);
     void draw_polygon(std::span<const Line> lines, const Color& color);
-    void draw_filled_polygon(std::span<const Vec2f> points, const Color& color);
-    void draw_filled_polygon(std::span<const Line> lines, const Color& color);
+    void draw_filled_polygon(std::span<const Vec2f> points, const Color& color) const;
+    void draw_filled_polygon(std::span<const Line> lines, const Color& color) const;
 
     void draw_circle(const Circle& circle, const Color& color);
     void draw_ellipse(const Ellipse& ellipse, const Color& color);
-    void draw_filled_circle(const Circle& circle, const Color& color);
-    void draw_filled_ellipse(const Ellipse& ellipse, const Color& color);
+    void draw_filled_circle(const Circle& circle, const Color& color) const;
+    void draw_filled_ellipse(const Ellipse& ellipse, const Color& color) const;
 
 private:
     sf::RenderTarget& _render_target;

@@ -67,7 +67,7 @@ public:
     ~WindowApi() = default;
     ZTH_NO_COPY_NO_MOVE(WindowApi)
 
-    void set_clear_color(Color color) const { _window.clear_color = color; }
+    void set_clear_color(const Color& color) const { _window.clear_color = color; }
     void clear() const { _window.clear(); }
     void clear(const Color& color) const { _window.clear(color); }
 

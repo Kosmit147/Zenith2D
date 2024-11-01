@@ -1,7 +1,5 @@
 #include "Application.hpp"
 
-#include <Zenith/Timer.hpp>
-
 static const zth::ApplicationSpec spec = {
     .window_spec = {
         .title = "Sandbox",
@@ -11,7 +9,7 @@ static const zth::ApplicationSpec spec = {
     },
     .logger_spec = {
         .target = zth::LogTarget::ConsoleAndFile,
-        .log_file_path = "../log.txt",
+        .log_file_path = "../sandbox_log.txt",
     },
 };
 
@@ -27,88 +25,10 @@ Application::~Application()
     zth::Logger::print_notification("On shutdown.");
 }
 
-static void count_fps()
+void Application::on_update([[maybe_unused]] const zth::u64 delta_time)
 {
-    static zth::Timer fps_counter;
-    static unsigned int frames = 0;
-    frames++;
-
-    if (fps_counter.elapsed_ms() > 1000)
-    {
-        zth::Logger::print_notification("FPS: {}", frames);
-        frames = 0;
-        fps_counter.reset();
-    }
-}
-
-void Application::on_update(const zth::u64 delta_time)
-{
-    (void)delta_time;
-    // logger().print_notification("On Update with delta time: {} microseconds.", delta_time);
-
-    count_fps();
-
-    auto& renderer = _window.primitive_renderer;
-    renderer.set_rendering_algorithm(zth::RenderingAlgorithm::Custom);
-    renderer.set_fill_algorithm(zth::FillAlgorithm::BoundaryFill);
-
-    // static constexpr zth::Rect rect1 = { .position = { 1500.0f, 100.0f }, .size = { 200.0f, 200.0f } };
-
-    // renderer.draw_filled_rect(rect1);
-
-    // static constexpr zth::Line lines[] = {
-    //     { { 2.0f, 2.0f }, { 2.0f, 1000.0f } },
-    //     { { 2.0f, 1000.0f }, { 150.0f, 600.0f } },
-    //     { { 150.0f, 600.0f }, { 1000.0f, 27.0f } },
-    //     { { 1000.0f, 27.0f }, { 1600.0f, 100.0f } },
-    // };
-
-    // renderer.draw_point(zth::Vec2f{ 300.0f, 300.0f }, zth::Color::magenta);
-    // renderer.draw_closed_lines(lines, zth::Color::green);
-    // renderer.draw_filled_circle(zth::Circle{ zth::Vec2f{ 100.0f, 100.0f }, 50.0f }, zth::Color::magenta,
-    //                             zth::Color::magenta);
-    // renderer.draw_filled_circle(zth::Circle{ zth::Vec2f{ 600.0f, 600.0f }, 50.0f }, zth::Color::magenta,
-    //                             zth::Color::magenta);
-    // renderer.draw_filled_ellipse(zth::Ellipse{ zth::Vec2f{ 300.0f, 300.0f }, { 50.0f, 80.0f } }, zth::Color::cyan,
-    //                              zth::Color::cyan);
-    // renderer.draw_filled_ellipse(zth::Ellipse{ zth::Vec2f{ 300.0f, 300.0f }, { 80.0f, 30.0f } }, zth::Color::cyan,
-    //                              zth::Color::cyan);
-
-    // static constexpr zth::Vec2f polygon_points1[] = {
-    //     { 1300.0f, 450.0f },
-    //     { 1500.0f, 450.0f },
-    //     { 1400.0f, 400.0f },
-    //     // { 1100.0f, 600.0f },
-    // };
-
-    // static constexpr zth::Line polygon_lines[] = {
-    //     {
-    //         { 1000.0f, 500.0f },
-    //         { 1200.0f, 500.0f },
-    //     },
-    //     {
-    //         { 1200.0f, 500.0f },
-    //         { 1100.0f, 450.0f },
-    //     },
-    //     {
-    //         { 1100.0f, 450.0f },
-    //         { 1000.0f, 500.0f },
-    //     },
-    // };
-
-    // renderer.draw_filled_polygon(polygon_points1, zth::Color::green);
-    // renderer.draw_filled_polygon(polygon_lines, zth::Color::blue, zth::Color::blue);
-
-    // static constexpr zth::Rect rect2 = { .position = { 1500.0f, 800.0f }, .size = { 200.0f, 200.0f } };
-
-    // renderer.draw_filled_rect(rect2, zth::Color::blue, zth::Color::white);
-
-    // static constexpr zth::Vec2f polygon_points2[] = {
-    //     { 1000.0f, 700.0f },  { 1400.0f, 500.0f }, { 1100.0f, 950.0f },
-    //     { 1000.0f, 1000.0f }, { 900.0f, 950.0f },  { 900.0f, 850.0f },
-    // };
-
-    // renderer.draw_filled_polygon(polygon_points2, zth::Color::white, zth::Color::red);
+    zth::Logger::print_notification("On Update with delta time: {} microseconds.", delta_time);
+    zth::Logger::print_notification("FPS: {}", get_fps());
 }
 
 void Application::on_event(const zth::Event& event)
@@ -121,16 +41,6 @@ void Application::on_event(const zth::Event& event)
         zth::Logger::print_notification("Window resized. New size: ({}, {}).", resize_event.width, resize_event.height);
     }
     break;
-    case zth::EventType::LostFocus:
-    {
-        zth::Logger::print_notification("Lost focus.");
-    }
-    break;
-    case zth::EventType::GainedFocus:
-    {
-        zth::Logger::print_notification("Gained focus.");
-    }
-    break;
     case zth::EventType::KeyPressed:
     {
         auto& key_event = event.key_event();
@@ -141,13 +51,6 @@ void Application::on_event(const zth::Event& event)
     {
         auto& key_event = event.key_event();
         zth::Logger::print_notification("{} key released.", to_string(key_event.key));
-    }
-    break;
-    case zth::EventType::MouseWheelScrolled:
-    {
-        auto& scroll_event = event.mouse_scroll_event();
-        auto [pos_x, pos_y] = scroll_event.cursor_pos;
-        zth::Logger::print_notification("Mouse scrolled: {}. Cursor pos: ({}, {}).", scroll_event.delta, pos_x, pos_y);
     }
     break;
     case zth::EventType::MouseButtonPressed:
@@ -164,23 +67,6 @@ void Application::on_event(const zth::Event& event)
         auto [pos_x, pos_y] = mouse_button_event.cursor_pos;
         zth::Logger::print_notification("{} mouse button released. Cursor pos: ({}, {}).",
                                         to_string(mouse_button_event.button), pos_x, pos_y);
-    }
-    break;
-    case zth::EventType::MouseMoved:
-    {
-        auto& mouse_move_event = event.mouse_move_event();
-        auto [pos_x, pos_y] = mouse_move_event.cursor_pos;
-        zth::Logger::print_notification("Mouse moved. New cursor pos: ({}, {}).", pos_x, pos_y);
-    }
-    break;
-    case zth::EventType::MouseEntered:
-    {
-        zth::Logger::print_notification("Mouse entered.");
-    }
-    break;
-    case zth::EventType::MouseLeft:
-    {
-        zth::Logger::print_notification("Mouse left.");
     }
     break;
     default:

@@ -10,6 +10,9 @@ void Application::run()
 {
     sf::Clock delta_t_clock;
 
+    u32 frame_count = 0;
+    sf::Clock fps_clock;
+
     while (_internal_window.is_open())
     {
         const auto delta_time = static_cast<u64>(delta_t_clock.restart().asMicroseconds());
@@ -31,6 +34,15 @@ void Application::run()
 
         on_update(delta_time);
         _internal_window.display();
+
+        frame_count++;
+
+        if (fps_clock.getElapsedTime().asSeconds() >= 1.0f)
+        {
+            fps_clock.restart();
+            _fps = frame_count;
+            frame_count = 0;
+        }
     }
 }
 
