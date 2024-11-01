@@ -23,12 +23,15 @@ public:
 
     void run();
 
+    auto get_fps() const { return _fps; }
+
 protected:
     WindowApi _window = WindowApi{ _internal_window };
     Logger _logger;
 
 private:
     Window _internal_window;
+    u32 _fps = 0;
 
 private:
     virtual void on_update([[maybe_unused]] u64 delta_time) {}

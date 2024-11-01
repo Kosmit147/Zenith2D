@@ -107,7 +107,7 @@ void CustomPrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Co
     _draw_call.execute(_render_target, sf::Points);
 }
 
-void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points, const Color& color)
+void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points, const Color& color) const
 {
     const auto render_target_size = _render_target.getSize();
     auto& image = get_tmp_image(render_target_size);
@@ -139,7 +139,7 @@ void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points,
     _render_target.draw(sprite);
 }
 
-void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const Color& color)
+void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const Color& color) const
 {
     const auto render_target_size = _render_target.getSize();
     auto& image = get_tmp_image(render_target_size);
@@ -183,7 +183,7 @@ void CustomPrimitiveRenderer::draw_ellipse(const Ellipse& ellipse, const Color& 
     _draw_call.execute(_render_target, sf::Points);
 }
 
-void CustomPrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& color)
+void CustomPrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& color) const
 {
     const auto render_target_size = _render_target.getSize();
     auto& image = get_tmp_image(render_target_size);
@@ -211,7 +211,7 @@ void CustomPrimitiveRenderer::draw_filled_circle(const Circle& circle, const Col
     _render_target.draw(sprite);
 }
 
-void CustomPrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const Color& color)
+void CustomPrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const Color& color) const
 {
     const auto render_target_size = _render_target.getSize();
     auto& image = get_tmp_image(render_target_size);
