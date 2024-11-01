@@ -38,7 +38,7 @@ public:
     void draw_closed_lines(std::span<const Line> lines, const Color& color);
 
     void draw_rect(const Rect& rect, const Color& color);
-    void draw_filled_rect(const Rect& rect, const Color& color);
+    void draw_filled_rect(const Rect& rect, const Color& color) const;
 
     void draw_polygon(std::span<const Vec2f> points, const Color& color);
     void draw_polygon(std::span<const Line> lines, const Color& color);
@@ -83,7 +83,7 @@ private:
     static void boundary_fill(sf::Image& image, const Vec2u& seed, const Color& border_color, const Color& fill_color);
     static void flood_fill(sf::Image& image, const Vec2u& seed, const Color& fill_color, const Color& background_color);
 
-    sf::Image& get_tmp_image(sf::Vector2u size);
+    static sf::Image& get_tmp_image(sf::Vector2u target_size);
 };
 
 } // namespace zth
