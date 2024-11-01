@@ -3,6 +3,7 @@
 #include "Event.hpp"
 #include "Logger.hpp"
 #include "Typedefs.hpp"
+#include "Utility.hpp"
 #include "Window.hpp"
 
 namespace zth {
@@ -17,14 +18,8 @@ class Application
 {
 public:
     explicit Application(const ApplicationSpec& spec = {});
-
-    Application(const Application&) = delete;
-    Application(Application&&) = delete;
-
     virtual ~Application() = default;
-
-    auto operator=(const Application&) = delete;
-    auto operator=(Application&&) = delete;
+    ZTH_NO_COPY_NO_MOVE(Application)
 
     void run();
 

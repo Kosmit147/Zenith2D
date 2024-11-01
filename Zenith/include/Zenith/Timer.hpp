@@ -20,7 +20,9 @@ public:
         return ns.count();
     }
 
-    double elapsed_ms() const { return static_cast<double>(elapsed_ns()) / 1000000.0; }
+    double elapsed_ms() const { return static_cast<double>(elapsed_ns()) / 1000.0 / 1000.0; }
+
+    double elapsed_s() const { return elapsed_ms() / 1000.0; }
 
 private:
     std::chrono::time_point<std::chrono::high_resolution_clock> _start;

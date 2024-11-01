@@ -5,11 +5,12 @@
 #include <span>
 
 #include "Color.hpp"
+#include "CustomPrimitiveRenderer.hpp"
 #include "Geometry.hpp"
+#include "SfmlPrimitiveRenderer.hpp"
+#include "Utility.hpp"
 
 namespace zth {
-
-class Window;
 
 enum class RenderingAlgorithm
 {
@@ -17,95 +18,48 @@ enum class RenderingAlgorithm
     Custom,
 };
 
+// PrimitiveRenderer should handle whether the parameters passed to it to draw are correct
 class PrimitiveRenderer
 {
 public:
-    RenderingAlgorithm rendering_algorithm = RenderingAlgorithm::Sfml;
-
-public:
-    explicit PrimitiveRenderer(sf::RenderWindow& window) : _window(window) {}
-
-    PrimitiveRenderer(const PrimitiveRenderer&) = delete;
-    PrimitiveRenderer(PrimitiveRenderer&&) = delete;
-
+    explicit PrimitiveRenderer(sf::RenderTarget& target);
     ~PrimitiveRenderer() = default;
+    ZTH_NO_COPY_NO_MOVE(PrimitiveRenderer)
 
-    auto operator=(const PrimitiveRenderer&) = delete;
-    auto operator=(PrimitiveRenderer&&) = delete;
+    auto rendering_algorithm() const { return _rendering_algorithm; }
+    auto fill_algorithm() const { return _custom_renderer.fill_algorithm; }
 
-    void draw_point(Point2D point, const Color& color = Color::white) const;
+    void set_rendering_algorithm(RenderingAlgorithm alg) { _rendering_algorithm = alg; }
+    void set_fill_algorithm(FillAlgorithm alg) { _custom_renderer.fill_algorithm = alg; }
 
-    void draw_line(const Point2D& from, const Point2D& to, const Color& color = Color::white) const;
+    void draw_point(const Vec2f& point, const Color& color);
+    void draw_points(std::span<const Vec2f> points, const Color& color);
+    void draw_line(const Vec2f& from, const Vec2f& to, const Color& color);
+    void draw_line(const Line& line, const Color& color);
+    void draw_line_strip(std::span<const Vec2f> points, const Color& color);
+    void draw_lines(std::span<const Line> lines, const Color& color);
+    void draw_closed_lines(std::span<const Vec2f> points, const Color& color);
+    void draw_closed_lines(std::span<const Line> lines, const Color& color);
 
-    void draw_line(const Line& line, const Color& color = Color::white) const;
+    void draw_rect(const Rect& rect, const Color& color);
+    void draw_filled_rect(const Rect& rect, const Color& color);
 
-    void draw_lines(std::span<const Point2D> points, const Color& color = Color::white) const;
+    void draw_polygon(std::span<const Vec2f> points, const Color& color);
+    void draw_polygon(std::span<const Line> lines, const Color& color);
+    void draw_filled_polygon(std::span<const Vec2f> points, const Color& color);
+    void draw_filled_polygon(std::span<const Line> lines, const Color& color);
 
-    void draw_lines(std::span<const Line> lines, const Color& color = Color::white) const;
-
-    void draw_closed_lines(std::span<const Point2D> points, const Color& color = Color::white) const;
-
-    void draw_closed_lines(std::span<const Line> lines, const Color& color = Color::white) const;
-
-    void draw_rect(const Rect& rect, const Color& color = Color::white) const;
-
-    void draw_filled_rect(const Rect& rect, const Color& outline_color = Color::white,
-                          const Color& fill_color = Color::black) const;
-
-    void draw_polygon(std::span<const Point2D> points, const Color& color = Color::white) const;
-
-    void draw_polygon(std::span<const Line> lines, const Color& color = Color::white) const;
-
-    void draw_filled_polygon(std::span<const Point2D> points, const Color& outline_color = Color::white,
-                             const Color& fill_color = Color::black) const;
-
-    void draw_filled_polygon(std::span<const Line> lines, const Color& outline_color = Color::white,
-                             const Color& fill_color = Color::black) const;
-
-    void draw_circle(const Circle& circle, const Color& color = Color::white) const;
-
-    void draw_filled_circle(const Circle& circle, const Color& outline_color = Color::white,
-                            const Color& fill_color = Color::black) const;
-
-    void draw_ellipse(const Ellipse& ellipse, const Color& color = Color::white) const;
-
-    void draw_filled_ellipse(const Ellipse& ellipse, const Color& outline_color = Color::white,
-                             const Color& fill_color = Color::black) const;
+    void draw_circle(const Circle& circle, const Color& color);
+    void draw_ellipse(const Ellipse& ellipse, const Color& color);
+    void draw_filled_circle(const Circle& circle, const Color& color);
+    void draw_filled_ellipse(const Ellipse& ellipse, const Color& color);
 
 private:
-    sf::RenderWindow& _window;
+    RenderingAlgorithm _rendering_algorithm = RenderingAlgorithm::Sfml;
 
-private:
-    void draw_line_sfml(const Point2D& from, const Point2D& to, const Color& color) const;
-
-    void draw_line_sfml(const Line& line, const Color& color) const;
-
-    void draw_line_custom(const Point2D& from, const Point2D& to, const Color& color) const;
-
-    void draw_line_custom(const Line& line, const Color& color) const;
-
-    void draw_rect_sfml(const Rect& rect, const Color& outline_color,
-                        const Color& fill_color = Color::transparent) const;
-
-    void draw_polygon_sfml(std::span<const Point2D> points, const Color& outline_color,
-                           const Color& fill_color = Color::transparent) const;
-
-    void draw_polygon_sfml(std::span<const Line> lines, const Color& outline_color,
-                           const Color& fill_color = Color::transparent) const;
-
-    void draw_polygon_custom(std::span<const Point2D> points, const Color& outline_color) const;
-
-    void draw_polygon_custom(std::span<const Line> lines, const Color& outline_color) const;
-
-    void draw_circle_sfml(const Circle& circle, const Color& outline_color,
-                          const Color& fill_color = Color::transparent) const;
-
-    void draw_circle_custom(const Circle& circle, const Color& color) const;
-
-    void draw_ellipse_sfml(const Ellipse& ellipse, const Color& outline_color,
-                           const Color& fill_color = Color::transparent) const;
-
-    void draw_ellipse_custom(const Ellipse& ellipse, const Color& color) const;
+    sf::RenderTarget& _render_target;
+    SfmlPrimitiveRenderer _sfml_renderer;
+    CustomPrimitiveRenderer _custom_renderer;
 };
 
 } // namespace zth

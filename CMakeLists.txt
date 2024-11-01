@@ -20,4 +20,5 @@ endif()
 
 get_compile_warnings(COMPILE_WARNINGS)
 add_subdirectory(Zenith)
+add_subdirectory(Testbed)
 add_subdirectory(Sandbox)

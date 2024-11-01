@@ -12,13 +12,13 @@ struct CursorPos
     i32 y;
 };
 
-enum class MouseButton
+enum class MouseButton : i8
 {
     Left,
     Right,
 };
 
-enum class Key
+enum class Key : i16
 {
     // Make sure the list is consistent with key_names array
     Unknown = -1,       // Represents any scancode not present in this enum

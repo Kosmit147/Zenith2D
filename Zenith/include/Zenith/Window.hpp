@@ -4,12 +4,12 @@
 
 #include <optional>
 #include <string>
-#include <utility>
 
 #include "Color.hpp"
 #include "Event.hpp"
 #include "PrimitiveRenderer.hpp"
 #include "Typedefs.hpp"
+#include "Utility.hpp"
 
 namespace zth {
 
@@ -37,6 +37,8 @@ public:
 
 public:
     explicit Window(const WindowSpec& spec);
+    ~Window() = default;
+    ZTH_NO_COPY_NO_MOVE(Window)
 
     bool is_open() const { return _sf_window.isOpen(); }
     void clear() { _sf_window.clear(static_cast<sf::Color>(clear_color)); }
@@ -60,15 +62,10 @@ private:
 public:
     PrimitiveRenderer& primitive_renderer;
 
+public:
     explicit WindowApi(Window& window) : _window(window), primitive_renderer(_window.primitive_renderer) {}
-
-    WindowApi(const WindowApi&) = delete;
-    WindowApi(WindowApi&&) = delete;
-
     ~WindowApi() = default;
-
-    auto operator=(const WindowApi&) = delete;
-    auto operator=(WindowApi&&) = delete;
+    ZTH_NO_COPY_NO_MOVE(WindowApi)
 
     void set_clear_color(Color color) const { _window.clear_color = color; }
     void clear() const { _window.clear(); }
