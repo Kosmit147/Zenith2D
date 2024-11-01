@@ -61,12 +61,12 @@ void CustomPrimitiveRenderer::draw_rect(const Rect& rect, const Color& color)
     _draw_call.execute(_render_target, sf::Points);
 }
 
-void CustomPrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& outline_color, const Color& fill_color)
+void CustomPrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& color)
 {
     const auto render_target_size = _render_target.getSize();
     auto& image = get_tmp_image(render_target_size);
 
-    draw_rect_on_image(image, rect, outline_color);
+    draw_rect_on_image(image, rect, color);
 
     auto top_left = rect.position;
     auto bottom_right = rect.position + rect.size;
@@ -77,10 +77,10 @@ void CustomPrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& ou
     switch (fill_algorithm)
     {
     case FillAlgorithm::BoundaryFill:
-        boundary_fill(image, seed, outline_color, fill_color);
+        boundary_fill(image, seed, color, color);
         break;
     case FillAlgorithm::FloodFill:
-        flood_fill(image, seed, outline_color, Color::transparent);
+        flood_fill(image, seed, color, Color::transparent);
         break;
     }
 
@@ -107,14 +107,13 @@ void CustomPrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Co
     _draw_call.execute(_render_target, sf::Points);
 }
 
-void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points, const Color& outline_color,
-                                                  const Color& fill_color)
+void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points, const Color& color)
 {
     const auto render_target_size = _render_target.getSize();
     auto& image = get_tmp_image(render_target_size);
 
-    draw_line_strip_on_image(image, points, outline_color);
-    draw_line_on_image(image, points.back(), points.front(), outline_color);
+    draw_line_strip_on_image(image, points, color);
+    draw_line_on_image(image, points.back(), points.front(), color);
 
     // TODO: figure out a better way to find the seed
     auto points_sum = std::reduce(points.begin(), points.end(), Vec2f{ 0, 0 });
@@ -124,10 +123,10 @@ void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points,
     switch (fill_algorithm)
     {
     case FillAlgorithm::BoundaryFill:
-        boundary_fill(image, seed, outline_color, fill_color);
+        boundary_fill(image, seed, color, color);
         break;
     case FillAlgorithm::FloodFill:
-        flood_fill(image, seed, outline_color, Color::transparent);
+        flood_fill(image, seed, color, Color::transparent);
         break;
     }
 
@@ -140,16 +139,15 @@ void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points,
     _render_target.draw(sprite);
 }
 
-void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const Color& outline_color,
-                                                  const Color& fill_color)
+void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const Color& color)
 {
     const auto render_target_size = _render_target.getSize();
     auto& image = get_tmp_image(render_target_size);
 
-    draw_lines_on_image(image, lines, outline_color);
+    draw_lines_on_image(image, lines, color);
 
     // TODO: figure out a better way to find the seed
-    auto points_sum = std::transform_reduce(lines.begin(), lines.end(), Vec2f{ 0, 0 }, std::plus{},
+    auto points_sum = std::transform_reduce(lines.begin(), lines.end(), Vec2f{ 0.0f, 0.0f }, std::plus{},
                                             [](auto& line) { return line.from; });
     auto points_average = points_sum / static_cast<float>(lines.size());
     auto seed = static_cast<Vec2u>(points_average);
@@ -157,10 +155,10 @@ void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, c
     switch (fill_algorithm)
     {
     case FillAlgorithm::BoundaryFill:
-        boundary_fill(image, seed, outline_color, fill_color);
+        boundary_fill(image, seed, color, color);
         break;
     case FillAlgorithm::FloodFill:
-        flood_fill(image, seed, outline_color, Color::transparent);
+        flood_fill(image, seed, color, Color::transparent);
         break;
     }
 
@@ -185,23 +183,22 @@ void CustomPrimitiveRenderer::draw_ellipse(const Ellipse& ellipse, const Color& 
     _draw_call.execute(_render_target, sf::Points);
 }
 
-void CustomPrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& outline_color,
-                                                 const Color& fill_color)
+void CustomPrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& color)
 {
     const auto render_target_size = _render_target.getSize();
     auto& image = get_tmp_image(render_target_size);
 
-    draw_circle_on_image(image, circle, outline_color);
+    draw_circle_on_image(image, circle, color);
 
     auto seed = static_cast<Vec2u>(circle.center);
 
     switch (fill_algorithm)
     {
     case FillAlgorithm::BoundaryFill:
-        boundary_fill(image, seed, outline_color, fill_color);
+        boundary_fill(image, seed, color, color);
         break;
     case FillAlgorithm::FloodFill:
-        flood_fill(image, seed, outline_color, Color::transparent);
+        flood_fill(image, seed, color, Color::transparent);
         break;
     }
 
@@ -214,23 +211,22 @@ void CustomPrimitiveRenderer::draw_filled_circle(const Circle& circle, const Col
     _render_target.draw(sprite);
 }
 
-void CustomPrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const Color& outline_color,
-                                                  const Color& fill_color)
+void CustomPrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const Color& color)
 {
     const auto render_target_size = _render_target.getSize();
     auto& image = get_tmp_image(render_target_size);
 
-    draw_ellipse_on_image(image, ellipse, outline_color);
+    draw_ellipse_on_image(image, ellipse, color);
 
     auto seed = static_cast<Vec2u>(ellipse.center);
 
     switch (fill_algorithm)
     {
     case FillAlgorithm::BoundaryFill:
-        boundary_fill(image, seed, outline_color, fill_color);
+        boundary_fill(image, seed, color, color);
         break;
     case FillAlgorithm::FloodFill:
-        flood_fill(image, seed, outline_color, Color::transparent);
+        flood_fill(image, seed, color, Color::transparent);
         break;
     }
 

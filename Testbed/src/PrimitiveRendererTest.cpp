@@ -78,7 +78,7 @@ void primitive_renderer_test(zth::PrimitiveRenderer& renderer)
 
     static constexpr zth::Rect filled_rect = { .position = { 300.0f, 70.0f }, .size = { 180.0f, 90.0f } };
 
-    renderer.draw_filled_rect(filled_rect, zth::Color::blue, zth::Color::blue);
+    renderer.draw_filled_rect(filled_rect, zth::Color::blue);
 
     static constexpr zth::Vec2f polygon_from_points[] = {
         { 490.0f, 160.0f },
@@ -100,13 +100,13 @@ void primitive_renderer_test(zth::PrimitiveRenderer& renderer)
         { 760.0f, 70.0f },
     };
 
-    renderer.draw_filled_polygon(filled_polygon_from_points, zth::Color::blue, zth::Color::blue);
+    renderer.draw_filled_polygon(filled_polygon_from_points, zth::Color::blue);
 
     static constexpr zth::Line filled_polygon_from_lines[] = { { { 820.0f, 160.0f }, { 920.0f, 160.0f } },
                                                                { { 920.0f, 160.0f }, { 870.0f, 70.0f } },
                                                                { { 870.0f, 70.0f }, { 820.0f, 160.0f } } };
 
-    renderer.draw_filled_polygon(filled_polygon_from_lines, zth::Color::blue, zth::Color::blue);
+    renderer.draw_filled_polygon(filled_polygon_from_lines, zth::Color::blue);
 
     static constexpr zth::Circle circle = {
         .center = { 980.0f, 115.0f },
@@ -120,7 +120,7 @@ void primitive_renderer_test(zth::PrimitiveRenderer& renderer)
         .radius = 50.0f,
     };
 
-    renderer.draw_filled_circle(filled_circle, zth::Color::blue, zth::Color::blue);
+    renderer.draw_filled_circle(filled_circle, zth::Color::blue);
 
     static constexpr zth::Ellipse ellipse = {
         .center = { 1250.0f, 115.0f },
@@ -134,5 +134,5 @@ void primitive_renderer_test(zth::PrimitiveRenderer& renderer)
         .radius = { 100.0f, 50.0f },
     };
 
-    renderer.draw_filled_ellipse(filled_ellipse, zth::Color::blue, zth::Color::blue);
+    renderer.draw_filled_ellipse(filled_ellipse, zth::Color::blue);
 }

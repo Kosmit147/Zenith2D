@@ -28,22 +28,18 @@ public:
     void draw_closed_lines(std::span<const Line> lines, const Color& color);
 
     void draw_rect(const Rect& rect, const Color& color);
-    void draw_filled_rect(const Rect& rect, const Color& outline_color, const Color& fill_color,
-                          float outline_thickness) const;
+    void draw_filled_rect(const Rect& rect, const Color& color);
 
+    // only supports convex polygons
     void draw_polygon(std::span<const Vec2f> points, const Color& color);
     void draw_polygon(std::span<const Line> lines, const Color& color);
-    void draw_filled_polygon(std::span<const Vec2f> points, const Color& outline_color, const Color& fill_color,
-                             float outline_thickness) const;
-    void draw_filled_polygon(std::span<const Line> lines, const Color& outline_color, const Color& fill_color,
-                             float outline_thickness) const;
+    void draw_filled_polygon(std::span<const Vec2f> points, const Color& color);
+    void draw_filled_polygon(std::span<const Line> lines, const Color& color);
 
     void draw_circle(const Circle& circle, const Color& color) const;
     void draw_ellipse(const Ellipse& ellipse, const Color& color) const;
-    void draw_filled_circle(const Circle& circle, const Color& outline_color, const Color& fill_color,
-                            float outline_thickness) const;
-    void draw_filled_ellipse(const Ellipse& ellipse, const Color& outline_color, const Color& fill_color,
-                             float outline_thickness) const;
+    void draw_filled_circle(const Circle& circle, const Color& color) const;
+    void draw_filled_ellipse(const Ellipse& ellipse, const Color& color) const;
 
 private:
     sf::RenderTarget& _render_target;
@@ -55,14 +51,18 @@ private:
     void plot_line(const Vec2f& from, const Vec2f& to, const Color& color);
     void plot_line(const Line& line, const Color& color);
     void plot_line_strip(std::span<const Vec2f> points, const Color& color);
+    void plot_line_strip(std::span<const Line> lines, const Color& color);
     void plot_lines(std::span<const Line> lines, const Color& color);
     void plot_closed_lines(std::span<const Vec2f> points, const Color& color);
     void plot_closed_lines(std::span<const Line> lines, const Color& color);
 
     void plot_rect(const Rect& rect, const Color& color);
+    void plot_filled_rect(const Rect& rect, const Color& color);
 
     void plot_polygon(std::span<const Vec2f> points, const Color& color);
     void plot_polygon(std::span<const Line> lines, const Color& color);
+    void plot_filled_polygon(std::span<const Vec2f> points, const Color& color);
+    void plot_filled_polygon(std::span<const Line> lines, const Color& color);
 };
 
 } // namespace zth

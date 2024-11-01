@@ -1,7 +1,6 @@
 #include "SfmlPrimitiveRenderer.hpp"
 
 #include "EllipseShape.hpp"
-#include "Typedefs.hpp"
 
 namespace zth {
 
@@ -59,17 +58,10 @@ void SfmlPrimitiveRenderer::draw_rect(const Rect& rect, const Color& color)
     _draw_call.execute(_render_target, sf::LineStrip);
 }
 
-void SfmlPrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& outline_color, const Color& fill_color,
-                                             float outline_thickness) const
+void SfmlPrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& color)
 {
-    sf::RectangleShape sf_rectangle;
-    sf_rectangle.setSize(static_cast<sf::Vector2f>(rect.size));
-    sf_rectangle.setOutlineColor(static_cast<sf::Color>(outline_color));
-    sf_rectangle.setOutlineThickness(outline_thickness);
-    sf_rectangle.setFillColor(static_cast<sf::Color>(fill_color));
-    sf_rectangle.setPosition(static_cast<sf::Vector2f>(rect.position));
-
-    _render_target.draw(sf_rectangle);
+    plot_filled_rect(rect, color);
+    _draw_call.execute(_render_target, sf::TriangleStrip);
 }
 
 void SfmlPrimitiveRenderer::draw_polygon(std::span<const Vec2f> points, const Color& color)
@@ -84,68 +76,62 @@ void SfmlPrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Colo
     _draw_call.execute(_render_target, sf::Lines);
 }
 
-void SfmlPrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points, const Color& outline_color,
-                                                const Color& fill_color, float outline_thickness) const
+void SfmlPrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points, const Color& color)
 {
-    sf::ConvexShape sf_polygon;
-    sf_polygon.setPointCount(points.size());
-
-    for (usize i = 0; i < points.size(); i++)
-        sf_polygon.setPoint(i, static_cast<sf::Vector2f>(points[i]));
-
-    sf_polygon.setOutlineColor(static_cast<sf::Color>(outline_color));
-    sf_polygon.setOutlineThickness(outline_thickness);
-    sf_polygon.setFillColor(static_cast<sf::Color>(fill_color));
-
-    _render_target.draw(sf_polygon);
+    plot_filled_polygon(points, color);
+    _draw_call.execute(_render_target, sf::TriangleFan);
 }
 
-void SfmlPrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const Color& outline_color,
-                                                const Color& fill_color, float outline_thickness) const
+void SfmlPrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const Color& color)
 {
-    sf::ConvexShape sf_polygon;
-    sf_polygon.setPointCount(lines.size());
-
-    for (usize i = 0; i < lines.size(); i++)
-        sf_polygon.setPoint(i, static_cast<sf::Vector2f>(lines[i].from));
-
-    sf_polygon.setOutlineColor(static_cast<sf::Color>(outline_color));
-    sf_polygon.setOutlineThickness(outline_thickness);
-    sf_polygon.setFillColor(static_cast<sf::Color>(fill_color));
-
-    _render_target.draw(sf_polygon);
+    plot_filled_polygon(lines, color);
+    _draw_call.execute(_render_target, sf::TriangleFan);
 }
 
 void SfmlPrimitiveRenderer::draw_circle(const Circle& circle, const Color& color) const
 {
-    draw_filled_circle(circle, color, Color::transparent, 1.0f);
-}
-
-void SfmlPrimitiveRenderer::draw_ellipse(const Ellipse& ellipse, const Color& color) const
-{
-    draw_filled_ellipse(ellipse, color, Color::transparent, 1.0f);
-}
-
-void SfmlPrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& outline_color,
-                                               const Color& fill_color, float outline_thickness) const
-{
+    // TODO: handle this on our own instead of using SFML shapes
     sf::CircleShape sf_circle;
     sf_circle.setRadius(circle.radius);
-    sf_circle.setOutlineColor(static_cast<sf::Color>(outline_color));
-    sf_circle.setOutlineThickness(outline_thickness);
-    sf_circle.setFillColor(static_cast<sf::Color>(fill_color));
+    sf_circle.setOutlineColor(static_cast<sf::Color>(color));
+    sf_circle.setOutlineThickness(1);
+    sf_circle.setFillColor(static_cast<sf::Color>(Color::transparent));
     sf_circle.setPosition(static_cast<sf::Vector2f>(circle.center - Vec2f{ circle.radius, circle.radius }));
 
     _render_target.draw(sf_circle);
 }
 
-void SfmlPrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const Color& outline_color,
-                                                const Color& fill_color, float outline_thickness) const
+void SfmlPrimitiveRenderer::draw_ellipse(const Ellipse& ellipse, const Color& color) const
 {
+    // TODO: handle this on our own instead of using SFML shapes
     EllipseShape sf_ellipse(ellipse);
-    sf_ellipse.setOutlineColor(static_cast<sf::Color>(outline_color));
-    sf_ellipse.setOutlineThickness(outline_thickness);
-    sf_ellipse.setFillColor(static_cast<sf::Color>(fill_color));
+    sf_ellipse.setOutlineColor(static_cast<sf::Color>(color));
+    sf_ellipse.setOutlineThickness(1);
+    sf_ellipse.setFillColor(static_cast<sf::Color>(Color::transparent));
+
+    _render_target.draw(sf_ellipse);
+}
+
+void SfmlPrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& color) const
+{
+    // TODO: handle this on our own instead of using SFML shapes
+    sf::CircleShape sf_circle;
+    sf_circle.setRadius(circle.radius);
+    sf_circle.setOutlineColor(static_cast<sf::Color>(color));
+    sf_circle.setOutlineThickness(1);
+    sf_circle.setFillColor(static_cast<sf::Color>(color));
+    sf_circle.setPosition(static_cast<sf::Vector2f>(circle.center - Vec2f{ circle.radius, circle.radius }));
+
+    _render_target.draw(sf_circle);
+}
+
+void SfmlPrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const Color& color) const
+{
+    // TODO: handle this on our own instead of using SFML shapes
+    EllipseShape sf_ellipse(ellipse);
+    sf_ellipse.setOutlineColor(static_cast<sf::Color>(color));
+    sf_ellipse.setOutlineThickness(1);
+    sf_ellipse.setFillColor(static_cast<sf::Color>(color));
 
     _render_target.draw(sf_ellipse);
 }
@@ -206,6 +192,18 @@ void SfmlPrimitiveRenderer::plot_rect(const Rect& rect, const Color& color)
     plot_point(points[0], color);
 }
 
+void SfmlPrimitiveRenderer::plot_filled_rect(const Rect& rect, const Color& color)
+{
+    auto points = rect.points();
+
+    // have to plot the corner first, then the diagonal
+
+    plot_point(points[1], color);
+    plot_point(points[0], color);
+    plot_point(points[2], color);
+    plot_point(points[3], color);
+}
+
 void SfmlPrimitiveRenderer::plot_polygon(std::span<const Vec2f> points, const Color& color)
 {
     plot_line_strip(points, color);
@@ -215,6 +213,27 @@ void SfmlPrimitiveRenderer::plot_polygon(std::span<const Vec2f> points, const Co
 void SfmlPrimitiveRenderer::plot_polygon(std::span<const Line> lines, const Color& color)
 {
     plot_lines(lines, color);
+}
+
+void SfmlPrimitiveRenderer::plot_filled_polygon(std::span<const Vec2f> points, const Color& color)
+{
+    auto center_point = std::reduce(points.begin(), points.end()) / static_cast<float>(points.size());
+    plot_point(center_point, color);
+    plot_line_strip(points, color);
+    plot_point(points[0], color);
+}
+
+void SfmlPrimitiveRenderer::plot_filled_polygon(std::span<const Line> lines, const Color& color)
+{
+    auto points_sum = std::transform_reduce(lines.begin(), lines.end(), Vec2f{ 0.0f, 0.0f }, std::plus{},
+                                            [](auto& line) { return line.from; });
+    auto center_point = points_sum / static_cast<float>(lines.size());
+    plot_point(center_point, color);
+
+    for (const auto& [from, to] : lines)
+        plot_point(from, color);
+
+    plot_point(lines.back().to, color);
 }
 
 } // namespace zth

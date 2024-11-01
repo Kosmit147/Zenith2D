@@ -140,16 +140,15 @@ void PrimitiveRenderer::draw_rect(const Rect& rect, const Color& color)
     }
 }
 
-void PrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& outline_color, const Color& fill_color,
-                                         float outline_thickness)
+void PrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& color)
 {
     switch (_rendering_algorithm)
     {
     case RenderingAlgorithm::Sfml:
-        _sfml_renderer.draw_filled_rect(rect, outline_color, fill_color, outline_thickness);
+        _sfml_renderer.draw_filled_rect(rect, color);
         break;
     case RenderingAlgorithm::Custom:
-        _custom_renderer.draw_filled_rect(rect, outline_color, fill_color);
+        _custom_renderer.draw_filled_rect(rect, color);
         break;
     }
 }
@@ -248,8 +247,7 @@ void PrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Color& c
     }
 }
 
-void PrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points, const Color& outline_color,
-                                            const Color& fill_color, float outline_thickness)
+void PrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points, const Color& color)
 {
     if (points.size() < 2)
         return;
@@ -260,16 +258,15 @@ void PrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points, const
     switch (_rendering_algorithm)
     {
     case RenderingAlgorithm::Sfml:
-        _sfml_renderer.draw_filled_polygon(points, outline_color, fill_color, outline_thickness);
+        _sfml_renderer.draw_filled_polygon(points, color);
         break;
     case RenderingAlgorithm::Custom:
-        _custom_renderer.draw_filled_polygon(points, outline_color, fill_color);
+        _custom_renderer.draw_filled_polygon(points, color);
         break;
     }
 }
 
-void PrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const Color& outline_color,
-                                            const Color& fill_color, float outline_thickness)
+void PrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const Color& color)
 {
     if (lines.empty())
         return;
@@ -280,10 +277,10 @@ void PrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const C
     switch (_rendering_algorithm)
     {
     case RenderingAlgorithm::Sfml:
-        _sfml_renderer.draw_filled_polygon(lines, outline_color, fill_color, outline_thickness);
+        _sfml_renderer.draw_filled_polygon(lines, color);
         break;
     case RenderingAlgorithm::Custom:
-        _custom_renderer.draw_filled_polygon(lines, outline_color, fill_color);
+        _custom_renderer.draw_filled_polygon(lines, color);
         break;
     }
 }
@@ -301,16 +298,15 @@ void PrimitiveRenderer::draw_circle(const Circle& circle, const Color& color)
     }
 }
 
-void PrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& outline_color, const Color& fill_color,
-                                           float outline_thickness)
+void PrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& color)
 {
     switch (_rendering_algorithm)
     {
     case RenderingAlgorithm::Sfml:
-        _sfml_renderer.draw_filled_circle(circle, outline_color, fill_color, outline_thickness);
+        _sfml_renderer.draw_filled_circle(circle, color);
         break;
     case RenderingAlgorithm::Custom:
-        _custom_renderer.draw_filled_circle(circle, outline_color, fill_color);
+        _custom_renderer.draw_filled_circle(circle, color);
         break;
     }
 }
@@ -328,16 +324,15 @@ void PrimitiveRenderer::draw_ellipse(const Ellipse& ellipse, const Color& color)
     }
 }
 
-void PrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const Color& outline_color, const Color& fill_color,
-                                            float outline_thickness)
+void PrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const Color& color)
 {
     switch (_rendering_algorithm)
     {
     case RenderingAlgorithm::Sfml:
-        _sfml_renderer.draw_filled_ellipse(ellipse, outline_color, fill_color, outline_thickness);
+        _sfml_renderer.draw_filled_ellipse(ellipse, color);
         break;
     case RenderingAlgorithm::Custom:
-        _custom_renderer.draw_filled_ellipse(ellipse, outline_color, fill_color);
+        _custom_renderer.draw_filled_ellipse(ellipse, color);
         break;
     }
 }
