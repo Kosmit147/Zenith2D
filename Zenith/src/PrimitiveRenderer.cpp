@@ -298,7 +298,7 @@ void PrimitiveRenderer::draw_circle(const Circle& circle, const Color& color)
     }
 }
 
-void PrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& color)
+void PrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& color) const
 {
     switch (_rendering_algorithm)
     {
@@ -324,7 +324,7 @@ void PrimitiveRenderer::draw_ellipse(const Ellipse& ellipse, const Color& color)
     }
 }
 
-void PrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const Color& color)
+void PrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const Color& color) const
 {
     switch (_rendering_algorithm)
     {

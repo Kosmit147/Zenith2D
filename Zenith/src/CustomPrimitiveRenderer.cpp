@@ -1,6 +1,5 @@
 #include "CustomPrimitiveRenderer.hpp"
 
-#include <execution>
 #include <stack>
 
 #include "Typedefs.hpp"
@@ -61,7 +60,7 @@ void CustomPrimitiveRenderer::draw_rect(const Rect& rect, const Color& color)
     _draw_call.execute(_render_target, sf::Points);
 }
 
-void CustomPrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& color)
+void CustomPrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& color) const
 {
     const auto render_target_size = _render_target.getSize();
     auto& image = get_tmp_image(render_target_size);
@@ -115,7 +114,6 @@ void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points,
     draw_line_strip_on_image(image, points, color);
     draw_line_on_image(image, points.back(), points.front(), color);
 
-    // TODO: figure out a better way to find the seed
     auto points_sum = std::reduce(points.begin(), points.end(), Vec2f{ 0, 0 });
     auto points_average = points_sum / static_cast<float>(points.size());
     auto seed = static_cast<Vec2u>(points_average);
@@ -146,7 +144,6 @@ void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, c
 
     draw_lines_on_image(image, lines, color);
 
-    // TODO: figure out a better way to find the seed
     auto points_sum = std::transform_reduce(lines.begin(), lines.end(), Vec2f{ 0.0f, 0.0f }, std::plus{},
                                             [](auto& line) { return line.from; });
     auto points_average = points_sum / static_cast<float>(lines.size());
@@ -361,10 +358,11 @@ void CustomPrimitiveRenderer::plot_circle(const Circle& circle, const Color& col
     constexpr auto pi = std::numbers::pi_v<float>;
 
     auto [xc, yc] = circle.center;
-    float step = 1.0f / circle.radius;
+    float step = std::min(1.0f / circle.radius, 1.0f);
+    usize iterations = static_cast<usize>(pi / 4.0f / step) + 1;
+    float alpha = 0.0f;
 
-    // TODO: do something about floating-point loop counter
-    for (float alpha = 0; alpha < pi / 4.0f; alpha += step)
+    for (usize i = 0; i < iterations; i++)
     {
         float x = circle.radius * std::cos(alpha);
         float y = circle.radius * std::sin(alpha);
@@ -375,6 +373,7 @@ void CustomPrimitiveRenderer::plot_circle(const Circle& circle, const Color& col
         };
 
         plot_points(points, color);
+        alpha += step;
     }
 }
 
@@ -384,9 +383,11 @@ void CustomPrimitiveRenderer::plot_ellipse(const Ellipse& ellipse, const Color& 
 
     auto [xc, yc] = ellipse.center;
     float step = 1.0f / std::max(ellipse.radius.x, ellipse.radius.y);
+    step = std::min(step, 1.0f);
+    usize iterations = static_cast<usize>(pi / 2.0f / step) + 1;
+    float alpha = 0.0f;
 
-    // TODO: do something about floating-point loop counter
-    for (float alpha = 0; alpha < pi / 2.0f; alpha += step)
+    for (usize i = 0; i < iterations; i++)
     {
         float x = ellipse.radius.x * std::cos(alpha);
         float y = ellipse.radius.y * std::sin(alpha);
@@ -399,12 +400,15 @@ void CustomPrimitiveRenderer::plot_ellipse(const Ellipse& ellipse, const Color& 
         };
 
         plot_points(points, color);
+        alpha += step;
     }
 }
 
 void CustomPrimitiveRenderer::draw_line_on_image(sf::Image& image, const Vec2f& from, const Vec2f& to,
                                                  const Color& color)
 {
+    // TODO: make sure the calculated points fit within the image
+
     const auto sf_color = static_cast<sf::Color>(color);
 
     auto [delta_x, delta_y] = to - from;
@@ -419,8 +423,8 @@ void CustomPrimitiveRenderer::draw_line_on_image(sf::Image& image, const Vec2f& 
             std::minmax(from, to, [](auto& from, auto& to) { return from.y <= to.y; });
 
         float x = start_point.x;
-        i32 y = static_cast<i32>(start_point.y);
-        i32 end_y = static_cast<i32>(end_point.y);
+        u32 y = static_cast<u32>(start_point.y);
+        u32 end_y = static_cast<u32>(end_point.y);
         assert(y <= end_y);
 
         for (; y <= end_y; y++)
@@ -435,8 +439,8 @@ void CustomPrimitiveRenderer::draw_line_on_image(sf::Image& image, const Vec2f& 
         const auto& [start_point, end_point] =
             std::minmax(from, to, [](auto& from, auto& to) { return from.x <= to.x; });
 
-        i32 x = static_cast<i32>(start_point.x);
-        i32 end_x = static_cast<i32>(end_point.x);
+        u32 x = static_cast<u32>(start_point.x);
+        u32 end_x = static_cast<u32>(end_point.x);
         float y = start_point.y;
         assert(x <= end_x);
 
@@ -478,15 +482,18 @@ void CustomPrimitiveRenderer::draw_rect_on_image(sf::Image& image, const Rect& r
 
 void CustomPrimitiveRenderer::draw_circle_on_image(sf::Image& image, const Circle& circle, const Color& color)
 {
+    // TODO: make sure the calculated points fit within the image
+
     const auto sf_color = static_cast<sf::Color>(color);
     constexpr auto pi = std::numbers::pi_v<float>;
 
     u32 xc = static_cast<u32>(circle.center.x);
     u32 yc = static_cast<u32>(circle.center.y);
-    float step = 1.0f / circle.radius;
+    float step = std::min(1.0f / circle.radius, 1.0f);
+    usize iterations = static_cast<usize>(pi / 4.0f / step) + 1;
+    float alpha = 0.0f;
 
-    // TODO: do something about floating-point loop counter
-    for (float alpha = 0; alpha < pi / 4.0f; alpha += step)
+    for (usize i = 0; i < iterations; i++)
     {
         u32 x = static_cast<u32>(circle.radius * std::cos(alpha));
         u32 y = static_cast<u32>(circle.radius * std::sin(alpha));
@@ -499,20 +506,26 @@ void CustomPrimitiveRenderer::draw_circle_on_image(sf::Image& image, const Circl
         image.setPixel(xc + y, yc - x, sf_color);
         image.setPixel(xc - y, yc + x, sf_color);
         image.setPixel(xc - y, yc - x, sf_color);
+
+        alpha += step;
     }
 }
 
 void CustomPrimitiveRenderer::draw_ellipse_on_image(sf::Image& image, const Ellipse& ellipse, const Color& color)
 {
+    // TODO: make sure the calculated points fit within the image
+
     const auto sf_color = static_cast<sf::Color>(color);
     constexpr auto pi = std::numbers::pi_v<float>;
 
     u32 xc = static_cast<u32>(ellipse.center.x);
     u32 yc = static_cast<u32>(ellipse.center.y);
     float step = 1.0f / std::max(ellipse.radius.x, ellipse.radius.y);
+    step = std::min(step, 1.0f);
+    usize iterations = static_cast<usize>(pi / 2.0f / step) + 1;
+    float alpha = 0.0f;
 
-    // TODO: do something about floating-point loop counter
-    for (float alpha = 0; alpha < pi / 2.0f; alpha += step)
+    for (usize i = 0; i < iterations; i++)
     {
         u32 x = static_cast<u32>(ellipse.radius.x * std::cos(alpha));
         u32 y = static_cast<u32>(ellipse.radius.y * std::sin(alpha));
@@ -521,6 +534,8 @@ void CustomPrimitiveRenderer::draw_ellipse_on_image(sf::Image& image, const Elli
         image.setPixel(xc + x, yc - y, sf_color);
         image.setPixel(xc - x, yc + y, sf_color);
         image.setPixel(xc - x, yc - y, sf_color);
+
+        alpha += step;
     }
 }
 
@@ -601,29 +616,17 @@ void CustomPrimitiveRenderer::flood_fill(sf::Image& image, const Vec2u& seed, co
     }
 }
 
-sf::Image& CustomPrimitiveRenderer::get_tmp_image(sf::Vector2u size)
+sf::Image& CustomPrimitiveRenderer::get_tmp_image(sf::Vector2u target_size)
 {
-    // TODO:
-    // maybe change this to return a temporary buffer, then upload that buffer into sf::Image (or a texture?) to draw?
-    // not sure if this is a good idea
-    // this seems hacky
-    // TODO: get a zeroed out buffer ready to be copied to the image whenever it needs to be cleared
+    static std::vector<Color> buff;
     static sf::Image image;
 
     auto image_size = image.getSize();
 
-    if (size != image_size)
-        image.create(size.x, size.y, static_cast<sf::Color>(Color::transparent));
+    if (image_size != target_size)
+        buff.assign(static_cast<usize>(target_size.x) * static_cast<usize>(target_size.y), Color::transparent);
 
-    auto xs = std::views::iota(0u, size.x);
-    auto ys = std::views::iota(0u, size.y);
-    const auto pixel_coords = std::views::cartesian_product(ys, xs); // first ys, then xs!
-
-    // clear the image
-    std::for_each(std::execution::par_unseq, pixel_coords.begin(), pixel_coords.end(), [&](const auto& coords) {
-        const auto& [y, x] = coords; // first ys, then xs!
-        image.setPixel(x, y, static_cast<sf::Color>(Color::transparent));
-    });
+    image.create(target_size.x, target_size.y, reinterpret_cast<u8*>(buff.data()));
 
     return image;
 }

@@ -51,8 +51,8 @@ public:
 
     void draw_circle(const Circle& circle, const Color& color);
     void draw_ellipse(const Ellipse& ellipse, const Color& color);
-    void draw_filled_circle(const Circle& circle, const Color& color);
-    void draw_filled_ellipse(const Ellipse& ellipse, const Color& color);
+    void draw_filled_circle(const Circle& circle, const Color& color) const;
+    void draw_filled_ellipse(const Ellipse& ellipse, const Color& color) const;
 
 private:
     RenderingAlgorithm _rendering_algorithm = RenderingAlgorithm::Sfml;
