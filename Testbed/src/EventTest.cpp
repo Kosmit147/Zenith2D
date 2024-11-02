@@ -1,6 +1,6 @@
 #include "EventTest.hpp"
 
-#include <Zenith/Logger.hpp>
+#include <Zenith/Logging/Logger.hpp>
 
 void event_test(const zth::Event& event)
 {
