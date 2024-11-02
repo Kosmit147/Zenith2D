@@ -8,6 +8,7 @@
 #include "Zenith/Graphics/CustomPrimitiveRenderer.hpp"
 #include "Zenith/Graphics/SfmlPrimitiveRenderer.hpp"
 #include "Zenith/Math/Geometry.hpp"
+#include "Zenith/Math/Vec2.hpp"
 #include "Zenith/Utility/Utility.hpp"
 
 namespace zth {

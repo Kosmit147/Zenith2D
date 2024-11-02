@@ -55,16 +55,16 @@ constexpr bool has_flag(T val, T flag)
 }
 
 template<IsEnumFlags T, IsEnumFlags... Flags>
-constexpr bool has_flags(T val, Flags... flags)
     requires(std::conjunction_v<std::is_same<T, Flags>...>)
+constexpr bool has_flags(T val, Flags... flags)
 {
     T sum = (flags | ...);
     return (val & sum) == sum;
 }
 
 template<IsEnumFlags T, IsEnumFlags... Flags>
-constexpr bool has_any_flag(T val, Flags... flags)
     requires(std::conjunction_v<std::is_same<T, Flags>...>)
+constexpr bool has_any_flag(T val, Flags... flags)
 {
     T sum = (flags | ...);
     return static_cast<bool>(val & sum);
