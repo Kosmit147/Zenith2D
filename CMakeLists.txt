@@ -19,7 +19,7 @@ elseif(CMAKE_BUILD_TYPE MATCHES "Release" OR CMAKE_BUILD_TYPE MATCHES "MinSizeRe
 endif()
 
 get_compile_warnings(COMPILE_WARNINGS)
-add_subdirectory("dependencies/SFML")
+add_subdirectory("dependencies/SFML") # currently tracking branch 2.6.x
 add_subdirectory("Zenith")
 add_subdirectory("Testbed")
 add_subdirectory("Sandbox")
