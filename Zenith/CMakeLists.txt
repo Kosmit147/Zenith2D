@@ -15,21 +15,20 @@ FetchContent_MakeAvailable(SFML)
 
 add_library(
     Zenith STATIC
-    "src/Application.cpp"
-    "src/CustomPrimitiveRenderer.cpp"
-    "src/EllipseShape.cpp"
-    "src/Event.cpp"
-    "src/FileIo.cpp"
-    "src/Input.cpp"
-    "src/Logger.cpp"
-    "src/PrimitiveRenderer.cpp"
-    "src/SfmlPrimitiveRenderer.cpp"
-    "src/Texture.cpp"
-    "src/Window.cpp"
+    "src/Core/Application.cpp"
+    "src/Filesystem/FileIo.cpp"
+    "src/Graphics/CustomPrimitiveRenderer.cpp"
+    "src/Graphics/EllipseShape.cpp"
+    "src/Graphics/PrimitiveRenderer.cpp"
+    "src/Graphics/SfmlPrimitiveRenderer.cpp"
+    "src/Graphics/Texture.cpp"
+    "src/Logging/Logger.cpp"
+    "src/Platform/Event.cpp"
+    "src/Platform/Input.cpp"
+    "src/Platform/Window.cpp"
 )
 target_link_libraries(Zenith PUBLIC sfml-graphics)
-target_include_directories(Zenith PRIVATE "include/Zenith")
-target_include_directories(Zenith INTERFACE "include")
+target_include_directories(Zenith PUBLIC "include")
 target_compile_features(Zenith PRIVATE cxx_std_23)
 target_compile_options(Zenith PRIVATE ${COMPILE_WARNINGS})
 target_precompile_headers(Zenith PRIVATE "src/pch.hpp")

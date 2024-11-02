@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Zenith/Application.hpp>
+#include <Zenith/Core/Application.hpp>
 
 class Application : public zth::Application
 {

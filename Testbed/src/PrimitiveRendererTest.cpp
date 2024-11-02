@@ -1,6 +1,6 @@
 #include "PrimitiveRendererTest.hpp"
 
-#include <Zenith/Timer.hpp>
+#include <Zenith/Time/Timer.hpp>
 
 void primitive_renderer_test(zth::PrimitiveRenderer& renderer)
 {
