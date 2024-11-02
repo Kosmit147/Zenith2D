@@ -7,6 +7,7 @@
 #include "Zenith/Graphics/Color.hpp"
 #include "Zenith/Graphics/DrawCall.hpp"
 #include "Zenith/Math/Geometry.hpp"
+#include "Zenith/Math/Vec2.hpp"
 #include "Zenith/Utility/Utility.hpp"
 
 namespace zth {
