@@ -5,7 +5,6 @@
 #include <span>
 
 #include "Zenith/Graphics/Color.hpp"
-#include "Zenith/Graphics/DrawCall.hpp"
 #include "Zenith/Math/Geometry.hpp"
 #include "Zenith/Math/Vec2.hpp"
 #include "Zenith/Utility/Utility.hpp"
@@ -53,7 +52,8 @@ public:
 
 private:
     sf::RenderTarget& _render_target;
-    DrawCall _draw_call = DrawCall{};
+    sf::VertexArray _vertex_array =
+        sf::VertexArray{ sf::Points, 0 }; // we're only ever drawing points in custom renderer
 
 private:
     void plot_point(const Vec2f& point, const Color& color);
@@ -85,6 +85,8 @@ private:
     static void flood_fill(sf::Image& image, const Vec2u& seed, const Color& fill_color, const Color& background_color);
 
     static sf::Image& get_tmp_image(sf::Vector2u target_size);
+
+    void draw();
 };
 
 } // namespace zth

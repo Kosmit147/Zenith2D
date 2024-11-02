@@ -5,7 +5,6 @@
 #include <span>
 
 #include "Zenith/Graphics/Color.hpp"
-#include "Zenith/Graphics/DrawCall.hpp"
 #include "Zenith/Math/Geometry.hpp"
 #include "Zenith/Math/Vec2.hpp"
 #include "Zenith/Utility/Utility.hpp"
@@ -44,7 +43,7 @@ public:
 
 private:
     sf::RenderTarget& _render_target;
-    DrawCall _draw_call = DrawCall{};
+    sf::VertexArray _vertex_array = sf::VertexArray{};
 
 private:
     void plot_point(const Vec2f& point, const Color& color);
@@ -52,7 +51,6 @@ private:
     void plot_line(const Vec2f& from, const Vec2f& to, const Color& color);
     void plot_line(const Line& line, const Color& color);
     void plot_line_strip(std::span<const Vec2f> points, const Color& color);
-    void plot_line_strip(std::span<const Line> lines, const Color& color);
     void plot_lines(std::span<const Line> lines, const Color& color);
     void plot_closed_lines(std::span<const Vec2f> points, const Color& color);
     void plot_closed_lines(std::span<const Line> lines, const Color& color);
@@ -64,6 +62,8 @@ private:
     void plot_polygon(std::span<const Line> lines, const Color& color);
     void plot_filled_polygon(std::span<const Vec2f> points, const Color& color);
     void plot_filled_polygon(std::span<const Line> lines, const Color& color);
+
+    void draw(sf::PrimitiveType primitive_type);
 };
 
 } // namespace zth

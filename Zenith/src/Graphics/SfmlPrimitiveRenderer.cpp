@@ -7,85 +7,85 @@ namespace zth {
 void SfmlPrimitiveRenderer::draw_point(const Vec2f& point, const Color& color)
 {
     plot_point(point, color);
-    _draw_call.execute(_render_target, sf::Points);
+    draw(sf::Points);
 }
 
 void SfmlPrimitiveRenderer::draw_points(std::span<const Vec2f> points, const Color& color)
 {
     plot_points(points, color);
-    _draw_call.execute(_render_target, sf::Points);
+    draw(sf::Points);
 }
 
 void SfmlPrimitiveRenderer::draw_line(const Vec2f& from, const Vec2f& to, const Color& color)
 {
     plot_line(from, to, color);
-    _draw_call.execute(_render_target, sf::Lines);
+    draw(sf::Lines);
 }
 
 void SfmlPrimitiveRenderer::draw_line(const Line& line, const Color& color)
 {
     plot_line(line, color);
-    _draw_call.execute(_render_target, sf::Lines);
+    draw(sf::Lines);
 }
 
 void SfmlPrimitiveRenderer::draw_line_strip(std::span<const Vec2f> points, const Color& color)
 {
     plot_line_strip(points, color);
-    _draw_call.execute(_render_target, sf::LineStrip);
+    draw(sf::LineStrip);
 }
 
 void SfmlPrimitiveRenderer::draw_lines(std::span<const Line> lines, const Color& color)
 {
     plot_lines(lines, color);
-    _draw_call.execute(_render_target, sf::Lines);
+    draw(sf::Lines);
 }
 
 void SfmlPrimitiveRenderer::draw_closed_lines(std::span<const Vec2f> points, const Color& color)
 {
     plot_closed_lines(points, color);
-    _draw_call.execute(_render_target, sf::LineStrip);
+    draw(sf::LineStrip);
 }
 
 void SfmlPrimitiveRenderer::draw_closed_lines(std::span<const Line> lines, const Color& color)
 {
     plot_closed_lines(lines, color);
-    _draw_call.execute(_render_target, sf::Lines);
+    draw(sf::Lines);
 }
 
 void SfmlPrimitiveRenderer::draw_rect(const Rect& rect, const Color& color)
 {
     plot_rect(rect, color);
-    _draw_call.execute(_render_target, sf::LineStrip);
+    draw(sf::LineStrip);
 }
 
 void SfmlPrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& color)
 {
     plot_filled_rect(rect, color);
-    _draw_call.execute(_render_target, sf::TriangleStrip);
+    draw(sf::TriangleStrip);
 }
 
 void SfmlPrimitiveRenderer::draw_polygon(std::span<const Vec2f> points, const Color& color)
 {
     plot_polygon(points, color);
-    _draw_call.execute(_render_target, sf::LineStrip);
+    draw(sf::LineStrip);
 }
 
 void SfmlPrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Color& color)
 {
     plot_polygon(lines, color);
-    _draw_call.execute(_render_target, sf::Lines);
+    draw(sf::Lines);
 }
 
 void SfmlPrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points, const Color& color)
 {
     plot_filled_polygon(points, color);
-    _draw_call.execute(_render_target, sf::TriangleFan);
+    draw(sf::TriangleFan);
 }
 
 void SfmlPrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const Color& color)
 {
     plot_filled_polygon(lines, color);
-    _draw_call.execute(_render_target, sf::TriangleFan);
+    draw(sf::TriangleFan);
 }
 
 void SfmlPrimitiveRenderer::draw_circle(const Circle& circle, const Color& color) const
@@ -138,7 +138,7 @@ void SfmlPrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const Co
 
 void SfmlPrimitiveRenderer::plot_point(const Vec2f& point, const Color& color)
 {
-    _draw_call.vertices.emplace_back(static_cast<sf::Vector2f>(point), static_cast<sf::Color>(color));
+    _vertex_array.append({ static_cast<sf::Vector2f>(point), static_cast<sf::Color>(color) });
 }
 
 void SfmlPrimitiveRenderer::plot_points(std::span<const Vec2f> points, const Color& color)
@@ -149,8 +149,8 @@ void SfmlPrimitiveRenderer::plot_points(std::span<const Vec2f> points, const Col
 
 void SfmlPrimitiveRenderer::plot_line(const Vec2f& from, const Vec2f& to, const Color& color)
 {
-    _draw_call.vertices.emplace_back(static_cast<sf::Vector2f>(from), static_cast<sf::Color>(color));
-    _draw_call.vertices.emplace_back(static_cast<sf::Vector2f>(to), static_cast<sf::Color>(color));
+    plot_point(from, color);
+    plot_point(to, color);
 }
 
 void SfmlPrimitiveRenderer::plot_line(const Line& line, const Color& color)
@@ -234,6 +234,13 @@ void SfmlPrimitiveRenderer::plot_filled_polygon(std::span<const Line> lines, con
         plot_point(from, color);
 
     plot_point(lines.back().to, color);
+}
+
+void SfmlPrimitiveRenderer::draw(sf::PrimitiveType primitive_type)
+{
+    _vertex_array.setPrimitiveType(primitive_type);
+    _render_target.draw(_vertex_array);
+    _vertex_array.clear();
 }
 
 } // namespace zth

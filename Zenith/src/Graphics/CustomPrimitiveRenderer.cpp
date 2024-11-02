@@ -9,55 +9,55 @@ namespace zth {
 void CustomPrimitiveRenderer::draw_point(const Vec2f& point, const Color& color)
 {
     plot_point(point, color);
-    _draw_call.execute(_render_target, sf::Points);
+    draw();
 }
 
 void CustomPrimitiveRenderer::draw_points(std::span<const Vec2f> points, const Color& color)
 {
     plot_points(points, color);
-    _draw_call.execute(_render_target, sf::Points);
+    draw();
 }
 
 void CustomPrimitiveRenderer::draw_line(const Vec2f& from, const Vec2f& to, const Color& color)
 {
     plot_line(from, to, color);
-    _draw_call.execute(_render_target, sf::Points);
+    draw();
 }
 
 void CustomPrimitiveRenderer::draw_line(const Line& line, const Color& color)
 {
     plot_line(line, color);
-    _draw_call.execute(_render_target, sf::Points);
+    draw();
 }
 
 void CustomPrimitiveRenderer::draw_line_strip(std::span<const Vec2f> points, const Color& color)
 {
     plot_line_strip(points, color);
-    _draw_call.execute(_render_target, sf::Points);
+    draw();
 }
 
 void CustomPrimitiveRenderer::draw_lines(std::span<const Line> lines, const Color& color)
 {
     plot_lines(lines, color);
-    _draw_call.execute(_render_target, sf::Points);
+    draw();
 }
 
 void CustomPrimitiveRenderer::draw_closed_lines(std::span<const Vec2f> points, const Color& color)
 {
     plot_closed_lines(points, color);
-    _draw_call.execute(_render_target, sf::Points);
+    draw();
 }
 
 void CustomPrimitiveRenderer::draw_closed_lines(std::span<const Line> lines, const Color& color)
 {
     plot_closed_lines(lines, color);
-    _draw_call.execute(_render_target, sf::Points);
+    draw();
 }
 
 void CustomPrimitiveRenderer::draw_rect(const Rect& rect, const Color& color)
 {
     plot_rect(rect, color);
-    _draw_call.execute(_render_target, sf::Points);
+    draw();
 }
 
 void CustomPrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& color) const
@@ -96,14 +96,14 @@ void CustomPrimitiveRenderer::draw_polygon(std::span<const Vec2f> points, const 
 {
     // The main PrimitiveRenderer class checks whether the polygon is valid in the first place
     plot_polygon(points, color);
-    _draw_call.execute(_render_target, sf::Points);
+    draw();
 }
 
 void CustomPrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Color& color)
 {
     // The main PrimitiveRenderer class checks whether the polygon is valid in the first place
     plot_polygon(lines, color);
-    _draw_call.execute(_render_target, sf::Points);
+    draw();
 }
 
 void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points, const Color& color) const
@@ -171,13 +171,13 @@ void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, c
 void CustomPrimitiveRenderer::draw_circle(const Circle& circle, const Color& color)
 {
     plot_circle(circle, color);
-    _draw_call.execute(_render_target, sf::Points);
+    draw();
 }
 
 void CustomPrimitiveRenderer::draw_ellipse(const Ellipse& ellipse, const Color& color)
 {
     plot_ellipse(ellipse, color);
-    _draw_call.execute(_render_target, sf::Points);
+    draw();
 }
 
 void CustomPrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& color) const
@@ -238,7 +238,7 @@ void CustomPrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const 
 
 void CustomPrimitiveRenderer::plot_point(const Vec2f& point, const Color& color)
 {
-    _draw_call.vertices.emplace_back(static_cast<sf::Vector2f>(point), static_cast<sf::Color>(color));
+    _vertex_array.append({ static_cast<sf::Vector2f>(point), static_cast<sf::Color>(color) });
 }
 
 void CustomPrimitiveRenderer::plot_points(std::span<const Vec2f> points, const Color& color)
@@ -629,6 +629,13 @@ sf::Image& CustomPrimitiveRenderer::get_tmp_image(sf::Vector2u target_size)
     image.create(target_size.x, target_size.y, reinterpret_cast<u8*>(buff.data()));
 
     return image;
+}
+
+void CustomPrimitiveRenderer::draw()
+{
+    _vertex_array.setPrimitiveType(sf::Points); // we're only ever drawing points in custom renderer
+    _render_target.draw(_vertex_array);
+    _vertex_array.clear();
 }
 
 } // namespace zth
