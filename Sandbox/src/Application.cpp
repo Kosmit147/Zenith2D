@@ -35,25 +35,26 @@ void Application::on_event(const zth::Event& event)
 {
     switch (event.type())
     {
-    case zth::EventType::WindowResized:
+        using enum zth::EventType;
+    case WindowResized:
     {
         auto& resize_event = event.resize_event();
         zth::Logger::print_notification("Window resized. New size: ({}, {}).", resize_event.width, resize_event.height);
     }
     break;
-    case zth::EventType::KeyPressed:
+    case KeyPressed:
     {
         auto& key_event = event.key_event();
         zth::Logger::print_notification("{} key pressed.", to_string(key_event.key));
     }
     break;
-    case zth::EventType::KeyReleased:
+    case KeyReleased:
     {
         auto& key_event = event.key_event();
         zth::Logger::print_notification("{} key released.", to_string(key_event.key));
     }
     break;
-    case zth::EventType::MouseButtonPressed:
+    case MouseButtonPressed:
     {
         auto& mouse_button_event = event.mouse_button_event();
         auto [pos_x, pos_y] = mouse_button_event.cursor_pos;
@@ -61,7 +62,7 @@ void Application::on_event(const zth::Event& event)
                                         to_string(mouse_button_event.button), pos_x, pos_y);
     }
     break;
-    case zth::EventType::MouseButtonReleased:
+    case MouseButtonReleased:
     {
         auto& mouse_button_event = event.mouse_button_event();
         auto [pos_x, pos_y] = mouse_button_event.cursor_pos;
