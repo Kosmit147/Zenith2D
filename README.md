@@ -1,6 +1,13 @@
+<div align="center">
+
 # Zenith
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/Kosmit147/Zenith/blob/master/LICENSE.md)
+[![Build](https://github.com/Kosmit147/Zenith/actions/workflows/ci.yml/badge.svg)](https://github.com/Kosmit147/Zenith/actions/workflows/ci.yml)
+
 A simple video game engine which uses SFML made for a university project.
+
+</div>
 
 ## How to Use
 
