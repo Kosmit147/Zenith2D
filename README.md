@@ -30,7 +30,8 @@ A simple video game engine which uses SFML made for a university project.
     - [Visual Studio](https://docs.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=msvc-170)
     - [CLion](https://www.jetbrains.com/clion/features/cmake-support.html)
     - [Qt Creator](https://doc.qt.io/qtcreator/creator-project-cmake.html)
-    Alternatively, run these commands using the terminal. Be sure to run these commands in the root directory of the project you just created.
+
+    Alternatively, run these commands using the terminal. Be sure to run them in the root directory of the project you just created.
     ```
     cmake -B build
     cmake --build build
