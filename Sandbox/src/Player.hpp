@@ -6,7 +6,7 @@
 class Player : public zth::Updatable, public zth::EventListener
 {
 public:
-    float movement_speed = 100.0f;
+    float movement_speed = 1000.0f;
 
 public:
     void update(double delta_time) override;

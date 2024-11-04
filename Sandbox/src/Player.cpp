@@ -1,13 +1,13 @@
 #include "Player.hpp"
 
-void Player::update(double delta_time)
+void Player::update([[maybe_unused]] const double delta_time)
 {
-    (void)delta_time;
+    zth::Logger::print_notification("Player Update");
 }
 
 void Player::on_event(const zth::Event& event, const double delta_time)
 {
-    switch (event)
+    switch (event.type())
     {
     case zth::EventType::KeyPressed:
     {
@@ -30,10 +30,10 @@ void Player::on_key_pressed(const zth::KeyEvent& event, const double delta_time)
     switch (event.key)
     {
     case zth::Key::A:
-        new_x += movement_speed * dt;
+        new_x -= movement_speed * dt;
         break;
     case zth::Key::D:
-        new_x -= movement_speed * dt;
+        new_x += movement_speed * dt;
         break;
     case zth::Key::W:
         new_y -= movement_speed * dt;

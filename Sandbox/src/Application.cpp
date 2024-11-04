@@ -21,12 +21,14 @@ Application::Application() : zth::Application(spec)
     _logger.log_error("Logger Test: {}, {}, {}.", 1, 2, 3);
     _window.set_clear_color(zth::Color::black);
     _event_dispatcher.register_listener(zth::EventType::KeyPressed, _player);
+    _update_dispatcher.register_updatable(_player);
 }
 
 Application::~Application()
 {
     zth::Logger::print_notification("On shutdown.");
     _event_dispatcher.deregister_listener(_player);
+    _update_dispatcher.deregister_updatable(_player);
 }
 
 void Application::on_update([[maybe_unused]] const double delta_time)
@@ -38,7 +40,7 @@ void Application::on_update([[maybe_unused]] const double delta_time)
     renderer.draw(_player.get_shape());
 }
 
-void Application::on_event(const zth::Event& event)
+void Application::on_event(const zth::Event& event, [[maybe_unused]] const double delta_time)
 {
     switch (event.type())
     {

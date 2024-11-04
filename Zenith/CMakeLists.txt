@@ -7,6 +7,7 @@ add_library(
     Zenith STATIC
     "src/Core/Application.cpp"
     "src/Core/EventDispatcher.cpp"
+    "src/Core/UpdateDispatcher.cpp"
     "src/Filesystem/FileIo.cpp"
     "src/Graphics/CustomPrimitiveRenderer.cpp"
     "src/Graphics/EllipseShape.cpp"

@@ -28,6 +28,11 @@ void EventDispatcher::deregister_listener(const EventListener& listener)
 
 void EventDispatcher::dispatch(const Event& event, double delta_time)
 {
+    // TODO:
+    // modifying listeners map during iterating over listeners will invalidate the iterators
+    // we should probably collect all the event listeners into a vector before iterating over
+    // them and calling on_event
+
     const auto& listeners = _listeners_map[event.type()];
 
     for (const auto& listener : listeners)

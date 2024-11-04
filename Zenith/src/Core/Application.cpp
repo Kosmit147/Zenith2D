@@ -30,6 +30,7 @@ void Application::run()
         }
 
         on_update(delta_time);
+        _update_dispatcher.dispatch(delta_time);
         _internal_window.display();
         _frame_counter.update();
     }
