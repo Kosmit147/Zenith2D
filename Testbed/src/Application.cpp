@@ -1,8 +1,5 @@
 #include "Application.hpp"
 
-#include "EventTest.hpp"
-#include "PrimitiveRendererTest.hpp"
-
 static const zth::ApplicationSpec spec = {
     .window_spec = {
         .title = "Testbed",
@@ -28,16 +25,14 @@ Application::~Application()
     zth::Logger::print_notification("On shutdown.");
 }
 
-void Application::on_update([[maybe_unused]] const zth::u64 delta_time)
+void Application::on_update([[maybe_unused]] const double delta_time)
 {
-    // zth::Logger::print_notification("On Update with delta time: {} microseconds.", delta_time);
+    zth::Logger::print_notification("On Update with delta time: {} seconds.", delta_time);
     zth::Logger::print_notification("FPS: {}", get_fps());
-
-    auto& renderer = _window.primitive_renderer;
-    primitive_renderer_test(renderer);
+    primitive_renderer_test();
 }
 
-void Application::on_event(const zth::Event& event)
+void Application::on_event(const zth::Event& event, [[maybe_unused]] const double delta_time)
 {
     event_test(event);
 }

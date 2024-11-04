@@ -2,7 +2,7 @@
 
 namespace zth {
 
-std::optional<Event> Event::create_from_sf_event(const sf::Event& event)
+std::optional<Event> Event::from_sf_event(const sf::Event& event)
 {
     std::optional<Event> ret = {};
 
@@ -30,12 +30,12 @@ std::optional<Event> Event::create_from_sf_event(const sf::Event& event)
     break;
     case sf::Event::KeyPressed:
     {
-        ret = Event{ EventType::KeyPressed, KeyEvent{ .key = key_from_sf_scancode(event.key.scancode) } };
+        ret = Event{ EventType::KeyPressed, KeyEvent{ .key = to_key(event.key.scancode) } };
     }
     break;
     case sf::Event::KeyReleased:
     {
-        ret = Event{ EventType::KeyReleased, KeyEvent{ .key = key_from_sf_scancode(event.key.scancode) } };
+        ret = Event{ EventType::KeyReleased, KeyEvent{ .key = to_key(event.key.scancode) } };
     }
     break;
     case sf::Event::MouseWheelScrolled:

@@ -1,31 +1,9 @@
-#include "PrimitiveRendererTest.hpp"
+#include "Application.hpp"
 
 #include <Zenith/Time/Timer.hpp>
 
-void primitive_renderer_test(zth::PrimitiveRenderer& renderer)
+static void draw_primitives(zth::PrimitiveRenderer& renderer)
 {
-    // switches between custom and sfml rendering every 2 seconds
-    // switches between custom fill algorithms every 4 seconds
-
-    static zth::Timer alg_timer;
-    static zth::Timer fill_timer;
-
-    if (alg_timer.elapsed_s() > 2.0)
-    {
-        auto alg = renderer.rendering_algorithm() == zth::RenderingAlgorithm::Sfml ? zth::RenderingAlgorithm::Custom
-                                                                                   : zth::RenderingAlgorithm::Sfml;
-        renderer.set_rendering_algorithm(alg);
-        alg_timer.reset();
-    }
-
-    if (fill_timer.elapsed_s() > 4.0)
-    {
-        auto alg = renderer.fill_algorithm() == zth::FillAlgorithm::BoundaryFill ? zth::FillAlgorithm::FloodFill
-                                                                                 : zth::FillAlgorithm::BoundaryFill;
-        renderer.set_fill_algorithm(alg);
-        fill_timer.reset();
-    }
-
     static constexpr zth::Vec2f point = { 960.0f, 540.0f };
 
     renderer.draw_point(point, zth::Color::red);
@@ -135,4 +113,59 @@ void primitive_renderer_test(zth::PrimitiveRenderer& renderer)
     };
 
     renderer.draw_filled_ellipse(filled_ellipse, zth::Color::blue);
+}
+
+static void sfml_renderer_test(zth::PrimitiveRenderer* renderer)
+{
+    draw_primitives(*renderer);
+}
+
+static void custom_renderer_test(zth::PrimitiveRenderer* primitive_renderer)
+{
+    // switches between custom fill algorithms every 4 seconds
+
+    auto renderer = dynamic_cast<zth::CustomPrimitiveRenderer*>(primitive_renderer);
+
+    static zth::Timer fill_alg_timer;
+
+    if (fill_alg_timer.elapsed_s() > 4.0)
+    {
+        auto alg = renderer->fill_algorithm == zth::FillAlgorithm::BoundaryFill ? zth::FillAlgorithm::FloodFill
+                                                                                : zth::FillAlgorithm::BoundaryFill;
+        renderer->fill_algorithm = alg;
+        fill_alg_timer.reset();
+    }
+
+    draw_primitives(*renderer);
+}
+
+void Application::primitive_renderer_test() const
+{
+    // switches between custom and sfml rendering every 2 seconds
+    // switches between custom fill algorithms every 4 seconds
+
+    static zth::Timer renderer_type_timer;
+
+    auto& renderer = _window.primitive_renderer();
+    zth::RendererType renderer_type = _window.get_primitive_renderer_type();
+
+    if (renderer_type_timer.elapsed_s() > 2.0)
+    {
+        renderer_type = _window.get_primitive_renderer_type() == zth::RendererType::SfmlRenderer
+                            ? zth::RendererType::CustomRenderer
+                            : zth::RendererType::SfmlRenderer;
+
+        _window.set_primitive_renderer_type(renderer_type);
+        renderer_type_timer.reset();
+    }
+
+    switch (renderer_type)
+    {
+    case zth::RendererType::SfmlRenderer:
+        sfml_renderer_test(&renderer);
+        break;
+    case zth::RendererType::CustomRenderer:
+        custom_renderer_test(&renderer);
+        break;
+    }
 }

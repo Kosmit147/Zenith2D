@@ -1,5 +1,7 @@
 #include "Application.hpp"
 
+#include <Zenith/Zenith.hpp>
+
 static const zth::ApplicationSpec spec = {
     .window_spec = {
         .title = "Sandbox",
@@ -18,17 +20,22 @@ Application::Application() : zth::Application(spec)
     zth::Logger::print_notification("On init.");
     _logger.log_error("Logger Test: {}, {}, {}.", 1, 2, 3);
     _window.set_clear_color(zth::Color::black);
+    _event_dispatcher.register_listener(zth::EventType::KeyPressed, _player);
 }
 
 Application::~Application()
 {
     zth::Logger::print_notification("On shutdown.");
+    _event_dispatcher.deregister_listener(_player);
 }
 
-void Application::on_update([[maybe_unused]] const zth::u64 delta_time)
+void Application::on_update([[maybe_unused]] const double delta_time)
 {
     zth::Logger::print_notification("On Update with delta time: {} microseconds.", delta_time);
     zth::Logger::print_notification("FPS: {}", get_fps());
+
+    auto& renderer = _window.primitive_renderer();
+    renderer.draw(_player.get_shape());
 }
 
 void Application::on_event(const zth::Event& event)

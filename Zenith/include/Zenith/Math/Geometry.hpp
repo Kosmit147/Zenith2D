@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <span>
 
 #include "Zenith/Math/Vec2.hpp"
 
@@ -35,6 +36,8 @@ struct Circle
 };
 
 constexpr bool lines_intersect(const Line& first_line, const Line& second_line);
+bool points_form_a_valid_polygon(std::span<const Vec2f> points);
+bool lines_form_a_valid_polygon(std::span<const Line> lines);
 
 } // namespace zth
 

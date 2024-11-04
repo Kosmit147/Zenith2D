@@ -5,33 +5,28 @@
 #include <span>
 
 #include "Zenith/Graphics/Color.hpp"
-#include "Zenith/Graphics/CustomPrimitiveRenderer.hpp"
-#include "Zenith/Graphics/SfmlPrimitiveRenderer.hpp"
+#include "Zenith/Graphics/Drawable.hpp"
 #include "Zenith/Math/Geometry.hpp"
 #include "Zenith/Math/Vec2.hpp"
 #include "Zenith/Utility/Utility.hpp"
 
 namespace zth {
 
-enum class RenderingAlgorithm
+enum class RendererType
 {
-    Sfml,
-    Custom,
+    SfmlRenderer,
+    CustomRenderer,
 };
 
-// PrimitiveRenderer should handle whether the parameters passed to it to draw are correct
+// PrimitiveRenderer should check whether the data provided to it is correct
 class PrimitiveRenderer
 {
 public:
-    explicit PrimitiveRenderer(sf::RenderTarget& target);
-    ~PrimitiveRenderer() = default;
+    explicit PrimitiveRenderer(sf::RenderTarget& render_target) : _render_target(render_target) {}
+    virtual ~PrimitiveRenderer() = default;
     ZTH_NO_COPY_NO_MOVE(PrimitiveRenderer)
 
-    auto rendering_algorithm() const { return _rendering_algorithm; }
-    auto fill_algorithm() const { return _custom_renderer.fill_algorithm; }
-
-    void set_rendering_algorithm(RenderingAlgorithm alg) { _rendering_algorithm = alg; }
-    void set_fill_algorithm(FillAlgorithm alg) { _custom_renderer.fill_algorithm = alg; }
+    void draw(const Drawable& drawable);
 
     void draw_point(const Vec2f& point, const Color& color);
     void draw_points(std::span<const Vec2f> points, const Color& color);
@@ -45,6 +40,7 @@ public:
     void draw_rect(const Rect& rect, const Color& color);
     void draw_filled_rect(const Rect& rect, const Color& color);
 
+    // supports only convex polygons
     void draw_polygon(std::span<const Vec2f> points, const Color& color);
     void draw_polygon(std::span<const Line> lines, const Color& color);
     void draw_filled_polygon(std::span<const Vec2f> points, const Color& color);
@@ -52,15 +48,34 @@ public:
 
     void draw_circle(const Circle& circle, const Color& color);
     void draw_ellipse(const Ellipse& ellipse, const Color& color);
-    void draw_filled_circle(const Circle& circle, const Color& color) const;
-    void draw_filled_ellipse(const Ellipse& ellipse, const Color& color) const;
+    void draw_filled_circle(const Circle& circle, const Color& color);
+    void draw_filled_ellipse(const Ellipse& ellipse, const Color& color);
+
+protected:
+    sf::RenderTarget& _render_target;
 
 private:
-    RenderingAlgorithm _rendering_algorithm = RenderingAlgorithm::Sfml;
+    virtual void draw_point_impl(const Vec2f& point, const Color& color) = 0;
+    virtual void draw_points_impl(std::span<const Vec2f> points, const Color& color) = 0;
+    virtual void draw_line_impl(const Vec2f& from, const Vec2f& to, const Color& color) = 0;
+    virtual void draw_line_impl(const Line& line, const Color& color) = 0;
+    virtual void draw_line_strip_impl(std::span<const Vec2f> points, const Color& color) = 0;
+    virtual void draw_lines_impl(std::span<const Line> lines, const Color& color) = 0;
+    virtual void draw_closed_lines_impl(std::span<const Vec2f> points, const Color& color) = 0;
+    virtual void draw_closed_lines_impl(std::span<const Line> lines, const Color& color) = 0;
 
-    sf::RenderTarget& _render_target;
-    SfmlPrimitiveRenderer _sfml_renderer;
-    CustomPrimitiveRenderer _custom_renderer;
+    virtual void draw_rect_impl(const Rect& rect, const Color& color) = 0;
+    virtual void draw_filled_rect_impl(const Rect& rect, const Color& color) = 0;
+
+    virtual void draw_polygon_impl(std::span<const Vec2f> points, const Color& color) = 0;
+    virtual void draw_polygon_impl(std::span<const Line> lines, const Color& color) = 0;
+    virtual void draw_filled_polygon_impl(std::span<const Vec2f> points, const Color& color) = 0;
+    virtual void draw_filled_polygon_impl(std::span<const Line> lines, const Color& color) = 0;
+
+    virtual void draw_circle_impl(const Circle& circle, const Color& color) = 0;
+    virtual void draw_ellipse_impl(const Ellipse& ellipse, const Color& color) = 0;
+    virtual void draw_filled_circle_impl(const Circle& circle, const Color& color) = 0;
+    virtual void draw_filled_ellipse_impl(const Ellipse& ellipse, const Color& color) = 0;
 };
 
 } // namespace zth

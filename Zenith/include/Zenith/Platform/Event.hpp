@@ -2,6 +2,7 @@
 
 #include <SFML/Window/Event.hpp>
 
+#include <array>
 #include <cassert>
 #include <optional>
 
@@ -40,6 +41,8 @@ struct MouseMoveEvent
 
 enum class EventType
 {
+    // keep this list consistent with the array below
+
     WindowClosed,
     WindowResized,
     LostFocus,
@@ -52,6 +55,23 @@ enum class EventType
     MouseMoved,
     MouseEntered,
     MouseLeft,
+};
+
+inline constexpr std::array event_type_enumerations = {
+    // clang-format off
+    EventType::WindowClosed,
+    EventType::WindowResized,
+    EventType::LostFocus,
+    EventType::GainedFocus,
+    EventType::KeyPressed,
+    EventType::KeyReleased,
+    EventType::MouseWheelScrolled,
+    EventType::MouseButtonPressed,
+    EventType::MouseButtonReleased,
+    EventType::MouseMoved,
+    EventType::MouseEntered,
+    EventType::MouseLeft,
+    // clang-format on
 };
 
 class Event
@@ -90,7 +110,7 @@ public:
     }
 
 private:
-    static std::optional<Event> create_from_sf_event(const sf::Event& event);
+    static std::optional<Event> from_sf_event(const sf::Event& event);
 
     // clang-format off
     explicit Event(EventType event_type) : _type(event_type), _dummy(false) {}

@@ -5,6 +5,7 @@ add_executable(
 	Sandbox
 	"src/Application.cpp"
 	"src/main.cpp"
+	"src/Player.cpp"
 )
 
 if(CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*")

@@ -2,7 +2,7 @@
 
 namespace zth {
 
-static const char* key_names[] = {
+static constexpr std::array key_names = {
     "Unknown",
     "A",
     "B",
@@ -154,12 +154,23 @@ static const char* key_names[] = {
 
 const char* to_string(Key key)
 {
+    assert(std::to_underlying(key) + 1 < static_cast<std::underlying_type_t<Key>>(key_names.size()));
     return key_names[static_cast<usize>(key) + 1];
 }
 
 const char* to_string(MouseButton button)
 {
-    return button == MouseButton::Left ? "Left" : "Right";
+    switch (button)
+    {
+        using enum MouseButton;
+    case Left:
+        return "Left";
+    case Right:
+        return "Right";
+    }
+
+    assert(false);
+    return "Unknown";
 }
 
 } // namespace zth

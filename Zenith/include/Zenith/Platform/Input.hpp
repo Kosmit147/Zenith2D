@@ -170,7 +170,7 @@ enum class Key : i16
     LaunchMediaSelect,  // Keyboard Launch Media Select key
 };
 
-constexpr auto key_from_sf_scancode(sf::Keyboard::Scancode code)
+constexpr auto to_key(sf::Keyboard::Scancode code)
 {
     return static_cast<Key>(code);
 }

@@ -20,7 +20,7 @@ class Texture
 public:
     explicit Texture() = default;
     explicit Texture(TextureSize size);
-    static std::optional<Texture> create_from_file(std::string_view path);
+    static std::optional<Texture> from_file(std::string_view path);
 
     ~Texture() = default;
 
@@ -35,6 +35,8 @@ public:
     auto width() const { return _texture.getSize().x; }
     auto height() const { return _texture.getSize().y; }
     auto size() const { return TextureSize{ width(), height() }; }
+
+    friend class Shader;
 
 private:
     sf::Texture _texture;

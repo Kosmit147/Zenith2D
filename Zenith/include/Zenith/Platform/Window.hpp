@@ -7,7 +7,9 @@
 
 #include "Zenith/Core/Typedefs.hpp"
 #include "Zenith/Graphics/Color.hpp"
+#include "Zenith/Graphics/CustomPrimitiveRenderer.hpp"
 #include "Zenith/Graphics/PrimitiveRenderer.hpp"
+#include "Zenith/Graphics/SfmlPrimitiveRenderer.hpp"
 #include "Zenith/Platform/Event.hpp"
 #include "Zenith/Utility/Utility.hpp"
 
@@ -33,7 +35,6 @@ class Window
 {
 public:
     Color clear_color = Color::black;
-    PrimitiveRenderer primitive_renderer = PrimitiveRenderer{ _sf_window };
 
 public:
     explicit Window(const WindowSpec& spec);
@@ -49,8 +50,15 @@ public:
     void display() { _sf_window.display(); }
     void close() { _sf_window.close(); }
 
+    auto& primitive_renderer() const { return *_selected_primitive_renderer; }
+    void set_primitive_renderer_type(RendererType renderer_type);
+    RendererType get_primitive_renderer_type() const;
+
 private:
     sf::RenderWindow _sf_window;
+    SfmlPrimitiveRenderer _sfml_primitive_renderer{ _sf_window };
+    CustomPrimitiveRenderer _custom_primitive_renderer{ _sf_window };
+    PrimitiveRenderer* _selected_primitive_renderer = &_sfml_primitive_renderer;
 };
 
 // user of the engine interacts with the window through this class
@@ -60,10 +68,7 @@ private:
     Window& _window;
 
 public:
-    PrimitiveRenderer& primitive_renderer;
-
-public:
-    explicit WindowApi(Window& window) : _window(window), primitive_renderer(_window.primitive_renderer) {}
+    explicit WindowApi(Window& window) : _window(window) {}
     ~WindowApi() = default;
     ZTH_NO_COPY_NO_MOVE(WindowApi)
 
@@ -72,6 +77,10 @@ public:
     void clear(const Color& color) const { _window.clear(color); }
 
     bool is_open() const { return _window.is_open(); }
+
+    auto& primitive_renderer() const { return _window.primitive_renderer(); }
+    void set_primitive_renderer_type(RendererType renderer_type) const;
+    auto get_primitive_renderer_type() const { return _window.get_primitive_renderer_type(); }
 };
 
 } // namespace zth
