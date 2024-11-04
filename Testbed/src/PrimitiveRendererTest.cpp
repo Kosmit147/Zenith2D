@@ -126,6 +126,9 @@ static void custom_renderer_test(zth::PrimitiveRenderer* primitive_renderer)
 
     auto renderer = dynamic_cast<zth::CustomPrimitiveRenderer*>(primitive_renderer);
 
+    if (!renderer)
+        return;
+
     static zth::Timer fill_alg_timer;
 
     if (fill_alg_timer.elapsed_s() > 4.0)
@@ -146,7 +149,6 @@ void Application::primitive_renderer_test() const
 
     static zth::Timer renderer_type_timer;
 
-    auto& renderer = _window.primitive_renderer();
     zth::RendererType renderer_type = _window.get_primitive_renderer_type();
 
     if (renderer_type_timer.elapsed_s() > 2.0)
@@ -158,6 +160,8 @@ void Application::primitive_renderer_test() const
         _window.set_primitive_renderer_type(renderer_type);
         renderer_type_timer.reset();
     }
+
+    auto& renderer = _window.primitive_renderer();
 
     switch (renderer_type)
     {
