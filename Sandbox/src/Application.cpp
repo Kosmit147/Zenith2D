@@ -33,7 +33,7 @@ Application::~Application()
 
 void Application::on_update([[maybe_unused]] const double delta_time)
 {
-    zth::Logger::print_notification("On Update with delta time: {} microseconds.", delta_time);
+    zth::Logger::print_notification("On Update with delta time: {} seconds.", delta_time);
     zth::Logger::print_notification("FPS: {}", get_fps());
 
     auto& renderer = _window.primitive_renderer();

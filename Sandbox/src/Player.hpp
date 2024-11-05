@@ -9,7 +9,7 @@ public:
     float movement_speed = 1000.0f;
 
 public:
-    void update(double delta_time) override;
+    void on_update(double delta_time) override;
     void on_event(const zth::Event& event, double delta_time) override;
     void on_key_pressed(const zth::KeyEvent& event, double delta_time);
 

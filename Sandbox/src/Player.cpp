@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-void Player::update([[maybe_unused]] const double delta_time)
+void Player::on_update([[maybe_unused]] const double delta_time)
 {
     zth::Logger::print_notification("Player Update");
 }

@@ -7,7 +7,7 @@ class Updatable
 public:
     virtual ~Updatable() = default;
 
-    virtual void update(double delta_time) = 0;
+    virtual void on_update(double delta_time) = 0;
 };
 
 } // namespace zth
