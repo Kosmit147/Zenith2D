@@ -3,6 +3,7 @@
 #include "Zenith/Core/Transformable.hpp"
 #include "Zenith/Graphics/Color.hpp"
 #include "Zenith/Graphics/Drawable.hpp"
+#include "Zenith/Utility/Utility.hpp"
 
 namespace zth {
 
@@ -14,6 +15,8 @@ public:
 public:
     explicit Shape() = default;
     explicit Shape(const Color& color) : color(color) {}
+    ZTH_DEFAULT_COPY_DEFAULT_MOVE(Shape)
+
     ~Shape() override = default;
 };
 
