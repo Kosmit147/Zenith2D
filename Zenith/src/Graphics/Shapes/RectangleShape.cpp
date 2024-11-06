@@ -1,6 +1,6 @@
 #include "Zenith/Graphics/Shapes/RectangleShape.hpp"
 
-#include "Zenith/Graphics/PrimitiveRenderer.hpp"
+#include "Zenith/Graphics/Renderer.hpp"
 
 namespace zth {
 
@@ -8,9 +8,9 @@ RectangleShape::RectangleShape(const Rect& rect) : rect(rect) {}
 
 RectangleShape::RectangleShape(const Rect& rect, const Color& color) : Shape(color), rect(rect) {}
 
-void RectangleShape::draw(PrimitiveRenderer& renderer) const
+void RectangleShape::draw(Renderer& renderer) const
 {
-    renderer.draw_filled_rect(rect, color);
+    renderer.primitive_renderer().draw_filled_rect(rect, color);
 }
 
 void RectangleShape::translate(const Vec2f& translation)

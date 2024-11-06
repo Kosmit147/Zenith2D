@@ -8,6 +8,7 @@
 
 #include "Zenith/Core/Typedefs.hpp"
 #include "Zenith/Platform/Input.hpp"
+#include "Zenith/Platform/Resolution.hpp"
 
 namespace zth {
 
@@ -18,13 +19,12 @@ struct KeyEvent
 
 struct ResizeEvent
 {
-    u32 width;
-    u32 height;
+    Resolution new_res;
 };
 
 struct MouseScrollEvent
 {
-    float delta; // wheel offset (positive is up/left, negative is down/right)
+    float delta; // wheel offset (positive is up, negative is down)
     CursorPos cursor_pos;
 };
 
@@ -36,7 +36,7 @@ struct MouseButtonEvent
 
 struct MouseMoveEvent
 {
-    CursorPos cursor_pos;
+    CursorPos new_cursor_pos;
 };
 
 enum class EventType
@@ -130,6 +130,8 @@ private:
         : _type(event_type), _mouse_move_event(mouse_move_event) {}
     // clang-format on
 
+    friend class Window;
+
 private:
     EventType _type;
 
@@ -142,8 +144,6 @@ private:
         MouseButtonEvent _mouse_button_event;
         MouseMoveEvent _mouse_move_event;
     };
-
-    friend class Window;
 };
 
 } // namespace zth

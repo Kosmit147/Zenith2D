@@ -4,16 +4,6 @@
 
 namespace zth {
 
-Shader::Shader(std::string_view shader_source, ShaderType shader_type)
-{
-    load_from_string(shader_source, shader_type);
-}
-
-Shader::Shader(std::string_view vertex_shader_source, std::string_view fragment_shader_source)
-{
-    load_from_string(vertex_shader_source, fragment_shader_source);
-}
-
 bool Shader::load_from_string(std::string_view shader_source, ShaderType shader_type)
 {
     // TODO: log errors to file
@@ -40,25 +30,25 @@ bool Shader::load_from_string(std::string_view vertex_shader_source, std::string
     return true;
 }
 
-bool Shader::load_from_file(std::string_view path, ShaderType shader_type)
+bool Shader::load_from_file(std::string_view shader_path, ShaderType shader_type)
 {
     // TODO: log errors to file
-    if (!_shader.loadFromFile(path.data(), to_sf_shader_type(shader_type)))
+    if (!_shader.loadFromFile(shader_path.data(), to_sf_shader_type(shader_type)))
     {
-        Logger::print_error("Failed to load {} shader from path: {}", to_string(shader_type), path.data());
+        Logger::print_error("Failed to load {} shader from path: {}", to_string(shader_type), shader_path.data());
         return false;
     }
 
     return true;
 }
 
-bool Shader::load_from_file(std::string_view vertex_path, std::string_view fragment_path)
+bool Shader::load_from_file(std::string_view vertex_shader_path, std::string_view fragment_shader_path)
 {
     // TODO: log errors to file
-    if (!_shader.loadFromFile(vertex_path.data(), fragment_path.data()))
+    if (!_shader.loadFromFile(vertex_shader_path.data(), fragment_shader_path.data()))
     {
-        Logger::print_error("Failed to load vertex shader from path: {}", vertex_path.data());
-        Logger::print_error("Failed to load fragment shader from path: {}", fragment_path.data());
+        Logger::print_error("Failed to load vertex shader from path: {}", vertex_shader_path.data());
+        Logger::print_error("Failed to load fragment shader from path: {}", fragment_shader_path.data());
         return false;
     }
 

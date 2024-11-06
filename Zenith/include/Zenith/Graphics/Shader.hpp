@@ -28,21 +28,19 @@ class Shader
 {
 public:
     explicit Shader() = default;
-    explicit Shader(std::string_view shader_source, ShaderType shader_type);
-    explicit Shader(std::string_view vertex_shader_source, std::string_view fragment_shader_source);
     ~Shader() = default;
     ZTH_NO_COPY_NO_MOVE(Shader)
 
     bool load_from_string(std::string_view shader_source, ShaderType shader_type);
     bool load_from_string(std::string_view vertex_shader_source, std::string_view fragment_shader_source);
-    bool load_from_file(std::string_view path, ShaderType shader_type);
-    bool load_from_file(std::string_view vertex_path, std::string_view fragment_path);
+    bool load_from_file(std::string_view shader_path, ShaderType shader_type);
+    bool load_from_file(std::string_view vertex_shader_path, std::string_view fragment_shader_path);
 
     void bind() const { sf::Shader::bind(&_shader); }
 
     template<typename T> void set_unif(const std::string& name, T val);
 
-    u32 get_native_handle() const { return _shader.getNativeHandle(); }
+    unsigned int get_native_handle() const { return _shader.getNativeHandle(); }
 
 private:
     sf::Shader _shader;
