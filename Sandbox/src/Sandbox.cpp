@@ -1,4 +1,4 @@
-#include "Application.hpp"
+#include "Sandbox.hpp"
 
 #include <Zenith/Zenith.hpp>
 
@@ -15,32 +15,35 @@ static const zth::ApplicationSpec spec = {
     },
 };
 
-Application::Application() : zth::Application(spec)
+Sandbox::Sandbox() : zth::Application(spec)
 {
+    _player_texture = zth::Texture::from_file("../emoji.png").value_or(zth::Texture{});
+    _player = Player{ _player_texture };
+
     zth::Logger::print_notification("On init.");
     _logger.log_error("Logger Test: {}, {}, {}.", 1, 2, 3);
     _window.set_clear_color(zth::Color::black);
     _event_dispatcher.register_listener(zth::EventType::KeyPressed, _player);
-    _update_dispatcher.register_updatable(_player);
+    _updater.register_updatable(_player);
 }
 
-Application::~Application()
+Sandbox::~Sandbox()
 {
     zth::Logger::print_notification("On shutdown.");
     _event_dispatcher.deregister_listener(_player);
-    _update_dispatcher.deregister_updatable(_player);
+    _updater.deregister_updatable(_player);
 }
 
-void Application::on_update([[maybe_unused]] const double delta_time)
+void Sandbox::on_update([[maybe_unused]] const double delta_time)
 {
     zth::Logger::print_notification("On Update with delta time: {} seconds.", delta_time);
     zth::Logger::print_notification("FPS: {}", get_fps());
 
-    auto& renderer = _window.primitive_renderer();
-    renderer.draw(_player.get_shape());
+    auto& renderer = _window.renderer;
+    renderer.draw(_player);
 }
 
-void Application::on_event(const zth::Event& event, [[maybe_unused]] const double delta_time)
+void Sandbox::on_event(const zth::Event& event, [[maybe_unused]] const double delta_time)
 {
     switch (event.type())
     {
@@ -48,7 +51,8 @@ void Application::on_event(const zth::Event& event, [[maybe_unused]] const doubl
     case WindowResized:
     {
         auto& resize_event = event.resize_event();
-        zth::Logger::print_notification("Window resized. New size: ({}, {}).", resize_event.width, resize_event.height);
+        auto& new_res = resize_event.new_res;
+        zth::Logger::print_notification("Window resized. New size: ({}, {}).", new_res.width, new_res.height);
     }
     break;
     case KeyPressed:

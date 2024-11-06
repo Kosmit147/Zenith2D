@@ -1,16 +1,18 @@
 #pragma once
 
 #include <Zenith/Core/Application.hpp>
+#include <Zenith/Graphics/Texture.hpp>
 
 #include "Player.hpp"
 
-class Application : public zth::Application
+class Sandbox : public zth::Application
 {
 public:
-    Application();
-    ~Application() override;
+    Sandbox();
+    ~Sandbox() override;
 
 private:
+    zth::Texture _player_texture;
     Player _player;
 
 private:

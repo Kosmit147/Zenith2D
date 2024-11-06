@@ -1,7 +1,7 @@
-#include "Application.hpp"
+#include "Sandbox.hpp"
 
 int main()
 {
-    Application app;
-    app.run();
+    Sandbox sandbox;
+    sandbox.run();
 }
