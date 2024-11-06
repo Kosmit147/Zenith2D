@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/Graphics/Rect.hpp>
+
 #include <array>
 #include <span>
 
@@ -21,6 +23,14 @@ struct Rect
     Vec2f size;
 
     constexpr std::array<Vec2f, 4> points() const;
+};
+
+struct IntRect
+{
+    Vec2i position;
+    Vec2i size;
+
+    operator sf::IntRect() const;
 };
 
 struct Ellipse

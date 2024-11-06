@@ -35,6 +35,14 @@ constexpr std::array<Vec2f, 4> Rect::points() const
     };
 }
 
+inline IntRect::operator sf::Rect<int>() const
+{
+    return sf::IntRect{
+        static_cast<sf::Vector2i>(position),
+        static_cast<sf::Vector2i>(size),
+    };
+}
+
 constexpr bool lines_intersect(const Line& first_line, const Line& second_line)
 {
     return first_line.intersects(second_line);
