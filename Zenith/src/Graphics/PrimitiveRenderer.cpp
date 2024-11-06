@@ -4,11 +4,6 @@
 
 namespace zth {
 
-void PrimitiveRenderer::draw(const Drawable& drawable)
-{
-    drawable.draw(*this);
-}
-
 void PrimitiveRenderer::draw_point(const Vec2f& point, const Color& color)
 {
     draw_point_impl(point, color);
@@ -74,7 +69,7 @@ void PrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& color)
     draw_filled_rect_impl(rect, color);
 }
 
-void PrimitiveRenderer::draw_polygon(std::span<const Vec2f> points, const Color& color)
+void PrimitiveRenderer::draw_convex_polygon(std::span<const Vec2f> points, const Color& color)
 {
     if (points.size() < 2)
         return;
@@ -82,10 +77,10 @@ void PrimitiveRenderer::draw_polygon(std::span<const Vec2f> points, const Color&
     if (!points_form_a_valid_polygon(points))
         return;
 
-    draw_polygon_impl(points, color);
+    draw_convex_polygon_impl(points, color);
 }
 
-void PrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Color& color)
+void PrimitiveRenderer::draw_convex_polygon(std::span<const Line> lines, const Color& color)
 {
     if (lines.empty())
         return;
@@ -93,10 +88,10 @@ void PrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Color& c
     if (!lines_form_a_valid_polygon(lines))
         return;
 
-    draw_polygon_impl(lines, color);
+    draw_convex_polygon_impl(lines, color);
 }
 
-void PrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points, const Color& color)
+void PrimitiveRenderer::draw_filled_convex_polygon(std::span<const Vec2f> points, const Color& color)
 {
     if (points.size() < 2)
         return;
@@ -104,10 +99,10 @@ void PrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points, const
     if (!points_form_a_valid_polygon(points))
         return;
 
-    draw_filled_polygon_impl(points, color);
+    draw_filled_convex_polygon_impl(points, color);
 }
 
-void PrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const Color& color)
+void PrimitiveRenderer::draw_filled_convex_polygon(std::span<const Line> lines, const Color& color)
 {
     if (lines.empty())
         return;
@@ -115,7 +110,7 @@ void PrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const C
     if (!lines_form_a_valid_polygon(lines))
         return;
 
-    draw_filled_polygon_impl(lines, color);
+    draw_filled_convex_polygon_impl(lines, color);
 }
 
 void PrimitiveRenderer::draw_circle(const Circle& circle, const Color& color)

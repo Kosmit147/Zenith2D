@@ -5,18 +5,11 @@
 #include <span>
 
 #include "Zenith/Graphics/Color.hpp"
-#include "Zenith/Graphics/Drawable.hpp"
 #include "Zenith/Math/Geometry.hpp"
 #include "Zenith/Math/Vec2.hpp"
 #include "Zenith/Utility/Utility.hpp"
 
 namespace zth {
-
-enum class RendererType
-{
-    SfmlRenderer,
-    CustomRenderer,
-};
 
 // PrimitiveRenderer should check whether the data provided to it is correct
 class PrimitiveRenderer
@@ -25,8 +18,6 @@ public:
     explicit PrimitiveRenderer(sf::RenderTarget& render_target) : _render_target(render_target) {}
     virtual ~PrimitiveRenderer() = default;
     ZTH_NO_COPY_NO_MOVE(PrimitiveRenderer)
-
-    void draw(const Drawable& drawable);
 
     void draw_point(const Vec2f& point, const Color& color);
     void draw_points(std::span<const Vec2f> points, const Color& color);
@@ -40,11 +31,10 @@ public:
     void draw_rect(const Rect& rect, const Color& color);
     void draw_filled_rect(const Rect& rect, const Color& color);
 
-    // supports only convex polygons
-    void draw_polygon(std::span<const Vec2f> points, const Color& color);
-    void draw_polygon(std::span<const Line> lines, const Color& color);
-    void draw_filled_polygon(std::span<const Vec2f> points, const Color& color);
-    void draw_filled_polygon(std::span<const Line> lines, const Color& color);
+    void draw_convex_polygon(std::span<const Vec2f> points, const Color& color);
+    void draw_convex_polygon(std::span<const Line> lines, const Color& color);
+    void draw_filled_convex_polygon(std::span<const Vec2f> points, const Color& color);
+    void draw_filled_convex_polygon(std::span<const Line> lines, const Color& color);
 
     void draw_circle(const Circle& circle, const Color& color);
     void draw_ellipse(const Ellipse& ellipse, const Color& color);
@@ -67,10 +57,10 @@ private:
     virtual void draw_rect_impl(const Rect& rect, const Color& color) = 0;
     virtual void draw_filled_rect_impl(const Rect& rect, const Color& color) = 0;
 
-    virtual void draw_polygon_impl(std::span<const Vec2f> points, const Color& color) = 0;
-    virtual void draw_polygon_impl(std::span<const Line> lines, const Color& color) = 0;
-    virtual void draw_filled_polygon_impl(std::span<const Vec2f> points, const Color& color) = 0;
-    virtual void draw_filled_polygon_impl(std::span<const Line> lines, const Color& color) = 0;
+    virtual void draw_convex_polygon_impl(std::span<const Vec2f> points, const Color& color) = 0;
+    virtual void draw_convex_polygon_impl(std::span<const Line> lines, const Color& color) = 0;
+    virtual void draw_filled_convex_polygon_impl(std::span<const Vec2f> points, const Color& color) = 0;
+    virtual void draw_filled_convex_polygon_impl(std::span<const Line> lines, const Color& color) = 0;
 
     virtual void draw_circle_impl(const Circle& circle, const Color& color) = 0;
     virtual void draw_ellipse_impl(const Ellipse& ellipse, const Color& color) = 0;

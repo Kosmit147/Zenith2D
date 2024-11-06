@@ -64,27 +64,27 @@ void SfmlPrimitiveRenderer::draw_filled_rect_impl(const Rect& rect, const Color&
     draw_call(sf::TriangleStrip);
 }
 
-void SfmlPrimitiveRenderer::draw_polygon_impl(std::span<const Vec2f> points, const Color& color)
+void SfmlPrimitiveRenderer::draw_convex_polygon_impl(std::span<const Vec2f> points, const Color& color)
 {
-    plot_polygon(points, color);
+    plot_convex_polygon(points, color);
     draw_call(sf::LineStrip);
 }
 
-void SfmlPrimitiveRenderer::draw_polygon_impl(std::span<const Line> lines, const Color& color)
+void SfmlPrimitiveRenderer::draw_convex_polygon_impl(std::span<const Line> lines, const Color& color)
 {
-    plot_polygon(lines, color);
+    plot_convex_polygon(lines, color);
     draw_call(sf::Lines);
 }
 
-void SfmlPrimitiveRenderer::draw_filled_polygon_impl(std::span<const Vec2f> points, const Color& color)
+void SfmlPrimitiveRenderer::draw_filled_convex_polygon_impl(std::span<const Vec2f> points, const Color& color)
 {
-    plot_filled_polygon(points, color);
+    plot_filled_convex_polygon(points, color);
     draw_call(sf::TriangleFan);
 }
 
-void SfmlPrimitiveRenderer::draw_filled_polygon_impl(std::span<const Line> lines, const Color& color)
+void SfmlPrimitiveRenderer::draw_filled_convex_polygon_impl(std::span<const Line> lines, const Color& color)
 {
-    plot_filled_polygon(lines, color);
+    plot_filled_convex_polygon(lines, color);
     draw_call(sf::TriangleFan);
 }
 
@@ -196,26 +196,25 @@ void SfmlPrimitiveRenderer::plot_filled_rect(const Rect& rect, const Color& colo
 {
     auto points = rect.points();
 
-    // have to plot the corner first, then the diagonal
-
+    // have to plot the corner first, then the diagonal because we're drawing a triangle strip
     plot_point(points[1], color);
     plot_point(points[0], color);
     plot_point(points[2], color);
     plot_point(points[3], color);
 }
 
-void SfmlPrimitiveRenderer::plot_polygon(std::span<const Vec2f> points, const Color& color)
+void SfmlPrimitiveRenderer::plot_convex_polygon(std::span<const Vec2f> points, const Color& color)
 {
     plot_line_strip(points, color);
     plot_point(points[0], color);
 }
 
-void SfmlPrimitiveRenderer::plot_polygon(std::span<const Line> lines, const Color& color)
+void SfmlPrimitiveRenderer::plot_convex_polygon(std::span<const Line> lines, const Color& color)
 {
     plot_lines(lines, color);
 }
 
-void SfmlPrimitiveRenderer::plot_filled_polygon(std::span<const Vec2f> points, const Color& color)
+void SfmlPrimitiveRenderer::plot_filled_convex_polygon(std::span<const Vec2f> points, const Color& color)
 {
     auto center_point = std::reduce(points.begin(), points.end()) / static_cast<float>(points.size());
     plot_point(center_point, color);
@@ -223,7 +222,7 @@ void SfmlPrimitiveRenderer::plot_filled_polygon(std::span<const Vec2f> points, c
     plot_point(points[0], color);
 }
 
-void SfmlPrimitiveRenderer::plot_filled_polygon(std::span<const Line> lines, const Color& color)
+void SfmlPrimitiveRenderer::plot_filled_convex_polygon(std::span<const Line> lines, const Color& color)
 {
     auto points_sum = std::transform_reduce(lines.begin(), lines.end(), Vec2f{ 0.0f, 0.0f }, std::plus{},
                                             [](auto& line) { return line.from; });

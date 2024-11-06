@@ -15,7 +15,7 @@ namespace zth {
 class SfmlPrimitiveRenderer : public PrimitiveRenderer
 {
 public:
-    explicit SfmlPrimitiveRenderer(sf::RenderTarget& target) : PrimitiveRenderer(target) {}
+    explicit SfmlPrimitiveRenderer(sf::RenderTarget& render_target) : PrimitiveRenderer(render_target) {}
     ~SfmlPrimitiveRenderer() override = default;
     ZTH_NO_COPY_NO_MOVE(SfmlPrimitiveRenderer)
 
@@ -35,11 +35,10 @@ private:
     void draw_rect_impl(const Rect& rect, const Color& color) override;
     void draw_filled_rect_impl(const Rect& rect, const Color& color) override;
 
-    // supports only convex polygons
-    void draw_polygon_impl(std::span<const Vec2f> points, const Color& color) override;
-    void draw_polygon_impl(std::span<const Line> lines, const Color& color) override;
-    void draw_filled_polygon_impl(std::span<const Vec2f> points, const Color& color) override;
-    void draw_filled_polygon_impl(std::span<const Line> lines, const Color& color) override;
+    void draw_convex_polygon_impl(std::span<const Vec2f> points, const Color& color) override;
+    void draw_convex_polygon_impl(std::span<const Line> lines, const Color& color) override;
+    void draw_filled_convex_polygon_impl(std::span<const Vec2f> points, const Color& color) override;
+    void draw_filled_convex_polygon_impl(std::span<const Line> lines, const Color& color) override;
 
     void draw_circle_impl(const Circle& circle, const Color& color) override;
     void draw_ellipse_impl(const Ellipse& ellipse, const Color& color) override;
@@ -58,10 +57,10 @@ private:
     void plot_rect(const Rect& rect, const Color& color);
     void plot_filled_rect(const Rect& rect, const Color& color);
 
-    void plot_polygon(std::span<const Vec2f> points, const Color& color);
-    void plot_polygon(std::span<const Line> lines, const Color& color);
-    void plot_filled_polygon(std::span<const Vec2f> points, const Color& color);
-    void plot_filled_polygon(std::span<const Line> lines, const Color& color);
+    void plot_convex_polygon(std::span<const Vec2f> points, const Color& color);
+    void plot_convex_polygon(std::span<const Line> lines, const Color& color);
+    void plot_filled_convex_polygon(std::span<const Vec2f> points, const Color& color);
+    void plot_filled_convex_polygon(std::span<const Line> lines, const Color& color);
 
     void draw_call(sf::PrimitiveType primitive_type);
 };

@@ -24,10 +24,10 @@ public:
 
     ~Texture() = default;
 
-    Texture(const Texture& other) = default;
+    Texture(const Texture&) = default;
     Texture(Texture&& other) noexcept;
 
-    Texture& operator=(const Texture& other) = default;
+    Texture& operator=(const Texture&) = default;
     Texture& operator=(Texture&& other) noexcept;
 
     bool load_from_file(std::string_view path);
@@ -36,7 +36,10 @@ public:
     auto height() const { return _texture.getSize().y; }
     auto size() const { return TextureSize{ width(), height() }; }
 
+    unsigned int get_native_handle() const { return _texture.getNativeHandle(); }
+
     friend class Shader;
+    friend class Sprite;
 
 private:
     sf::Texture _texture;

@@ -92,21 +92,21 @@ void CustomPrimitiveRenderer::draw_filled_rect_impl(const Rect& rect, const Colo
     _render_target.draw(sprite);
 }
 
-void CustomPrimitiveRenderer::draw_polygon_impl(std::span<const Vec2f> points, const Color& color)
+void CustomPrimitiveRenderer::draw_convex_polygon_impl(std::span<const Vec2f> points, const Color& color)
 {
     // The main PrimitiveRenderer class checks whether the polygon is valid in the first place
-    plot_polygon(points, color);
+    plot_convex_polygon(points, color);
     draw_call();
 }
 
-void CustomPrimitiveRenderer::draw_polygon_impl(std::span<const Line> lines, const Color& color)
+void CustomPrimitiveRenderer::draw_convex_polygon_impl(std::span<const Line> lines, const Color& color)
 {
     // The main PrimitiveRenderer class checks whether the polygon is valid in the first place
-    plot_polygon(lines, color);
+    plot_convex_polygon(lines, color);
     draw_call();
 }
 
-void CustomPrimitiveRenderer::draw_filled_polygon_impl(std::span<const Vec2f> points, const Color& color)
+void CustomPrimitiveRenderer::draw_filled_convex_polygon_impl(std::span<const Vec2f> points, const Color& color)
 {
     const auto render_target_size = _render_target.getSize();
     auto& image = get_tmp_image(render_target_size);
@@ -137,7 +137,7 @@ void CustomPrimitiveRenderer::draw_filled_polygon_impl(std::span<const Vec2f> po
     _render_target.draw(sprite);
 }
 
-void CustomPrimitiveRenderer::draw_filled_polygon_impl(std::span<const Line> lines, const Color& color)
+void CustomPrimitiveRenderer::draw_filled_convex_polygon_impl(std::span<const Line> lines, const Color& color)
 {
     const auto render_target_size = _render_target.getSize();
     auto& image = get_tmp_image(render_target_size);
@@ -333,7 +333,7 @@ void CustomPrimitiveRenderer::plot_rect(const Rect& rect, const Color& color)
     plot_line(points.back(), points.front(), color);
 }
 
-void CustomPrimitiveRenderer::plot_polygon(std::span<const Vec2f> points, const Color& color)
+void CustomPrimitiveRenderer::plot_convex_polygon(std::span<const Vec2f> points, const Color& color)
 {
     for (const auto line : points | std::views::adjacent<2>)
     {
@@ -347,7 +347,7 @@ void CustomPrimitiveRenderer::plot_polygon(std::span<const Vec2f> points, const 
     plot_line(points.back(), points.front(), color);
 }
 
-void CustomPrimitiveRenderer::plot_polygon(std::span<const Line> lines, const Color& color)
+void CustomPrimitiveRenderer::plot_convex_polygon(std::span<const Line> lines, const Color& color)
 {
     for (const auto& line : lines)
         plot_line(line, color);
@@ -616,7 +616,7 @@ void CustomPrimitiveRenderer::flood_fill(sf::Image& image, const Vec2u& seed, co
     }
 }
 
-sf::Image& CustomPrimitiveRenderer::get_tmp_image(sf::Vector2u target_size)
+sf::Image& CustomPrimitiveRenderer::get_tmp_image(const sf::Vector2u& target_size)
 {
     static std::vector<Color> buff;
     static sf::Image image;

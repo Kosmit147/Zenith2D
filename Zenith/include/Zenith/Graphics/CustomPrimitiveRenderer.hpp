@@ -25,7 +25,7 @@ public:
     FillAlgorithm fill_algorithm = FillAlgorithm::FloodFill;
 
 public:
-    explicit CustomPrimitiveRenderer(sf::RenderTarget& target) : PrimitiveRenderer(target) {}
+    explicit CustomPrimitiveRenderer(sf::RenderTarget& render_target) : PrimitiveRenderer(render_target) {}
     ~CustomPrimitiveRenderer() override = default;
     ZTH_NO_COPY_NO_MOVE(CustomPrimitiveRenderer)
 
@@ -45,10 +45,10 @@ private:
     void draw_rect_impl(const Rect& rect, const Color& color) override;
     void draw_filled_rect_impl(const Rect& rect, const Color& color) override;
 
-    void draw_polygon_impl(std::span<const Vec2f> points, const Color& color) override;
-    void draw_polygon_impl(std::span<const Line> lines, const Color& color) override;
-    void draw_filled_polygon_impl(std::span<const Vec2f> points, const Color& color) override;
-    void draw_filled_polygon_impl(std::span<const Line> lines, const Color& color) override;
+    void draw_convex_polygon_impl(std::span<const Vec2f> points, const Color& color) override;
+    void draw_convex_polygon_impl(std::span<const Line> lines, const Color& color) override;
+    void draw_filled_convex_polygon_impl(std::span<const Vec2f> points, const Color& color) override;
+    void draw_filled_convex_polygon_impl(std::span<const Line> lines, const Color& color) override;
 
     void draw_circle_impl(const Circle& circle, const Color& color) override;
     void draw_ellipse_impl(const Ellipse& ellipse, const Color& color) override;
@@ -66,8 +66,8 @@ private:
 
     void plot_rect(const Rect& rect, const Color& color);
 
-    void plot_polygon(std::span<const Vec2f> points, const Color& color);
-    void plot_polygon(std::span<const Line> lines, const Color& color);
+    void plot_convex_polygon(std::span<const Vec2f> points, const Color& color);
+    void plot_convex_polygon(std::span<const Line> lines, const Color& color);
 
     void plot_circle(const Circle& circle, const Color& color);
     void plot_ellipse(const Ellipse& ellipse, const Color& color);
@@ -83,7 +83,7 @@ private:
     static void boundary_fill(sf::Image& image, const Vec2u& seed, const Color& border_color, const Color& fill_color);
     static void flood_fill(sf::Image& image, const Vec2u& seed, const Color& fill_color, const Color& background_color);
 
-    static sf::Image& get_tmp_image(sf::Vector2u target_size);
+    static sf::Image& get_tmp_image(const sf::Vector2u& target_size);
 
     void draw_call();
 };
