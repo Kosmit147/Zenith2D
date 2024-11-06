@@ -2,11 +2,11 @@
 
 #include <Zenith/Core/Application.hpp>
 
-class Application : public zth::Application
+class Testbed : public zth::Application
 {
 public:
-    Application();
-    ~Application() override;
+    Testbed();
+    ~Testbed() override;
 
 private:
     void on_update(double delta_time) override;

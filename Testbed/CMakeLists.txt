@@ -3,10 +3,10 @@ project(Testbed LANGUAGES CXX)
 
 add_executable(
 	Testbed
-	"src/Application.cpp"
 	"src/EventTest.cpp"
 	"src/main.cpp"
 	"src/PrimitiveRendererTest.cpp"
+	"src/Testbed.cpp"
 )
 
 if(CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*")

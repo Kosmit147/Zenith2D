@@ -1,6 +1,8 @@
-#include "Application.hpp"
+#include "Testbed.hpp"
 
 #include <Zenith/Time/Timer.hpp>
+
+#include <cassert>
 
 static void draw_primitives(zth::PrimitiveRenderer& renderer)
 {
@@ -64,13 +66,13 @@ static void draw_primitives(zth::PrimitiveRenderer& renderer)
         { 540.0f, 70.0f },
     };
 
-    renderer.draw_polygon(polygon_from_points, zth::Color::blue);
+    renderer.draw_convex_polygon(polygon_from_points, zth::Color::blue);
 
     static constexpr zth::Line polygon_from_lines[] = { { { 600.0f, 160.0f }, { 700.0f, 160.0f } },
                                                         { { 700.0f, 160.0f }, { 650.0f, 70.0f } },
                                                         { { 650.0f, 70.0f }, { 600.0f, 160.0f } } };
 
-    renderer.draw_polygon(polygon_from_lines, zth::Color::blue);
+    renderer.draw_convex_polygon(polygon_from_lines, zth::Color::blue);
 
     static constexpr zth::Vec2f filled_polygon_from_points[] = {
         { 710.0f, 160.0f },
@@ -78,13 +80,13 @@ static void draw_primitives(zth::PrimitiveRenderer& renderer)
         { 760.0f, 70.0f },
     };
 
-    renderer.draw_filled_polygon(filled_polygon_from_points, zth::Color::blue);
+    renderer.draw_filled_convex_polygon(filled_polygon_from_points, zth::Color::blue);
 
     static constexpr zth::Line filled_polygon_from_lines[] = { { { 820.0f, 160.0f }, { 920.0f, 160.0f } },
                                                                { { 920.0f, 160.0f }, { 870.0f, 70.0f } },
                                                                { { 870.0f, 70.0f }, { 820.0f, 160.0f } } };
 
-    renderer.draw_filled_polygon(filled_polygon_from_lines, zth::Color::blue);
+    renderer.draw_filled_convex_polygon(filled_polygon_from_lines, zth::Color::blue);
 
     static constexpr zth::Circle circle = {
         .center = { 980.0f, 115.0f },
@@ -115,16 +117,17 @@ static void draw_primitives(zth::PrimitiveRenderer& renderer)
     renderer.draw_filled_ellipse(filled_ellipse, zth::Color::blue);
 }
 
-static void sfml_renderer_test(zth::PrimitiveRenderer* renderer)
+static void sfml_primitive_renderer_test(zth::PrimitiveRenderer& renderer)
 {
-    draw_primitives(*renderer);
+    draw_primitives(renderer);
 }
 
-static void custom_renderer_test(zth::PrimitiveRenderer* primitive_renderer)
+static void custom_primitive_renderer_test(zth::PrimitiveRenderer& primitive_renderer)
 {
     // switches between custom fill algorithms every 4 seconds
 
-    auto renderer = dynamic_cast<zth::CustomPrimitiveRenderer*>(primitive_renderer);
+    auto renderer = dynamic_cast<zth::CustomPrimitiveRenderer*>(&primitive_renderer);
+    assert(renderer != nullptr);
 
     if (!renderer)
         return;
@@ -142,34 +145,34 @@ static void custom_renderer_test(zth::PrimitiveRenderer* primitive_renderer)
     draw_primitives(*renderer);
 }
 
-void Application::primitive_renderer_test() const
+void Testbed::primitive_renderer_test() const
 {
     // switches between custom and sfml rendering every 2 seconds
     // switches between custom fill algorithms every 4 seconds
 
     static zth::Timer renderer_type_timer;
 
-    zth::RendererType renderer_type = _window.get_primitive_renderer_type();
+    auto renderer_type = _window.renderer.get_primitive_renderer_type();
 
     if (renderer_type_timer.elapsed_s() > 2.0)
     {
-        renderer_type = _window.get_primitive_renderer_type() == zth::RendererType::SfmlRenderer
-                            ? zth::RendererType::CustomRenderer
-                            : zth::RendererType::SfmlRenderer;
+        renderer_type = renderer_type == zth::PrimitiveRendererType::SfmlPrimitiveRenderer
+                            ? zth::PrimitiveRendererType::CustomPrimitiveRenderer
+                            : zth::PrimitiveRendererType::SfmlPrimitiveRenderer;
 
-        _window.set_primitive_renderer_type(renderer_type);
+        _window.renderer.set_primitive_renderer_type(renderer_type);
         renderer_type_timer.reset();
     }
 
-    auto& renderer = _window.primitive_renderer();
+    auto& renderer = _window.renderer.primitive_renderer();
 
     switch (renderer_type)
     {
-    case zth::RendererType::SfmlRenderer:
-        sfml_renderer_test(&renderer);
+    case zth::PrimitiveRendererType::SfmlPrimitiveRenderer:
+        sfml_primitive_renderer_test(renderer);
         break;
-    case zth::RendererType::CustomRenderer:
-        custom_renderer_test(&renderer);
+    case zth::PrimitiveRendererType::CustomPrimitiveRenderer:
+        custom_primitive_renderer_test(renderer);
         break;
     }
 }

@@ -1,8 +1,8 @@
-#include "Application.hpp"
+#include "Testbed.hpp"
 
 #include <Zenith/Logging/Logger.hpp>
 
-void Application::event_test(const zth::Event& event)
+void Testbed::event_test(const zth::Event& event)
 {
     switch (event.type())
     {
@@ -10,7 +10,8 @@ void Application::event_test(const zth::Event& event)
     case WindowResized:
     {
         auto& resize_event = event.resize_event();
-        zth::Logger::print_notification("Window resized. New size: ({}, {}).", resize_event.width, resize_event.height);
+        auto& new_res = resize_event.new_res;
+        zth::Logger::print_notification("Window resized. New size: ({}, {}).", new_res.width, new_res.height);
     }
     break;
     case LostFocus:
@@ -61,7 +62,7 @@ void Application::event_test(const zth::Event& event)
     case MouseMoved:
     {
         auto& mouse_move_event = event.mouse_move_event();
-        auto [pos_x, pos_y] = mouse_move_event.cursor_pos;
+        auto [pos_x, pos_y] = mouse_move_event.new_cursor_pos;
         zth::Logger::print_notification("Mouse moved. New cursor pos: ({}, {}).", pos_x, pos_y);
     }
     break;
