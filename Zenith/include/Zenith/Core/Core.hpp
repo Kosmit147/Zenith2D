@@ -7,4 +7,4 @@
 #include "Transformable.hpp"
 #include "Typedefs.hpp"
 #include "Updatable.hpp"
-#include "UpdateDispatcher.hpp"
+#include "Updater.hpp"

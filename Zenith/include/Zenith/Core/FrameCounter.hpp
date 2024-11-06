@@ -11,6 +11,7 @@ class FrameCounter
 public:
     auto get_fps() const { return _fps; }
 
+    // should be called every frame to update the counter
     void update()
     {
         _frame_count++;

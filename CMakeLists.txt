@@ -22,7 +22,7 @@ get_compile_warnings(COMPILE_WARNINGS)
 add_subdirectory("dependencies/SFML")
 
 # unfortunately sfml-graphics does not set its headers as SYSTEM
-# which results in warnings whenever these are added to our projects' files
+# which results in warnings whenever these are included in our projects' files
 # this is a hacky solution
 get_target_property(_sfml_graphics_includes sfml-graphics INTERFACE_INCLUDE_DIRECTORIES)
 target_include_directories(sfml-graphics SYSTEM INTERFACE ${_sfml_graphics_includes})

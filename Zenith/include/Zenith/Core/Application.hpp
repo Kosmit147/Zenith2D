@@ -2,7 +2,7 @@
 
 #include "Zenith/Core/EventDispatcher.hpp"
 #include "Zenith/Core/FrameCounter.hpp"
-#include "Zenith/Core/UpdateDispatcher.hpp"
+#include "Zenith/Core/Updater.hpp"
 #include "Zenith/Logging/Logger.hpp"
 #include "Zenith/Platform/Event.hpp"
 #include "Zenith/Platform/Window.hpp"
@@ -30,10 +30,8 @@ public:
 protected:
     WindowApi _window = WindowApi{ _internal_window };
     Logger _logger;
-    // TODO: user shouldn't be able to call event dispatcher's dispatch function
     EventDispatcher _event_dispatcher;
-    // TODO: user shouldn't be able to call update dispatcher's dispatch function
-    UpdateDispatcher _update_dispatcher;
+    Updater _updater;
 
 private:
     Window _internal_window;

@@ -1,18 +1,18 @@
-#include "Zenith/Core/UpdateDispatcher.hpp"
+#include "Zenith/Core/Updater.hpp"
 
 namespace zth {
 
-void UpdateDispatcher::register_updatable(Updatable& updatable)
+void Updater::register_updatable(Updatable& updatable)
 {
     _updatables.push_back(&updatable);
 }
 
-void UpdateDispatcher::deregister_updatable(const Updatable& updatable)
+void Updater::deregister_updatable(const Updatable& updatable)
 {
     std::erase(_updatables, &updatable);
 }
 
-void UpdateDispatcher::dispatch(double delta_time) const
+void Updater::update(double delta_time) const
 {
     // TODO:
     // modifying updatables vector during iterating over updatables will invalidate the iterators

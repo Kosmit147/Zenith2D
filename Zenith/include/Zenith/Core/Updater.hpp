@@ -6,12 +6,12 @@
 
 namespace zth {
 
-class UpdateDispatcher
+class Updater
 {
 public:
     void register_updatable(Updatable& updatable);
     void deregister_updatable(const Updatable& updatable);
-    void dispatch(double delta_time) const;
+    void update(double delta_time) const;
 
 private:
     std::vector<Updatable*> _updatables;
