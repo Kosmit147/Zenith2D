@@ -11,15 +11,14 @@ static const zth::ApplicationSpec spec = {
     },
     .logger_spec = {
         .target = zth::LogTarget::ConsoleAndFile,
-        .log_file_path = "../sandbox_log.txt",
+        .log_file_path = "log/sandbox_log.txt",
     },
 };
 
-Sandbox::Sandbox() : zth::Application(spec)
+Sandbox::Sandbox()
+    : Application(spec), _player_texture(zth::Texture::from_file("res/emoji.png").value_or(zth::Texture{})),
+      _player(_player_texture)
 {
-    _player_texture = zth::Texture::from_file("../emoji.png").value_or(zth::Texture{});
-    _player = Player{ _player_texture };
-
     zth::Logger::print_notification("On init.");
     _logger.log_error("Logger Test: {}, {}, {}.", 1, 2, 3);
     _window.set_clear_color(zth::Color::black);
@@ -38,9 +37,7 @@ void Sandbox::on_update([[maybe_unused]] const double delta_time)
 {
     zth::Logger::print_notification("On Update with delta time: {} seconds.", delta_time);
     zth::Logger::print_notification("FPS: {}", get_fps());
-
-    auto& renderer = _window.renderer;
-    renderer.draw(_player);
+    _window.renderer.draw(_player);
 }
 
 void Sandbox::on_event(const zth::Event& event, [[maybe_unused]] const double delta_time)

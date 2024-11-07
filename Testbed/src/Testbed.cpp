@@ -9,11 +9,11 @@ static const zth::ApplicationSpec spec = {
     },
     .logger_spec = {
         .target = zth::LogTarget::ConsoleAndFile,
-        .log_file_path = "../testbed_log.txt",
+        .log_file_path = "log/testbed_log.txt",
     },
 };
 
-Testbed::Testbed() : zth::Application(spec)
+Testbed::Testbed() : Application(spec)
 {
     zth::Logger::print_notification("On init.");
     _logger.log_error("Logger Test: {}, {}, {}.", 1, 2, 3);
