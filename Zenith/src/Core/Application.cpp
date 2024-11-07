@@ -29,11 +29,16 @@ void Application::run()
             handle_event(ev, delta_time);
         }
 
-        on_update(delta_time);
-        _updater.update(delta_time);
+        handle_update(delta_time);
         _internal_window.display();
         _frame_counter.update();
     }
+}
+
+void Application::handle_update(double delta_time)
+{
+    on_update(delta_time);
+    _updater.update(delta_time);
 }
 
 void Application::handle_event(const Event& event, double delta_time)

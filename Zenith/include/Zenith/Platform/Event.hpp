@@ -6,7 +6,6 @@
 #include <cassert>
 #include <optional>
 
-#include "Zenith/Core/Typedefs.hpp"
 #include "Zenith/Platform/Input.hpp"
 #include "Zenith/Platform/Resolution.hpp"
 
@@ -111,24 +110,12 @@ public:
 
 private:
     static std::optional<Event> from_sf_event(const sf::Event& event);
-
-    // clang-format off
-    explicit Event(EventType event_type) : _type(event_type), _dummy(false) {}
-
-    explicit Event(EventType event_type, const ResizeEvent& resize_event)
-        : _type(event_type), _resize_event(resize_event) {}
-
-    explicit Event(EventType event_type, const KeyEvent& key_event) : _type(event_type), _key_event(key_event) {}
-
-    explicit Event(EventType event_type, const MouseScrollEvent& mouse_scroll_event)
-        : _type(event_type), _mouse_scroll_event(mouse_scroll_event) {}
-
-    explicit Event(EventType event_type, const MouseButtonEvent& mouse_button_event)
-        : _type(event_type), _mouse_button_event(mouse_button_event) {}
-
-    explicit Event(EventType event_type, const MouseMoveEvent& mouse_move_event)
-        : _type(event_type), _mouse_move_event(mouse_move_event) {}
-    // clang-format on
+    explicit Event(EventType event_type);
+    explicit Event(EventType event_type, const ResizeEvent& resize_event);
+    explicit Event(EventType event_type, const KeyEvent& key_event);
+    explicit Event(EventType event_type, const MouseScrollEvent& mouse_scroll_event);
+    explicit Event(EventType event_type, const MouseButtonEvent& mouse_button_event);
+    explicit Event(EventType event_type, const MouseMoveEvent& mouse_move_event);
 
     friend class Window;
 

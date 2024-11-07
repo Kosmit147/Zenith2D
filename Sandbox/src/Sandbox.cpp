@@ -1,7 +1,5 @@
 #include "Sandbox.hpp"
 
-#include <Zenith/Zenith.hpp>
-
 static const zth::ApplicationSpec spec = {
     .window_spec = {
         .title = "Sandbox",

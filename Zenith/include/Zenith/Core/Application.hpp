@@ -41,6 +41,7 @@ private:
     virtual void on_update([[maybe_unused]] double delta_time) {}
     virtual void on_event([[maybe_unused]] const Event& event, [[maybe_unused]] double delta_time) {}
 
+    void handle_update(double delta_time);
     void handle_event(const Event& event, double delta_time);
 };
 

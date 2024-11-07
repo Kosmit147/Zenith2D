@@ -89,4 +89,22 @@ std::optional<Event> Event::from_sf_event(const sf::Event& event)
     return ret;
 }
 
+Event::Event(EventType event_type) : _type(event_type), _dummy(false) {}
+
+Event::Event(EventType event_type, const ResizeEvent& resize_event) : _type(event_type), _resize_event(resize_event) {}
+
+Event::Event(EventType event_type, const KeyEvent& key_event) : _type(event_type), _key_event(key_event) {}
+
+Event::Event(EventType event_type, const MouseScrollEvent& mouse_scroll_event)
+    : _type(event_type), _mouse_scroll_event(mouse_scroll_event)
+{}
+
+Event::Event(EventType event_type, const MouseButtonEvent& mouse_button_event)
+    : _type(event_type), _mouse_button_event(mouse_button_event)
+{}
+
+Event::Event(EventType event_type, const MouseMoveEvent& mouse_move_event)
+    : _type(event_type), _mouse_move_event(mouse_move_event)
+{}
+
 } // namespace zth

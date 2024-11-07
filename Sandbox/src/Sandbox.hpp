@@ -1,7 +1,6 @@
 #pragma once
 
-#include <Zenith/Core/Application.hpp>
-#include <Zenith/Graphics/Texture.hpp>
+#include <Zenith/Zenith.hpp>
 
 #include "Player.hpp"
 
