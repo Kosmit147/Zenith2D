@@ -7,7 +7,7 @@ Texture::Texture(TextureSize size)
     _texture.create(size.width, size.height);
 }
 
-std::optional<Texture> Texture::create_from_file(std::string_view path)
+std::optional<Texture> Texture::from_file(std::string_view path)
 {
     if (Texture tex; tex.load_from_file(path))
         return std::optional{ tex };

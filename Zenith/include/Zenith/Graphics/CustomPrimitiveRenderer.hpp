@@ -5,6 +5,7 @@
 #include <span>
 
 #include "Zenith/Graphics/Color.hpp"
+#include "Zenith/Graphics/PrimitiveRenderer.hpp"
 #include "Zenith/Math/Geometry.hpp"
 #include "Zenith/Math/Vec2.hpp"
 #include "Zenith/Utility/Utility.hpp"
@@ -18,44 +19,42 @@ enum class FillAlgorithm
 };
 
 // TODO: Refactor this class
-class CustomPrimitiveRenderer
+class CustomPrimitiveRenderer : public PrimitiveRenderer
 {
 public:
     FillAlgorithm fill_algorithm = FillAlgorithm::FloodFill;
 
 public:
-    explicit CustomPrimitiveRenderer(sf::RenderTarget& target) : _render_target(target) {}
-    ~CustomPrimitiveRenderer() = default;
+    explicit CustomPrimitiveRenderer(sf::RenderTarget& render_target) : PrimitiveRenderer(render_target) {}
+    ~CustomPrimitiveRenderer() override = default;
     ZTH_NO_COPY_NO_MOVE(CustomPrimitiveRenderer)
 
-    void draw_point(const Vec2f& point, const Color& color);
-    void draw_points(std::span<const Vec2f> points, const Color& color);
-    void draw_line(const Vec2f& from, const Vec2f& to, const Color& color);
-    void draw_line(const Line& line, const Color& color);
-    void draw_line_strip(std::span<const Vec2f> points, const Color& color);
-    void draw_lines(std::span<const Line> lines, const Color& color);
-    void draw_closed_lines(std::span<const Vec2f> points, const Color& color);
-    void draw_closed_lines(std::span<const Line> lines, const Color& color);
-
-    void draw_rect(const Rect& rect, const Color& color);
-    void draw_filled_rect(const Rect& rect, const Color& color) const;
-
-    void draw_polygon(std::span<const Vec2f> points, const Color& color);
-    void draw_polygon(std::span<const Line> lines, const Color& color);
-    void draw_filled_polygon(std::span<const Vec2f> points, const Color& color) const;
-    void draw_filled_polygon(std::span<const Line> lines, const Color& color) const;
-
-    void draw_circle(const Circle& circle, const Color& color);
-    void draw_ellipse(const Ellipse& ellipse, const Color& color);
-    void draw_filled_circle(const Circle& circle, const Color& color) const;
-    void draw_filled_ellipse(const Ellipse& ellipse, const Color& color) const;
+private:
+    sf::VertexArray _vertex_array{ sf::Points, 0 }; // we're only ever drawing points in custom renderer
 
 private:
-    sf::RenderTarget& _render_target;
-    sf::VertexArray _vertex_array =
-        sf::VertexArray{ sf::Points, 0 }; // we're only ever drawing points in custom renderer
+    void draw_point_impl(const Vec2f& point, const Color& color) override;
+    void draw_points_impl(std::span<const Vec2f> points, const Color& color) override;
+    void draw_line_impl(const Vec2f& from, const Vec2f& to, const Color& color) override;
+    void draw_line_impl(const Line& line, const Color& color) override;
+    void draw_line_strip_impl(std::span<const Vec2f> points, const Color& color) override;
+    void draw_lines_impl(std::span<const Line> lines, const Color& color) override;
+    void draw_closed_lines_impl(std::span<const Vec2f> points, const Color& color) override;
+    void draw_closed_lines_impl(std::span<const Line> lines, const Color& color) override;
 
-private:
+    void draw_rect_impl(const Rect& rect, const Color& color) override;
+    void draw_filled_rect_impl(const Rect& rect, const Color& color) override;
+
+    void draw_convex_polygon_impl(std::span<const Vec2f> points, const Color& color) override;
+    void draw_convex_polygon_impl(std::span<const Line> lines, const Color& color) override;
+    void draw_filled_convex_polygon_impl(std::span<const Vec2f> points, const Color& color) override;
+    void draw_filled_convex_polygon_impl(std::span<const Line> lines, const Color& color) override;
+
+    void draw_circle_impl(const Circle& circle, const Color& color) override;
+    void draw_ellipse_impl(const Ellipse& ellipse, const Color& color) override;
+    void draw_filled_circle_impl(const Circle& circle, const Color& color) override;
+    void draw_filled_ellipse_impl(const Ellipse& ellipse, const Color& color) override;
+
     void plot_point(const Vec2f& point, const Color& color);
     void plot_points(std::span<const Vec2f> points, const Color& color);
     void plot_line(const Vec2f& from, const Vec2f& to, const Color& color);
@@ -67,8 +66,8 @@ private:
 
     void plot_rect(const Rect& rect, const Color& color);
 
-    void plot_polygon(std::span<const Vec2f> points, const Color& color);
-    void plot_polygon(std::span<const Line> lines, const Color& color);
+    void plot_convex_polygon(std::span<const Vec2f> points, const Color& color);
+    void plot_convex_polygon(std::span<const Line> lines, const Color& color);
 
     void plot_circle(const Circle& circle, const Color& color);
     void plot_ellipse(const Ellipse& ellipse, const Color& color);
@@ -84,9 +83,9 @@ private:
     static void boundary_fill(sf::Image& image, const Vec2u& seed, const Color& border_color, const Color& fill_color);
     static void flood_fill(sf::Image& image, const Vec2u& seed, const Color& fill_color, const Color& background_color);
 
-    static sf::Image& get_tmp_image(sf::Vector2u target_size);
+    static sf::Image& get_tmp_image(const sf::Vector2u& target_size);
 
-    void draw();
+    void draw_call();
 };
 
 } // namespace zth

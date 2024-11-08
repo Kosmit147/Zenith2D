@@ -2,11 +2,12 @@
 
 #include <SFML/Window/Event.hpp>
 
+#include <array>
 #include <cassert>
 #include <optional>
 
-#include "Zenith/Core/Typedefs.hpp"
 #include "Zenith/Platform/Input.hpp"
+#include "Zenith/Platform/Resolution.hpp"
 
 namespace zth {
 
@@ -17,13 +18,12 @@ struct KeyEvent
 
 struct ResizeEvent
 {
-    u32 width;
-    u32 height;
+    Resolution new_res;
 };
 
 struct MouseScrollEvent
 {
-    float delta; // wheel offset (positive is up/left, negative is down/right)
+    float delta; // wheel offset (positive is up, negative is down)
     CursorPos cursor_pos;
 };
 
@@ -35,11 +35,13 @@ struct MouseButtonEvent
 
 struct MouseMoveEvent
 {
-    CursorPos cursor_pos;
+    CursorPos new_cursor_pos;
 };
 
 enum class EventType
 {
+    // keep this list consistent with the array below
+
     WindowClosed,
     WindowResized,
     LostFocus,
@@ -52,6 +54,23 @@ enum class EventType
     MouseMoved,
     MouseEntered,
     MouseLeft,
+};
+
+inline constexpr std::array event_type_enumerations = {
+    // clang-format off
+    EventType::WindowClosed,
+    EventType::WindowResized,
+    EventType::LostFocus,
+    EventType::GainedFocus,
+    EventType::KeyPressed,
+    EventType::KeyReleased,
+    EventType::MouseWheelScrolled,
+    EventType::MouseButtonPressed,
+    EventType::MouseButtonReleased,
+    EventType::MouseMoved,
+    EventType::MouseEntered,
+    EventType::MouseLeft,
+    // clang-format on
 };
 
 class Event
@@ -90,25 +109,15 @@ public:
     }
 
 private:
-    static std::optional<Event> create_from_sf_event(const sf::Event& event);
+    static std::optional<Event> from_sf_event(const sf::Event& event);
+    explicit Event(EventType event_type);
+    explicit Event(EventType event_type, const ResizeEvent& resize_event);
+    explicit Event(EventType event_type, const KeyEvent& key_event);
+    explicit Event(EventType event_type, const MouseScrollEvent& mouse_scroll_event);
+    explicit Event(EventType event_type, const MouseButtonEvent& mouse_button_event);
+    explicit Event(EventType event_type, const MouseMoveEvent& mouse_move_event);
 
-    // clang-format off
-    explicit Event(EventType event_type) : _type(event_type), _dummy(false) {}
-
-    explicit Event(EventType event_type, const ResizeEvent& resize_event)
-        : _type(event_type), _resize_event(resize_event) {}
-
-    explicit Event(EventType event_type, const KeyEvent& key_event) : _type(event_type), _key_event(key_event) {}
-
-    explicit Event(EventType event_type, const MouseScrollEvent& mouse_scroll_event)
-        : _type(event_type), _mouse_scroll_event(mouse_scroll_event) {}
-
-    explicit Event(EventType event_type, const MouseButtonEvent& mouse_button_event)
-        : _type(event_type), _mouse_button_event(mouse_button_event) {}
-
-    explicit Event(EventType event_type, const MouseMoveEvent& mouse_move_event)
-        : _type(event_type), _mouse_move_event(mouse_move_event) {}
-    // clang-format on
+    friend class Window;
 
 private:
     EventType _type;
@@ -122,8 +131,6 @@ private:
         MouseButtonEvent _mouse_button_event;
         MouseMoveEvent _mouse_move_event;
     };
-
-    friend class Window;
 };
 
 } // namespace zth

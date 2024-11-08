@@ -1,4 +1,4 @@
-#include "Application.hpp"
+#include "Sandbox.hpp"
 
 static const zth::ApplicationSpec spec = {
     .window_spec = {
@@ -9,51 +9,60 @@ static const zth::ApplicationSpec spec = {
     },
     .logger_spec = {
         .target = zth::LogTarget::ConsoleAndFile,
-        .log_file_path = "../sandbox_log.txt",
+        .log_file_path = "log/sandbox_log.txt",
     },
 };
 
-Application::Application() : zth::Application(spec)
+Sandbox::Sandbox()
+    : Application(spec), _player_texture(zth::Texture::from_file("assets/emoji.png").value_or(zth::Texture{})),
+      _player(_player_texture)
 {
     zth::Logger::print_notification("On init.");
     _logger.log_error("Logger Test: {}, {}, {}.", 1, 2, 3);
     _window.set_clear_color(zth::Color::black);
+    _event_dispatcher.register_listener(zth::EventType::KeyPressed, _player);
+    _updater.register_updatable(_player);
 }
 
-Application::~Application()
+Sandbox::~Sandbox()
 {
     zth::Logger::print_notification("On shutdown.");
+    _event_dispatcher.deregister_listener(_player);
+    _updater.deregister_updatable(_player);
 }
 
-void Application::on_update([[maybe_unused]] const zth::u64 delta_time)
+void Sandbox::on_update([[maybe_unused]] const double delta_time)
 {
-    zth::Logger::print_notification("On Update with delta time: {} microseconds.", delta_time);
+    zth::Logger::print_notification("On Update with delta time: {} seconds.", delta_time);
     zth::Logger::print_notification("FPS: {}", get_fps());
+    _window.renderer.draw(_player);
 }
 
-void Application::on_event(const zth::Event& event)
+void Sandbox::on_event(const zth::Event& event, [[maybe_unused]] const double delta_time)
 {
     switch (event.type())
     {
-    case zth::EventType::WindowResized:
+        using enum zth::EventType;
+    case WindowResized:
     {
         auto& resize_event = event.resize_event();
-        zth::Logger::print_notification("Window resized. New size: ({}, {}).", resize_event.width, resize_event.height);
+        auto& new_res = resize_event.new_res;
+        zth::Logger::print_notification("Window resized. New size: ({}, {}).", new_res.width, new_res.height);
     }
     break;
-    case zth::EventType::KeyPressed:
+    case KeyPressed:
     {
         auto& key_event = event.key_event();
         zth::Logger::print_notification("{} key pressed.", to_string(key_event.key));
     }
     break;
-    case zth::EventType::KeyReleased:
+    case KeyReleased:
     {
         auto& key_event = event.key_event();
         zth::Logger::print_notification("{} key released.", to_string(key_event.key));
     }
     break;
-    case zth::EventType::MouseButtonPressed:
+    case MouseButtonPressed:
     {
         auto& mouse_button_event = event.mouse_button_event();
         auto [pos_x, pos_y] = mouse_button_event.cursor_pos;
@@ -61,7 +70,7 @@ void Application::on_event(const zth::Event& event)
                                         to_string(mouse_button_event.button), pos_x, pos_y);
     }
     break;
-    case zth::EventType::MouseButtonReleased:
+    case MouseButtonReleased:
     {
         auto& mouse_button_event = event.mouse_button_event();
         auto [pos_x, pos_y] = mouse_button_event.cursor_pos;

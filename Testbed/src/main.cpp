@@ -1,7 +1,7 @@
-#include "Application.hpp"
+#include "Testbed.hpp"
 
 int main()
 {
-    Application app;
-    app.run();
+    Testbed testbed;
+    testbed.run();
 }

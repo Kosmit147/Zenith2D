@@ -1,7 +1,4 @@
-#include "Application.hpp"
-
-#include "EventTest.hpp"
-#include "PrimitiveRendererTest.hpp"
+#include "Testbed.hpp"
 
 static const zth::ApplicationSpec spec = {
     .window_spec = {
@@ -12,32 +9,30 @@ static const zth::ApplicationSpec spec = {
     },
     .logger_spec = {
         .target = zth::LogTarget::ConsoleAndFile,
-        .log_file_path = "../testbed_log.txt",
+        .log_file_path = "log/testbed_log.txt",
     },
 };
 
-Application::Application() : zth::Application(spec)
+Testbed::Testbed() : Application(spec)
 {
     zth::Logger::print_notification("On init.");
     _logger.log_error("Logger Test: {}, {}, {}.", 1, 2, 3);
     _window.set_clear_color(zth::Color::black);
 }
 
-Application::~Application()
+Testbed::~Testbed()
 {
     zth::Logger::print_notification("On shutdown.");
 }
 
-void Application::on_update([[maybe_unused]] const zth::u64 delta_time)
+void Testbed::on_update([[maybe_unused]] const double delta_time)
 {
-    // zth::Logger::print_notification("On Update with delta time: {} microseconds.", delta_time);
+    zth::Logger::print_notification("On Update with delta time: {} seconds.", delta_time);
     zth::Logger::print_notification("FPS: {}", get_fps());
-
-    auto& renderer = _window.primitive_renderer;
-    primitive_renderer_test(renderer);
+    primitive_renderer_test();
 }
 
-void Application::on_event(const zth::Event& event)
+void Testbed::on_event(const zth::Event& event, [[maybe_unused]] const double delta_time)
 {
     event_test(event);
 }

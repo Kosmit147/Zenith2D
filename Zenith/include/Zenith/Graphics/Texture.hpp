@@ -15,19 +15,19 @@ struct TextureSize
     u32 height;
 };
 
-class Texture
+class Texture final
 {
 public:
     explicit Texture() = default;
     explicit Texture(TextureSize size);
-    static std::optional<Texture> create_from_file(std::string_view path);
+    static std::optional<Texture> from_file(std::string_view path);
 
     ~Texture() = default;
 
-    Texture(const Texture& other) = default;
+    Texture(const Texture&) = default;
     Texture(Texture&& other) noexcept;
 
-    Texture& operator=(const Texture& other) = default;
+    Texture& operator=(const Texture&) = default;
     Texture& operator=(Texture&& other) noexcept;
 
     bool load_from_file(std::string_view path);
@@ -35,6 +35,14 @@ public:
     auto width() const { return _texture.getSize().x; }
     auto height() const { return _texture.getSize().y; }
     auto size() const { return TextureSize{ width(), height() }; }
+
+    void bind() const { sf::Texture::bind(&_texture); }
+    static void unbind() { sf::Texture::bind(nullptr); }
+
+    unsigned int get_native_handle() const { return _texture.getNativeHandle(); }
+
+    friend class Shader;
+    friend class Sprite;
 
 private:
     sf::Texture _texture;

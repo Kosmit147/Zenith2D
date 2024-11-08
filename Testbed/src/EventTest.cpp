@@ -1,47 +1,49 @@
-#include "EventTest.hpp"
+#include "Testbed.hpp"
 
 #include <Zenith/Logging/Logger.hpp>
 
-void event_test(const zth::Event& event)
+void Testbed::event_test(const zth::Event& event)
 {
     switch (event.type())
     {
-    case zth::EventType::WindowResized:
+        using enum zth::EventType;
+    case WindowResized:
     {
         auto& resize_event = event.resize_event();
-        zth::Logger::print_notification("Window resized. New size: ({}, {}).", resize_event.width, resize_event.height);
+        auto& new_res = resize_event.new_res;
+        zth::Logger::print_notification("Window resized. New size: ({}, {}).", new_res.width, new_res.height);
     }
     break;
-    case zth::EventType::LostFocus:
+    case LostFocus:
     {
         zth::Logger::print_notification("Lost focus.");
     }
     break;
-    case zth::EventType::GainedFocus:
+    case GainedFocus:
     {
         zth::Logger::print_notification("Gained focus.");
     }
     break;
-    case zth::EventType::KeyPressed:
+    case KeyPressed:
     {
         auto& key_event = event.key_event();
         zth::Logger::print_notification("{} key pressed.", to_string(key_event.key));
     }
     break;
-    case zth::EventType::KeyReleased:
+    case KeyReleased:
     {
         auto& key_event = event.key_event();
         zth::Logger::print_notification("{} key released.", to_string(key_event.key));
     }
     break;
-    case zth::EventType::MouseWheelScrolled:
+    case MouseWheelScrolled:
     {
         auto& scroll_event = event.mouse_scroll_event();
         auto [pos_x, pos_y] = scroll_event.cursor_pos;
         zth::Logger::print_notification("Mouse scrolled: {}. Cursor pos: ({}, {}).", scroll_event.delta, pos_x, pos_y);
     }
     break;
-    case zth::EventType::MouseButtonPressed:
+    case MouseButtonPressed:
     {
         auto& mouse_button_event = event.mouse_button_event();
         auto [pos_x, pos_y] = mouse_button_event.cursor_pos;
@@ -49,7 +51,7 @@ void event_test(const zth::Event& event)
                                         to_string(mouse_button_event.button), pos_x, pos_y);
     }
     break;
-    case zth::EventType::MouseButtonReleased:
+    case MouseButtonReleased:
     {
         auto& mouse_button_event = event.mouse_button_event();
         auto [pos_x, pos_y] = mouse_button_event.cursor_pos;
@@ -57,19 +59,19 @@ void event_test(const zth::Event& event)
                                         to_string(mouse_button_event.button), pos_x, pos_y);
     }
     break;
-    case zth::EventType::MouseMoved:
+    case MouseMoved:
     {
         auto& mouse_move_event = event.mouse_move_event();
-        auto [pos_x, pos_y] = mouse_move_event.cursor_pos;
+        auto [pos_x, pos_y] = mouse_move_event.new_cursor_pos;
         zth::Logger::print_notification("Mouse moved. New cursor pos: ({}, {}).", pos_x, pos_y);
     }
     break;
-    case zth::EventType::MouseEntered:
+    case MouseEntered:
     {
         zth::Logger::print_notification("Mouse entered.");
     }
     break;
-    case zth::EventType::MouseLeft:
+    case MouseLeft:
     {
         zth::Logger::print_notification("Mouse left.");
     }

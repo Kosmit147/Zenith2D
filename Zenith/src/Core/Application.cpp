@@ -1,6 +1,6 @@
 #include "Zenith/Core/Application.hpp"
 
-#include <SFML/System/Time.hpp>
+#include <SFML/System/Clock.hpp>
 
 namespace zth {
 
@@ -10,12 +10,9 @@ void Application::run()
 {
     sf::Clock delta_t_clock;
 
-    u32 frame_count = 0;
-    sf::Clock fps_clock;
-
     while (_internal_window.is_open())
     {
-        const auto delta_time = static_cast<u64>(delta_t_clock.restart().asMicroseconds());
+        const auto delta_time = delta_t_clock.restart().asMilliseconds() / 1000.0;
         _internal_window.clear();
 
         while (auto event = _internal_window.poll_event())
@@ -24,26 +21,30 @@ void Application::run()
 
             if (ev.type() == EventType::WindowClosed)
             {
-                on_event(ev);
+                handle_event(ev, delta_time);
                 _internal_window.close();
                 return;
             }
 
-            on_event(ev);
+            handle_event(ev, delta_time);
         }
 
-        on_update(delta_time);
+        handle_update(delta_time);
         _internal_window.display();
-
-        frame_count++;
-
-        if (fps_clock.getElapsedTime().asSeconds() >= 1.0f)
-        {
-            fps_clock.restart();
-            _fps = frame_count;
-            frame_count = 0;
-        }
+        _frame_counter.update();
     }
+}
+
+void Application::handle_update(double delta_time)
+{
+    on_update(delta_time);
+    _updater.update(delta_time);
+}
+
+void Application::handle_event(const Event& event, double delta_time)
+{
+    on_event(event, delta_time);
+    _event_dispatcher.dispatch(event, delta_time);
 }
 
 } // namespace zth

@@ -21,7 +21,6 @@ public:
     }
 
     double elapsed_ms() const { return static_cast<double>(elapsed_ns()) / 1000.0 / 1000.0; }
-
     double elapsed_s() const { return elapsed_ms() / 1000.0; }
 
 private:

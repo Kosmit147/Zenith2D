@@ -3,12 +3,12 @@
 #include <type_traits>
 #include <utility>
 
-#define ZTH_MAKE_ENUM_FLAGS(enum_t) consteval void enable_enum_flags(enum_t);
+#define ZTH_MAKE_ENUM_FLAGS(enum_t) consteval void zth_make_enum_flags(enum_t);
 
 namespace zth {
 
 template<typename T>
-concept IsEnumFlags = std::is_scoped_enum_v<T> and requires(T e) { enable_enum_flags(e); };
+concept IsEnumFlags = std::is_scoped_enum_v<T> and requires(T e) { zth_make_enum_flags(e); };
 
 template<IsEnumFlags T> constexpr auto operator&(T lhs, T rhs)
 {

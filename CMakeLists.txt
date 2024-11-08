@@ -19,7 +19,14 @@ elseif(CMAKE_BUILD_TYPE MATCHES "Release" OR CMAKE_BUILD_TYPE MATCHES "MinSizeRe
 endif()
 
 get_compile_warnings(COMPILE_WARNINGS)
-add_subdirectory("dependencies/SFML") # currently tracking branch 2.6.x
+add_subdirectory("dependencies/SFML")
+
+# unfortunately sfml-graphics does not set its headers as SYSTEM
+# which results in warnings whenever these are included in our projects' files
+# this is a hacky solution
+get_target_property(_sfml_graphics_includes sfml-graphics INTERFACE_INCLUDE_DIRECTORIES)
+target_include_directories(sfml-graphics SYSTEM INTERFACE ${_sfml_graphics_includes})
+
 add_subdirectory("Zenith")
 add_subdirectory("Testbed")
 add_subdirectory("Sandbox")

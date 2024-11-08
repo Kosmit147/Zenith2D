@@ -1,25 +1,18 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 
 #include <optional>
 #include <string>
 
 #include "Zenith/Core/Typedefs.hpp"
 #include "Zenith/Graphics/Color.hpp"
-#include "Zenith/Graphics/PrimitiveRenderer.hpp"
+#include "Zenith/Graphics/Renderer.hpp"
 #include "Zenith/Platform/Event.hpp"
+#include "Zenith/Platform/Resolution.hpp"
 #include "Zenith/Utility/Utility.hpp"
 
 namespace zth {
-
-struct Resolution
-{
-    u32 width;
-    u32 height;
-
-    explicit operator sf::VideoMode() const { return sf::VideoMode{ width, height }; }
-};
 
 struct WindowSpec
 {
@@ -31,9 +24,12 @@ struct WindowSpec
 
 class Window
 {
+private:
+    sf::RenderWindow _sf_window;
+
 public:
+    Renderer renderer{ _sf_window };
     Color clear_color = Color::black;
-    PrimitiveRenderer primitive_renderer = PrimitiveRenderer{ _sf_window };
 
 public:
     explicit Window(const WindowSpec& spec);
@@ -48,9 +44,6 @@ public:
 
     void display() { _sf_window.display(); }
     void close() { _sf_window.close(); }
-
-private:
-    sf::RenderWindow _sf_window;
 };
 
 // user of the engine interacts with the window through this class
@@ -60,10 +53,10 @@ private:
     Window& _window;
 
 public:
-    PrimitiveRenderer& primitive_renderer;
+    Renderer& renderer{ _window.renderer };
 
 public:
-    explicit WindowApi(Window& window) : _window(window), primitive_renderer(_window.primitive_renderer) {}
+    explicit WindowApi(Window& window) : _window(window) {}
     ~WindowApi() = default;
     ZTH_NO_COPY_NO_MOVE(WindowApi)
 

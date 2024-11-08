@@ -2,7 +2,7 @@
 
 namespace zth {
 
-std::optional<Event> Event::create_from_sf_event(const sf::Event& event)
+std::optional<Event> Event::from_sf_event(const sf::Event& event)
 {
     std::optional<Event> ret = {};
 
@@ -30,12 +30,12 @@ std::optional<Event> Event::create_from_sf_event(const sf::Event& event)
     break;
     case sf::Event::KeyPressed:
     {
-        ret = Event{ EventType::KeyPressed, KeyEvent{ .key = key_from_sf_scancode(event.key.scancode) } };
+        ret = Event{ EventType::KeyPressed, KeyEvent{ .key = to_key(event.key.scancode) } };
     }
     break;
     case sf::Event::KeyReleased:
     {
-        ret = Event{ EventType::KeyReleased, KeyEvent{ .key = key_from_sf_scancode(event.key.scancode) } };
+        ret = Event{ EventType::KeyReleased, KeyEvent{ .key = to_key(event.key.scancode) } };
     }
     break;
     case sf::Event::MouseWheelScrolled:
@@ -88,5 +88,23 @@ std::optional<Event> Event::create_from_sf_event(const sf::Event& event)
 
     return ret;
 }
+
+Event::Event(EventType event_type) : _type(event_type), _dummy(false) {}
+
+Event::Event(EventType event_type, const ResizeEvent& resize_event) : _type(event_type), _resize_event(resize_event) {}
+
+Event::Event(EventType event_type, const KeyEvent& key_event) : _type(event_type), _key_event(key_event) {}
+
+Event::Event(EventType event_type, const MouseScrollEvent& mouse_scroll_event)
+    : _type(event_type), _mouse_scroll_event(mouse_scroll_event)
+{}
+
+Event::Event(EventType event_type, const MouseButtonEvent& mouse_button_event)
+    : _type(event_type), _mouse_button_event(mouse_button_event)
+{}
+
+Event::Event(EventType event_type, const MouseMoveEvent& mouse_move_event)
+    : _type(event_type), _mouse_move_event(mouse_move_event)
+{}
 
 } // namespace zth

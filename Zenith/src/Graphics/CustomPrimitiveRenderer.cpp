@@ -6,61 +6,61 @@
 
 namespace zth {
 
-void CustomPrimitiveRenderer::draw_point(const Vec2f& point, const Color& color)
+void CustomPrimitiveRenderer::draw_point_impl(const Vec2f& point, const Color& color)
 {
     plot_point(point, color);
-    draw();
+    draw_call();
 }
 
-void CustomPrimitiveRenderer::draw_points(std::span<const Vec2f> points, const Color& color)
+void CustomPrimitiveRenderer::draw_points_impl(std::span<const Vec2f> points, const Color& color)
 {
     plot_points(points, color);
-    draw();
+    draw_call();
 }
 
-void CustomPrimitiveRenderer::draw_line(const Vec2f& from, const Vec2f& to, const Color& color)
+void CustomPrimitiveRenderer::draw_line_impl(const Vec2f& from, const Vec2f& to, const Color& color)
 {
     plot_line(from, to, color);
-    draw();
+    draw_call();
 }
 
-void CustomPrimitiveRenderer::draw_line(const Line& line, const Color& color)
+void CustomPrimitiveRenderer::draw_line_impl(const Line& line, const Color& color)
 {
     plot_line(line, color);
-    draw();
+    draw_call();
 }
 
-void CustomPrimitiveRenderer::draw_line_strip(std::span<const Vec2f> points, const Color& color)
+void CustomPrimitiveRenderer::draw_line_strip_impl(std::span<const Vec2f> points, const Color& color)
 {
     plot_line_strip(points, color);
-    draw();
+    draw_call();
 }
 
-void CustomPrimitiveRenderer::draw_lines(std::span<const Line> lines, const Color& color)
+void CustomPrimitiveRenderer::draw_lines_impl(std::span<const Line> lines, const Color& color)
 {
     plot_lines(lines, color);
-    draw();
+    draw_call();
 }
 
-void CustomPrimitiveRenderer::draw_closed_lines(std::span<const Vec2f> points, const Color& color)
+void CustomPrimitiveRenderer::draw_closed_lines_impl(std::span<const Vec2f> points, const Color& color)
 {
     plot_closed_lines(points, color);
-    draw();
+    draw_call();
 }
 
-void CustomPrimitiveRenderer::draw_closed_lines(std::span<const Line> lines, const Color& color)
+void CustomPrimitiveRenderer::draw_closed_lines_impl(std::span<const Line> lines, const Color& color)
 {
     plot_closed_lines(lines, color);
-    draw();
+    draw_call();
 }
 
-void CustomPrimitiveRenderer::draw_rect(const Rect& rect, const Color& color)
+void CustomPrimitiveRenderer::draw_rect_impl(const Rect& rect, const Color& color)
 {
     plot_rect(rect, color);
-    draw();
+    draw_call();
 }
 
-void CustomPrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& color) const
+void CustomPrimitiveRenderer::draw_filled_rect_impl(const Rect& rect, const Color& color)
 {
     const auto render_target_size = _render_target.getSize();
     auto& image = get_tmp_image(render_target_size);
@@ -92,21 +92,21 @@ void CustomPrimitiveRenderer::draw_filled_rect(const Rect& rect, const Color& co
     _render_target.draw(sprite);
 }
 
-void CustomPrimitiveRenderer::draw_polygon(std::span<const Vec2f> points, const Color& color)
+void CustomPrimitiveRenderer::draw_convex_polygon_impl(std::span<const Vec2f> points, const Color& color)
 {
     // The main PrimitiveRenderer class checks whether the polygon is valid in the first place
-    plot_polygon(points, color);
-    draw();
+    plot_convex_polygon(points, color);
+    draw_call();
 }
 
-void CustomPrimitiveRenderer::draw_polygon(std::span<const Line> lines, const Color& color)
+void CustomPrimitiveRenderer::draw_convex_polygon_impl(std::span<const Line> lines, const Color& color)
 {
     // The main PrimitiveRenderer class checks whether the polygon is valid in the first place
-    plot_polygon(lines, color);
-    draw();
+    plot_convex_polygon(lines, color);
+    draw_call();
 }
 
-void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points, const Color& color) const
+void CustomPrimitiveRenderer::draw_filled_convex_polygon_impl(std::span<const Vec2f> points, const Color& color)
 {
     const auto render_target_size = _render_target.getSize();
     auto& image = get_tmp_image(render_target_size);
@@ -137,7 +137,7 @@ void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Vec2f> points,
     _render_target.draw(sprite);
 }
 
-void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, const Color& color) const
+void CustomPrimitiveRenderer::draw_filled_convex_polygon_impl(std::span<const Line> lines, const Color& color)
 {
     const auto render_target_size = _render_target.getSize();
     auto& image = get_tmp_image(render_target_size);
@@ -168,19 +168,19 @@ void CustomPrimitiveRenderer::draw_filled_polygon(std::span<const Line> lines, c
     _render_target.draw(sprite);
 }
 
-void CustomPrimitiveRenderer::draw_circle(const Circle& circle, const Color& color)
+void CustomPrimitiveRenderer::draw_circle_impl(const Circle& circle, const Color& color)
 {
     plot_circle(circle, color);
-    draw();
+    draw_call();
 }
 
-void CustomPrimitiveRenderer::draw_ellipse(const Ellipse& ellipse, const Color& color)
+void CustomPrimitiveRenderer::draw_ellipse_impl(const Ellipse& ellipse, const Color& color)
 {
     plot_ellipse(ellipse, color);
-    draw();
+    draw_call();
 }
 
-void CustomPrimitiveRenderer::draw_filled_circle(const Circle& circle, const Color& color) const
+void CustomPrimitiveRenderer::draw_filled_circle_impl(const Circle& circle, const Color& color)
 {
     const auto render_target_size = _render_target.getSize();
     auto& image = get_tmp_image(render_target_size);
@@ -208,7 +208,7 @@ void CustomPrimitiveRenderer::draw_filled_circle(const Circle& circle, const Col
     _render_target.draw(sprite);
 }
 
-void CustomPrimitiveRenderer::draw_filled_ellipse(const Ellipse& ellipse, const Color& color) const
+void CustomPrimitiveRenderer::draw_filled_ellipse_impl(const Ellipse& ellipse, const Color& color)
 {
     const auto render_target_size = _render_target.getSize();
     auto& image = get_tmp_image(render_target_size);
@@ -333,7 +333,7 @@ void CustomPrimitiveRenderer::plot_rect(const Rect& rect, const Color& color)
     plot_line(points.back(), points.front(), color);
 }
 
-void CustomPrimitiveRenderer::plot_polygon(std::span<const Vec2f> points, const Color& color)
+void CustomPrimitiveRenderer::plot_convex_polygon(std::span<const Vec2f> points, const Color& color)
 {
     for (const auto line : points | std::views::adjacent<2>)
     {
@@ -347,7 +347,7 @@ void CustomPrimitiveRenderer::plot_polygon(std::span<const Vec2f> points, const 
     plot_line(points.back(), points.front(), color);
 }
 
-void CustomPrimitiveRenderer::plot_polygon(std::span<const Line> lines, const Color& color)
+void CustomPrimitiveRenderer::plot_convex_polygon(std::span<const Line> lines, const Color& color)
 {
     for (const auto& line : lines)
         plot_line(line, color);
@@ -616,7 +616,7 @@ void CustomPrimitiveRenderer::flood_fill(sf::Image& image, const Vec2u& seed, co
     }
 }
 
-sf::Image& CustomPrimitiveRenderer::get_tmp_image(sf::Vector2u target_size)
+sf::Image& CustomPrimitiveRenderer::get_tmp_image(const sf::Vector2u& target_size)
 {
     static std::vector<Color> buff;
     static sf::Image image;
@@ -631,7 +631,7 @@ sf::Image& CustomPrimitiveRenderer::get_tmp_image(sf::Vector2u target_size)
     return image;
 }
 
-void CustomPrimitiveRenderer::draw()
+void CustomPrimitiveRenderer::draw_call()
 {
     _vertex_array.setPrimitiveType(sf::Points); // we're only ever drawing points in custom renderer
     _render_target.draw(_vertex_array);
