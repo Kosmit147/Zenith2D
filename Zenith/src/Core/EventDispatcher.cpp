@@ -1,5 +1,7 @@
 #include "Zenith/Core/EventDispatcher.hpp"
 
+#include "Zenith/Core/EventListener.hpp"
+
 namespace zth {
 
 void EventDispatcher::register_listener(EventListener& listener)

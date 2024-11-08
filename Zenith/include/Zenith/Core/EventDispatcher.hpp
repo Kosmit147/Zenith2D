@@ -3,10 +3,11 @@
 #include <map>
 #include <vector>
 
-#include "Zenith/Core/EventListener.hpp"
 #include "Zenith/Platform/Event.hpp"
 
 namespace zth {
+
+class EventListener;
 
 class EventDispatcher
 {

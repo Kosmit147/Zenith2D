@@ -35,11 +35,19 @@ constexpr std::array<Vec2f, 4> Rect::points() const
     };
 }
 
-inline IntRect::operator sf::Rect<int>() const
+inline IntRect::operator sf::Rect<i32>() const
 {
-    return sf::IntRect{
+    return sf::Rect<i32>{
         static_cast<sf::Vector2i>(position),
         static_cast<sf::Vector2i>(size),
+    };
+}
+
+inline UIntRect::operator sf::Rect<u32>() const
+{
+    return sf::Rect<u32>{
+        static_cast<sf::Vector2u>(position),
+        static_cast<sf::Vector2u>(size),
     };
 }
 

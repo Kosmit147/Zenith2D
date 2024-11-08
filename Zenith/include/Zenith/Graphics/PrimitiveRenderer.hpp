@@ -11,7 +11,7 @@
 
 namespace zth {
 
-// PrimitiveRenderer should check whether the data provided to it is correct
+// PrimitiveRenderer should check whether the parameters passed to it to draw are correct
 class PrimitiveRenderer
 {
 public:

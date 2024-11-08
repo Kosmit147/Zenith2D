@@ -5,8 +5,8 @@
 
 namespace zth {
 
-Sprite::Sprite(const Texture& texture, const IntRect& tex_rect)
-    : _sprite(texture._texture, static_cast<sf::IntRect>(tex_rect))
+Sprite::Sprite(const Texture& texture, const IntRect& texture_rect)
+    : _sprite(texture._texture, static_cast<sf::IntRect>(texture_rect))
 {}
 
 void Sprite::translate(const Vec2f& translation)

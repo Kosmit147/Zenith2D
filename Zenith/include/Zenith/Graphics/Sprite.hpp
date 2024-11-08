@@ -18,7 +18,7 @@ class Sprite : public Drawable, public Transformable2D
 {
 public:
     explicit Sprite() = default;
-    explicit Sprite(const Texture& texture, const IntRect& tex_rect = { { 0, 0 }, { 0, 0 } });
+    explicit Sprite(const Texture& texture, const IntRect& texture_rect = { { 0, 0 }, { 0, 0 } });
     ZTH_DEFAULT_COPY_DEFAULT_MOVE(Sprite)
 
     ~Sprite() override = default;

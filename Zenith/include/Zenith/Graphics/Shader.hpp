@@ -24,7 +24,7 @@ enum class ShaderType
     Fragment,
 };
 
-class Shader
+class Shader final
 {
 public:
     explicit Shader() = default;
@@ -37,6 +37,7 @@ public:
     bool load_from_file(std::string_view vertex_shader_path, std::string_view fragment_shader_path);
 
     void bind() const { sf::Shader::bind(&_shader); }
+    static void unbind() { sf::Shader::bind(nullptr); }
 
     template<typename T> void set_unif(const std::string& name, T val);
 

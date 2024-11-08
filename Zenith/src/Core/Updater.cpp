@@ -1,5 +1,7 @@
 #include "Zenith/Core/Updater.hpp"
 
+#include "Zenith/Core/Updatable.hpp"
+
 namespace zth {
 
 void Updater::register_updatable(Updatable& updatable)

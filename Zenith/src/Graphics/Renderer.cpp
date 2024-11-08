@@ -5,14 +5,14 @@
 
 namespace zth {
 
-void Renderer::draw_sprite(const Sprite& sprite) const
-{
-    _render_target.draw(sprite._sprite);
-}
-
 void Renderer::draw(const Drawable& drawable)
 {
     drawable.draw(*this);
+}
+
+void Renderer::draw_sprite(const Sprite& sprite) const
+{
+    _render_target.draw(sprite._sprite);
 }
 
 void Renderer::set_primitive_renderer_type(PrimitiveRendererType primitive_renderer_type)

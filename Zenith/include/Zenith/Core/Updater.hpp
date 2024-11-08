@@ -2,9 +2,9 @@
 
 #include <vector>
 
-#include "Zenith/Core/Updatable.hpp"
-
 namespace zth {
+
+class Updatable;
 
 class Updater
 {

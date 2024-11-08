@@ -30,7 +30,15 @@ struct IntRect
     Vec2i position;
     Vec2i size;
 
-    operator sf::IntRect() const;
+    explicit operator sf::Rect<i32>() const;
+};
+
+struct UIntRect
+{
+    Vec2u position;
+    Vec2u size;
+
+    explicit operator sf::Rect<u32>() const;
 };
 
 struct Ellipse

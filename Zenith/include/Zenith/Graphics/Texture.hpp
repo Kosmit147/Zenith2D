@@ -15,7 +15,7 @@ struct TextureSize
     u32 height;
 };
 
-class Texture
+class Texture final
 {
 public:
     explicit Texture() = default;
@@ -35,6 +35,9 @@ public:
     auto width() const { return _texture.getSize().x; }
     auto height() const { return _texture.getSize().y; }
     auto size() const { return TextureSize{ width(), height() }; }
+
+    void bind() const { sf::Texture::bind(&_texture); }
+    static void unbind() { sf::Texture::bind(nullptr); }
 
     unsigned int get_native_handle() const { return _texture.getNativeHandle(); }
 
