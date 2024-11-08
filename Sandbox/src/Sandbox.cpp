@@ -14,7 +14,7 @@ static const zth::ApplicationSpec spec = {
 };
 
 Sandbox::Sandbox()
-    : Application(spec), _player_texture(zth::Texture::from_file("res/emoji.png").value_or(zth::Texture{})),
+    : Application(spec), _player_texture(zth::Texture::from_file("assets/emoji.png").value_or(zth::Texture{})),
       _player(_player_texture)
 {
     zth::Logger::print_notification("On init.");
