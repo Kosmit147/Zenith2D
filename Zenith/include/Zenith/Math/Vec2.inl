@@ -39,6 +39,38 @@ template<typename T> constexpr void Vec2<T>::reflect(const Vec2& normal)
     *this = this->reflected(normal);
 }
 
+template<typename T> constexpr Vec2<T> Vec2<T>::translated_point(const Vec2& translation) const
+{
+    return *this + translation;
+}
+
+template<typename T> constexpr void Vec2<T>::translate_point(const Vec2& translation)
+{
+    *this = this->translated_point(translation);
+}
+
+template<typename T> constexpr Vec2<T> Vec2<T>::rotated_point(const float& angle, const Vec2& pivot_point) const
+{
+    return { pivot_point.x + (this->x - pivot_point.x) * std::cos(angle) - (this->y - pivot_point.y) * std::sin(angle),
+             pivot_point.y + (this->x - pivot_point.x) * std::sin(angle)
+                 + (this->y - pivot_point.y) * std::cos(angle) };
+}
+
+template<typename T> constexpr void Vec2<T>::rotate_point(const float& angle, const Vec2& pivot_point)
+{
+    *this = this->rotated_point(angle, pivot_point);
+}
+
+template<typename T> constexpr Vec2<T> Vec2<T>::scaled_point(const float& factor, const Vec2& scaling_point) const
+{
+    return { this->x * factor + (1 - factor) * scaling_point.x, this->y * factor + (1 - factor) * scaling_point.y };
+}
+
+template<typename T> constexpr void Vec2<T>::scale_point(const float& factor, const Vec2& scaling_point)
+{
+    *this = this->scaled_point(factor, scaling_point);
+}
+
 template<typename T> constexpr Vec2<T> Vec2<T>::operator+(const Vec2& other) const
 {
     return { x + other.x, y + other.y };

@@ -15,20 +15,17 @@ void RectangleShape::draw(Renderer& renderer) const
 
 void RectangleShape::translate(const Vec2f& translation)
 {
-    (void)translation;
-    // TODO
+    rect.translate_rect(translation);
 }
 
-void RectangleShape::rotate(float angle)
+void RectangleShape::rotate(const float& angle, const Vec2f& pivot_point)
 {
-    (void)angle;
-    // TODO
+    rect.rotate_rect(angle, pivot_point);
 }
 
-void RectangleShape::scale(const Vec2f& factor)
+void RectangleShape::scale(const float& factor, const Vec2f& scaling_point)
 {
-    (void)factor;
-    // TODO
+    rect.scale_rect(factor, scaling_point);
 }
 
 } // namespace zth

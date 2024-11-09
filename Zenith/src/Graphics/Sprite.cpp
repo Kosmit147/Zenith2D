@@ -15,15 +15,17 @@ void Sprite::translate(const Vec2f& translation)
     // TODO
 }
 
-void Sprite::rotate(float angle)
+void Sprite::rotate(const float& angle, const Vec2f& pivot_point)
 {
     (void)angle;
+    (void)pivot_point;
     // TODO
 }
 
-void Sprite::scale(const Vec2f& factor)
+void Sprite::scale(const float& factor, const Vec2f& scaling_point)
 {
     (void)factor;
+    (void)scaling_point;
     // TODO
 }
 
