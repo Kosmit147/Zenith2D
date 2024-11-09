@@ -1,6 +1,6 @@
 #pragma once
 
-#include <unordered_map>
+#include <map>
 #include <vector>
 
 #include "Zenith/Platform/Event.hpp"
@@ -19,7 +19,7 @@ public:
     void dispatch(const Event& event);
 
 private:
-    std::unordered_map<EventType, std::vector<EventListener*>> _listeners_map;
+    std::map<EventType, std::vector<EventListener*>> _listeners_map;
 };
 
 } // namespace zth
