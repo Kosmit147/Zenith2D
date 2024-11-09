@@ -1,6 +1,6 @@
 #include "Zenith/Graphics/SfmlPrimitiveRenderer.hpp"
 
-#include "Zenith/Graphics/EllipseShape.hpp"
+#include "Zenith/Graphics/SfmlEllipseShape.hpp"
 
 namespace zth {
 
@@ -116,7 +116,7 @@ void SfmlPrimitiveRenderer::draw_circle_impl(const Circle& circle, const Color& 
 void SfmlPrimitiveRenderer::draw_ellipse_impl(const Ellipse& ellipse, const Color& color)
 {
     // TODO: handle this on our own instead of using SFML shapes
-    EllipseShape sf_ellipse(ellipse);
+    SfmlEllipseShape sf_ellipse(ellipse);
     sf_ellipse.setOutlineColor(static_cast<sf::Color>(color));
     sf_ellipse.setOutlineThickness(1);
     sf_ellipse.setFillColor(static_cast<sf::Color>(Color::transparent));
@@ -140,7 +140,7 @@ void SfmlPrimitiveRenderer::draw_filled_circle_impl(const Circle& circle, const 
 void SfmlPrimitiveRenderer::draw_filled_ellipse_impl(const Ellipse& ellipse, const Color& color)
 {
     // TODO: handle this on our own instead of using SFML shapes
-    EllipseShape sf_ellipse(ellipse);
+    SfmlEllipseShape sf_ellipse(ellipse);
     sf_ellipse.setOutlineColor(static_cast<sf::Color>(color));
     sf_ellipse.setOutlineThickness(1);
     sf_ellipse.setFillColor(static_cast<sf::Color>(color));

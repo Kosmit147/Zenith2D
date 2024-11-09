@@ -1,5 +1,6 @@
 #include "Testbed.hpp"
 
+#include <Zenith/Core/Engine.hpp>
 #include <Zenith/Time/Timer.hpp>
 
 #include <cassert>
@@ -168,7 +169,7 @@ void Testbed::primitive_renderer_test() const
 
     static zth::Timer renderer_type_timer;
 
-    auto renderer_type = _window.renderer.get_primitive_renderer_type();
+    auto renderer_type = zth::engine->window.renderer.get_primitive_renderer_type();
 
     if (renderer_type_timer.elapsed_s() > 2.0)
     {
@@ -176,11 +177,11 @@ void Testbed::primitive_renderer_test() const
                             ? zth::PrimitiveRendererType::CustomPrimitiveRenderer
                             : zth::PrimitiveRendererType::SfmlPrimitiveRenderer;
 
-        _window.renderer.set_primitive_renderer_type(renderer_type);
+        zth::engine->window.renderer.set_primitive_renderer_type(renderer_type);
         renderer_type_timer.reset();
     }
 
-    auto& renderer = _window.renderer.primitive_renderer();
+    auto& renderer = zth::engine->window.renderer.primitive_renderer();
 
     switch (renderer_type)
     {

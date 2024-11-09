@@ -17,28 +17,30 @@ Sandbox::Sandbox()
     : Application(spec), _player_texture(zth::Texture::from_file("assets/emoji.png").value_or(zth::Texture{})),
       _player(_player_texture)
 {
-    zth::Logger::print_notification("On init.");
-    _logger.log_error("Logger Test: {}, {}, {}.", 1, 2, 3);
-    _window.set_clear_color(zth::Color::black);
-    _event_dispatcher.register_listener(zth::EventType::KeyPressed, _player);
-    _updater.register_updatable(_player);
+    zth::logger->log_notification("On init.");
+
+    zth::engine->window.clear_color = zth::Color::black;
+
+    zth::engine->register_listener(zth::EventType::KeyPressed, _player);
+    zth::engine->register_updatable(_player);
 }
 
 Sandbox::~Sandbox()
 {
-    zth::Logger::print_notification("On shutdown.");
-    _event_dispatcher.deregister_listener(_player);
-    _updater.deregister_updatable(_player);
+    zth::logger->log_notification("On shutdown.");
+
+    zth::engine->deregister_listener(_player);
+    zth::engine->deregister_updatable(_player);
 }
 
-void Sandbox::on_update([[maybe_unused]] const double delta_time)
+void Sandbox::on_update()
 {
-    zth::Logger::print_notification("On Update with delta time: {} seconds.", delta_time);
-    zth::Logger::print_notification("FPS: {}", get_fps());
-    _window.renderer.draw(_player);
+    zth::Logger::print_notification("On Update with delta time: {} seconds.", zth::engine->delta_time());
+    zth::Logger::print_notification("FPS: {}", zth::engine->fps());
+    zth::engine->window.renderer.draw(_player);
 }
 
-void Sandbox::on_event(const zth::Event& event, [[maybe_unused]] const double delta_time)
+void Sandbox::on_event(const zth::Event& event)
 {
     switch (event.type())
     {

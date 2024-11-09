@@ -2,49 +2,114 @@
 
 #include <SFML/System/Clock.hpp>
 
+#include "Zenith/Core/Engine.hpp"
+#include "Zenith/Logging/Logger.hpp"
+
 namespace zth {
 
-Application::Application(const ApplicationSpec& spec) : _logger(spec.logger_spec), _internal_window(spec.window_spec) {}
+Application::Application(const ApplicationSpec& spec)
+{
+    // logger should be initialized first
+    logger.init(spec.logger_spec);
+    engine.init(spec.window_spec);
+}
+
+Application::~Application()
+{
+    engine.terminate();
+    logger.terminate();
+}
 
 void Application::run()
 {
     sf::Clock delta_t_clock;
 
-    while (_internal_window.is_open())
+    while (engine->window.is_open())
     {
-        const auto delta_time = delta_t_clock.restart().asMilliseconds() / 1000.0;
-        _internal_window.clear();
+        engine->_delta_time = delta_t_clock.restart().asMilliseconds() / 1000.0;
+        engine->window.clear();
 
-        while (auto event = _internal_window.poll_event())
+        while (auto event = engine->window.poll_event())
         {
             const auto& ev = event.value();
 
             if (ev.type() == EventType::WindowClosed)
             {
-                handle_event(ev, delta_time);
-                _internal_window.close();
+                handle_event(ev);
+                engine->window.close();
                 return;
             }
 
-            handle_event(ev, delta_time);
+            handle_event(ev);
         }
 
-        handle_update(delta_time);
-        _internal_window.display();
-        _frame_counter.update();
+        handle_update();
+        engine->window.display();
+        engine->_frame_counter.update();
     }
 }
 
-void Application::handle_update(double delta_time)
+void Application::handle_update()
 {
-    on_update(delta_time);
-    _updater.update(delta_time);
+    on_update();
+    engine->_updater.update();
 }
 
-void Application::handle_event(const Event& event, double delta_time)
+void Application::handle_event(const Event& event)
 {
-    on_event(event, delta_time);
-    _event_dispatcher.dispatch(event, delta_time);
+    if (event.is_input_event())
+        handle_input_event(event);
+
+    on_event(event);
+    engine->_event_dispatcher.dispatch(event);
+}
+
+void Application::handle_input_event(const Event& event)
+{
+    switch (event.type())
+    {
+    case EventType::KeyPressed:
+    {
+        const auto& [key] = event.key_event();
+        engine->input.set_key_pressed(key, true);
+    }
+    break;
+    case EventType::KeyReleased:
+    {
+        const auto& [key] = event.key_event();
+        engine->input.set_key_pressed(key, false);
+    }
+    break;
+    case EventType::MouseButtonPressed:
+    {
+        const auto& [button, cursor_pos] = event.mouse_button_event();
+        engine->input.set_mouse_button_pressed(button, true);
+    }
+    break;
+    case EventType::MouseButtonReleased:
+    {
+        const auto& [button, cursor_pos] = event.mouse_button_event();
+        engine->input.set_mouse_button_pressed(button, false);
+    }
+    break;
+    case EventType::MouseMoved:
+    {
+        const auto& [new_cursor_pos] = event.mouse_move_event();
+        engine->input.set_cursor_pos(new_cursor_pos);
+    }
+    break;
+    case EventType::GainedFocus:
+    case EventType::LostFocus:
+    case EventType::MouseEntered:
+    case EventType::MouseLeft:
+    case EventType::MouseWheelScrolled:
+    case EventType::WindowClosed:
+    case EventType::WindowResized:
+    {
+        assert(false);
+        std::unreachable();
+    }
+    }
 }
 
 } // namespace zth

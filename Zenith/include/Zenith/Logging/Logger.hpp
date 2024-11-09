@@ -5,15 +5,9 @@
 #include <string_view>
 
 #include "Zenith/Utility/EnumFlags.hpp"
+#include "Zenith/Utility/GlobalAccessPtr.hpp"
 
 namespace zth {
-
-namespace ansi_colors {
-inline auto red = "\x1b[31m";
-inline auto yellow = "\x1b[33m";
-inline auto white = "\x1b[37m";
-inline auto reset = "\x1b[0m";
-} // namespace ansi_colors
 
 enum class LogSeverity
 {
@@ -66,12 +60,16 @@ public:
     template<typename... Args> static void print_warning(std::format_string<Args...>&& format, Args&&... args);
     template<typename... Args> static void print_error(std::format_string<Args...>&& format, Args&&... args);
 
+    friend class GlobalAccessPtr<Logger>;
+
 private:
     void log(LogSeverity severity, std::string_view message) const;
 
     template<typename... Args>
     void log(LogSeverity severity, std::format_string<Args...>&& format, Args&&... args) const;
 };
+
+inline GlobalAccessPtr<Logger> logger;
 
 } // namespace zth
 

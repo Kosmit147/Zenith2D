@@ -11,7 +11,7 @@ public:
     explicit Player() = default;
     explicit Player(const zth::Texture& texture);
 
-    void on_update(double delta_time) override;
-    void on_event(const zth::Event& event, double delta_time) override;
-    void on_key_pressed(const zth::KeyEvent& event, double delta_time);
+    void on_update() override;
+    void on_event(const zth::Event& event) override;
+    void on_key_pressed(const zth::KeyEvent& event);
 };

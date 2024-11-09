@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EnumFlags.hpp"
+#include "GlobalAccessPtr.hpp"
 
 #define ZTH_NO_COPY(type)                                                                                              \
     type(const type&) = delete;                                                                                        \
