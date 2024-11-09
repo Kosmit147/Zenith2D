@@ -6,6 +6,7 @@
 #include <string_view>
 
 #include "Zenith/Core/Typedefs.hpp"
+#include "Zenith/Utility/Utility.hpp"
 
 namespace zth {
 
@@ -15,19 +16,17 @@ struct TextureSize
     u32 height;
 };
 
-class Texture final
+class Texture
 {
 public:
     explicit Texture() = default;
     explicit Texture(TextureSize size);
     static std::optional<Texture> from_file(std::string_view path);
+    ZTH_DEFAULT_COPY(Texture)
 
     ~Texture() = default;
 
-    Texture(const Texture&) = default;
     Texture(Texture&& other) noexcept;
-
-    Texture& operator=(const Texture&) = default;
     Texture& operator=(Texture&& other) noexcept;
 
     bool load_from_file(std::string_view path);

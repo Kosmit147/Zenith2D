@@ -17,7 +17,7 @@ namespace zth {
 struct WindowSpec
 {
     std::string title;
-    Resolution resolution;
+    Resolution resolution = { 800, 600 };
     bool fullscreen = false;
     u32 frame_rate_limit = 60;
 };
@@ -40,31 +40,12 @@ public:
     void clear() { _sf_window.clear(static_cast<sf::Color>(clear_color)); }
     void clear(const Color& color) { _sf_window.clear(static_cast<sf::Color>(color)); }
 
-    std::optional<Event> poll_event();
+    friend class Application;
 
+private:
+    std::optional<Event> poll_event();
     void display() { _sf_window.display(); }
     void close() { _sf_window.close(); }
-};
-
-// user of the engine interacts with the window through this class
-class WindowApi
-{
-private:
-    Window& _window;
-
-public:
-    Renderer& renderer{ _window.renderer };
-
-public:
-    explicit WindowApi(Window& window) : _window(window) {}
-    ~WindowApi() = default;
-    ZTH_NO_COPY_NO_MOVE(WindowApi)
-
-    void set_clear_color(const Color& color) const { _window.clear_color = color; }
-    void clear() const { _window.clear(); }
-    void clear(const Color& color) const { _window.clear(color); }
-
-    bool is_open() const { return _window.is_open(); }
 };
 
 } // namespace zth

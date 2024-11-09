@@ -11,7 +11,7 @@ class Updater
 public:
     void register_updatable(Updatable& updatable);
     void deregister_updatable(const Updatable& updatable);
-    void update(double delta_time) const;
+    void update() const;
 
 private:
     std::vector<Updatable*> _updatables;

@@ -4,10 +4,8 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/System/Vector3.hpp>
 
-#include <cassert>
 #include <string>
 #include <string_view>
-#include <utility>
 
 #include "Zenith/Core/Typedefs.hpp"
 #include "Zenith/Graphics/Texture.hpp"
@@ -24,7 +22,7 @@ enum class ShaderType
     Fragment,
 };
 
-class Shader final
+class Shader
 {
 public:
     explicit Shader() = default;
@@ -87,38 +85,8 @@ template<> inline void Shader::set_unif(const std::string& name, const Texture& 
     _shader.setUniform(name, val._texture);
 }
 
-constexpr auto to_shader_type(sf::Shader::Type shader_type)
-{
-    switch (shader_type)
-    {
-    case sf::Shader::Vertex:
-        return ShaderType::Vertex;
-    case sf::Shader::Geometry:
-        return ShaderType::Geometry;
-    case sf::Shader::Fragment:
-        return ShaderType::Fragment;
-    }
-
-    assert(false);
-    std::unreachable();
-}
-
-constexpr auto to_sf_shader_type(ShaderType shader_type)
-{
-    switch (shader_type)
-    {
-    case ShaderType::Vertex:
-        return sf::Shader::Vertex;
-    case ShaderType::Geometry:
-        return sf::Shader::Geometry;
-    case ShaderType::Fragment:
-        return sf::Shader::Fragment;
-    }
-
-    assert(false);
-    std::unreachable();
-}
-
+ShaderType to_shader_type(sf::Shader::Type shader_type);
+sf::Shader::Type to_sf_shader_type(ShaderType shader_type);
 const char* to_string(ShaderType shader_type);
 
 } // namespace zth

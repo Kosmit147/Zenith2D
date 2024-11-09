@@ -6,22 +6,25 @@ option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 add_library(
     Zenith STATIC
     "src/Core/Application.cpp"
+    "src/Core/Engine.cpp"
     "src/Core/EventDispatcher.cpp"
     "src/Core/Updater.cpp"
     "src/Filesystem/FileIo.cpp"
+    "src/Graphics/Shapes/RectangleShape.cpp"
     "src/Graphics/CustomPrimitiveRenderer.cpp"
-    "src/Graphics/EllipseShape.cpp"
     "src/Graphics/PrimitiveRenderer.cpp"
     "src/Graphics/Renderer.cpp"
+    "src/Graphics/SfmlEllipseShape.cpp"
     "src/Graphics/SfmlPrimitiveRenderer.cpp"
     "src/Graphics/Shader.cpp"
     "src/Graphics/Sprite.cpp"
-    "src/Graphics/Shapes/RectangleShape.cpp"
     "src/Graphics/Texture.cpp"
     "src/Logging/Logger.cpp"
     "src/Math/Geometry.cpp"
+    "src/Platform/Input/Input.cpp"
+    "src/Platform/Input/Keyboard.cpp"
+    "src/Platform/Input/Mouse.cpp"
     "src/Platform/Event.cpp"
-    "src/Platform/Input.cpp"
     "src/Platform/Window.cpp"
 )
 target_link_libraries(Zenith PUBLIC sfml-graphics)
