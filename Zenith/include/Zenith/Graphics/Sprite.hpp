@@ -24,8 +24,8 @@ public:
     ~Sprite() override = default;
 
     void translate(const Vec2f& translation) override;
-    void rotate(const float& angle, const Vec2f& pivot_point) override;
-    void scale(const float& factor, const Vec2f& scaling_point) override;
+    void rotate(const float angle, const Vec2f& pivot_point) override;
+    void scale(const float factor, const Vec2f& scaling_point) override;
 
     void draw(Renderer& renderer) const override;
 
