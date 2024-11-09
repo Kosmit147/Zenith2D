@@ -115,6 +115,22 @@ static void draw_primitives(zth::PrimitiveRenderer& renderer)
     };
 
     renderer.draw_filled_ellipse(filled_ellipse, zth::Color::blue);
+
+    static constexpr zth::Triangle triangle = {
+        zth::Vec2f{ 100.0f, 175.0f },
+        zth::Vec2f{ 10.0f, 230.0f },
+        zth::Vec2f{ 190.0f, 230.0f },
+    };
+
+    renderer.draw_triangle(triangle, zth::Color::green);
+
+    static constexpr zth::Triangle filled_triangle = {
+        zth::Vec2f{ 290.0f, 175.0f },
+        zth::Vec2f{ 200.0f, 230.0f },
+        zth::Vec2f{ 380.0f, 230.0f },
+    };
+
+    renderer.draw_filled_triangle(filled_triangle, zth::Color::green);
 }
 
 static void sfml_primitive_renderer_test(zth::PrimitiveRenderer& renderer)

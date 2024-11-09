@@ -54,6 +54,43 @@ void CustomPrimitiveRenderer::draw_closed_lines_impl(std::span<const Line> lines
     draw_call();
 }
 
+void CustomPrimitiveRenderer::draw_triangle_impl(const Triangle& triangle, const Color& color)
+{
+    plot_triangle(triangle, color);
+    draw_call();
+}
+
+void CustomPrimitiveRenderer::draw_filled_triangle_impl(const Triangle& triangle, const Color& color)
+{
+    const auto render_target_size = _render_target.getSize();
+    auto& image = get_tmp_image(render_target_size);
+
+    draw_triangle_on_image(image, triangle, color);
+
+    const auto& points = triangle.points;
+    auto points_sum = std::reduce(points.begin(), points.end(), Vec2f{ 0.0f, 0.0f });
+    auto points_average = points_sum / static_cast<float>(points.size());
+    auto seed = static_cast<Vec2u>(points_average);
+
+    switch (fill_algorithm)
+    {
+    case FillAlgorithm::BoundaryFill:
+        boundary_fill(image, seed, color, color);
+        break;
+    case FillAlgorithm::FloodFill:
+        flood_fill(image, seed, color, Color::transparent);
+        break;
+    }
+
+    sf::Texture texture;
+
+    if (!texture.loadFromImage(image))
+        return;
+
+    sf::Sprite sprite(texture);
+    _render_target.draw(sprite);
+}
+
 void CustomPrimitiveRenderer::draw_rect_impl(const Rect& rect, const Color& color)
 {
     plot_rect(rect, color);
@@ -114,7 +151,7 @@ void CustomPrimitiveRenderer::draw_filled_convex_polygon_impl(std::span<const Ve
     draw_line_strip_on_image(image, points, color);
     draw_line_on_image(image, points.back(), points.front(), color);
 
-    auto points_sum = std::reduce(points.begin(), points.end(), Vec2f{ 0, 0 });
+    auto points_sum = std::reduce(points.begin(), points.end(), Vec2f{ 0.0f, 0.0f });
     auto points_average = points_sum / static_cast<float>(points.size());
     auto seed = static_cast<Vec2u>(points_average);
 
@@ -326,6 +363,12 @@ void CustomPrimitiveRenderer::plot_closed_lines(std::span<const Line> lines, con
     plot_line(lines.back().to, lines.front().from, color);
 }
 
+void CustomPrimitiveRenderer::plot_triangle(const Triangle& triangle, const Color& color)
+{
+    plot_line_strip(triangle.points, color);
+    plot_line(triangle.points.back(), triangle.points.front(), color);
+}
+
 void CustomPrimitiveRenderer::plot_rect(const Rect& rect, const Color& color)
 {
     auto points = rect.points();
@@ -471,6 +514,12 @@ void CustomPrimitiveRenderer::draw_lines_on_image(sf::Image& image, std::span<co
 {
     for (const auto& line : lines)
         draw_line_on_image(image, line, color);
+}
+
+void CustomPrimitiveRenderer::draw_triangle_on_image(sf::Image& image, const Triangle& triangle, const Color& color)
+{
+    draw_line_strip_on_image(image, triangle.points, color);
+    draw_line_on_image(image, triangle.points.back(), triangle.points.front(), color);
 }
 
 void CustomPrimitiveRenderer::draw_rect_on_image(sf::Image& image, const Rect& rect, const Color& color)

@@ -59,6 +59,16 @@ void PrimitiveRenderer::draw_closed_lines(std::span<const Line> lines, const Col
     draw_closed_lines_impl(lines, color);
 }
 
+void PrimitiveRenderer::draw_triangle(const Triangle& triangle, const Color& color)
+{
+    draw_triangle_impl(triangle, color);
+}
+
+void PrimitiveRenderer::draw_filled_triangle(const Triangle& triangle, const Color& color)
+{
+    draw_filled_triangle_impl(triangle, color);
+}
+
 void PrimitiveRenderer::draw_rect(const Rect& rect, const Color& color)
 {
     draw_rect_impl(rect, color);
