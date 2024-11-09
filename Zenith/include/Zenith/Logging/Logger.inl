@@ -6,6 +6,13 @@
 
 namespace zth {
 
+namespace ansi_colors {
+inline auto red = "\x1b[31m";
+inline auto yellow = "\x1b[33m";
+inline auto white = "\x1b[37m";
+inline auto reset = "\x1b[0m";
+} // namespace ansi_colors
+
 inline void Logger::log_notification(std::string_view message) const
 {
     log(LogSeverity::Notification, message);

@@ -5,23 +5,19 @@
 #include <cstddef>
 
 #include "Zenith/Math/Geometry.hpp"
+#include "Zenith/Utility/Utility.hpp"
 
 namespace zth {
 
 // TODO: delete this class once we figure out how to deal with drawing shapes on our own
-class EllipseShape : public sf::Shape
+class SfmlEllipseShape : public sf::Shape
 {
 public:
-    explicit EllipseShape(const sf::Vector2f& radius = sf::Vector2f(0.0f, 0.0f));
-    explicit EllipseShape(const Ellipse& ellipse);
+    explicit SfmlEllipseShape(const sf::Vector2f& radius = sf::Vector2f(0.0f, 0.0f));
+    explicit SfmlEllipseShape(const Ellipse& ellipse);
+    ZTH_DEFAULT_COPY_DEFAULT_MOVE(SfmlEllipseShape)
 
-    EllipseShape(const EllipseShape&) = default;
-    EllipseShape(EllipseShape&&) = default;
-
-    ~EllipseShape() override = default;
-
-    EllipseShape& operator=(const EllipseShape&) = default;
-    EllipseShape& operator=(EllipseShape&&) = default;
+    ~SfmlEllipseShape() override = default;
 
     void set_radius(const sf::Vector2f& radius);
 

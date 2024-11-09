@@ -2,25 +2,17 @@
 
 #include <SFML/Window/Keyboard.hpp>
 
+#include <array>
+
 #include "Zenith/Core/Typedefs.hpp"
 
 namespace zth {
 
-struct CursorPos
-{
-    i32 x;
-    i32 y;
-};
-
-enum class MouseButton : i8
-{
-    Left,
-    Right,
-};
-
 enum class Key : i16
 {
-    // Make sure the list is consistent with key_names array
+    // keep this list consistent with the array below
+
+    // copied from SFML scancodes
     Unknown = -1,       // Represents any scancode not present in this enum
     A = 0,              // Keyboard a and A key
     B,                  // Keyboard b and B key
@@ -170,12 +162,157 @@ enum class Key : i16
     LaunchMediaSelect,  // Keyboard Launch Media Select key
 };
 
-constexpr auto to_key(sf::Keyboard::Scancode code)
-{
-    return static_cast<Key>(code);
-}
+inline constexpr std::array key_enumerations = {
+    Key::Unknown,
+    Key::A,
+    Key::B,
+    Key::C,
+    Key::D,
+    Key::E,
+    Key::F,
+    Key::G,
+    Key::H,
+    Key::I,
+    Key::J,
+    Key::K,
+    Key::L,
+    Key::M,
+    Key::N,
+    Key::O,
+    Key::P,
+    Key::Q,
+    Key::R,
+    Key::S,
+    Key::T,
+    Key::U,
+    Key::V,
+    Key::W,
+    Key::X,
+    Key::Y,
+    Key::Z,
+    Key::Num1,
+    Key::Num2,
+    Key::Num3,
+    Key::Num4,
+    Key::Num5,
+    Key::Num6,
+    Key::Num7,
+    Key::Num8,
+    Key::Num9,
+    Key::Num0,
+    Key::Enter,
+    Key::Escape,
+    Key::Backspace,
+    Key::Tab,
+    Key::Space,
+    Key::Hyphen,
+    Key::Equal,
+    Key::LBracket,
+    Key::RBracket,
+    Key::Backslash,
+    Key::Semicolon,
+    Key::Apostrophe,
+    Key::Grave,
+    Key::Comma,
+    Key::Period,
+    Key::Slash,
+    Key::F1,
+    Key::F2,
+    Key::F3,
+    Key::F4,
+    Key::F5,
+    Key::F6,
+    Key::F7,
+    Key::F8,
+    Key::F9,
+    Key::F10,
+    Key::F11,
+    Key::F12,
+    Key::F13,
+    Key::F14,
+    Key::F15,
+    Key::F16,
+    Key::F17,
+    Key::F18,
+    Key::F19,
+    Key::F20,
+    Key::F21,
+    Key::F22,
+    Key::F23,
+    Key::F24,
+    Key::CapsLock,
+    Key::PrintScreen,
+    Key::ScrollLock,
+    Key::Pause,
+    Key::Insert,
+    Key::Home,
+    Key::PageUp,
+    Key::Delete,
+    Key::End,
+    Key::PageDown,
+    Key::Right,
+    Key::Left,
+    Key::Down,
+    Key::Up,
+    Key::NumLock,
+    Key::NumpadDivide,
+    Key::NumpadMultiply,
+    Key::NumpadMinus,
+    Key::NumpadPlus,
+    Key::NumpadEqual,
+    Key::NumpadEnter,
+    Key::NumpadDecimal,
+    Key::Numpad1,
+    Key::Numpad2,
+    Key::Numpad3,
+    Key::Numpad4,
+    Key::Numpad5,
+    Key::Numpad6,
+    Key::Numpad7,
+    Key::Numpad8,
+    Key::Numpad9,
+    Key::Numpad0,
+    Key::NonUsBackslash,
+    Key::Application,
+    Key::Execute,
+    Key::ModeChange,
+    Key::Help,
+    Key::Menu,
+    Key::Select,
+    Key::Redo,
+    Key::Undo,
+    Key::Cut,
+    Key::Copy,
+    Key::Paste,
+    Key::VolumeMute,
+    Key::VolumeUp,
+    Key::VolumeDown,
+    Key::MediaPlayPause,
+    Key::MediaStop,
+    Key::MediaNextTrack,
+    Key::MediaPreviousTrack,
+    Key::LControl,
+    Key::LShift,
+    Key::LAlt,
+    Key::LSystem,
+    Key::RControl,
+    Key::RShift,
+    Key::RAlt,
+    Key::RSystem,
+    Key::Back,
+    Key::Forward,
+    Key::Refresh,
+    Key::Stop,
+    Key::Search,
+    Key::Favorites,
+    Key::HomePage,
+    Key::LaunchApplication1,
+    Key::LaunchApplication2,
+    Key::LaunchMail,
+    Key::LaunchMediaSelect,
+};
 
+Key to_key(sf::Keyboard::Scancode code);
 const char* to_string(Key key);
-const char* to_string(MouseButton button);
 
 } // namespace zth

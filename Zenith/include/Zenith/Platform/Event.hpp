@@ -6,7 +6,7 @@
 #include <cassert>
 #include <optional>
 
-#include "Zenith/Platform/Input.hpp"
+#include "Zenith/Platform/Input/Input.hpp"
 #include "Zenith/Platform/Resolution.hpp"
 
 namespace zth {
@@ -107,6 +107,8 @@ public:
         assert(_type == EventType::MouseMoved);
         return _mouse_move_event;
     }
+
+    bool is_input_event() const;
 
 private:
     static std::optional<Event> from_sf_event(const sf::Event& event);

@@ -28,7 +28,7 @@ void EventDispatcher::deregister_listener(const EventListener& listener)
         std::erase(listeners, &listener);
 }
 
-void EventDispatcher::dispatch(const Event& event, double delta_time)
+void EventDispatcher::dispatch(const Event& event)
 {
     // TODO:
     // modifying listeners map during iterating over listeners will invalidate the iterators
@@ -38,7 +38,7 @@ void EventDispatcher::dispatch(const Event& event, double delta_time)
     const auto& listeners = _listeners_map[event.type()];
 
     for (const auto& listener : listeners)
-        listener->on_event(event, delta_time);
+        listener->on_event(event);
 }
 
 } // namespace zth

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Zenith/Core/EventDispatcher.hpp"
-#include "Zenith/Core/FrameCounter.hpp"
-#include "Zenith/Core/Updater.hpp"
 #include "Zenith/Logging/Logger.hpp"
 #include "Zenith/Platform/Event.hpp"
 #include "Zenith/Platform/Window.hpp"
 #include "Zenith/Utility/Utility.hpp"
+
+// TODO:
+#define ZTH_APP
 
 namespace zth {
 
@@ -16,33 +16,28 @@ struct ApplicationSpec
     LoggerSpec logger_spec = { .target = LogTarget::Console };
 };
 
+// only one Application object should exist at any given time
 class Application
 {
 public:
+    // TODO:
+    // the user has to implement this function through ZTH_APP macro
+    Application* create_application() = delete;
+
+    // TODO: make constructor private
     explicit Application(const ApplicationSpec& spec = {});
-    virtual ~Application() = default;
+    virtual ~Application();
     ZTH_NO_COPY_NO_MOVE(Application)
 
     void run();
 
-    auto get_fps() const { return _frame_counter.get_fps(); }
-
-protected:
-    WindowApi _window = WindowApi{ _internal_window };
-    Logger _logger;
-    EventDispatcher _event_dispatcher;
-    Updater _updater;
-
 private:
-    Window _internal_window;
-    FrameCounter _frame_counter;
+    virtual void on_update() {}
+    virtual void on_event([[maybe_unused]] const Event& event) {}
 
-private:
-    virtual void on_update([[maybe_unused]] double delta_time) {}
-    virtual void on_event([[maybe_unused]] const Event& event, [[maybe_unused]] double delta_time) {}
-
-    void handle_update(double delta_time);
-    void handle_event(const Event& event, double delta_time);
+    void handle_update();
+    void handle_event(const Event& event);
+    static void handle_input_event(const Event& event);
 };
 
 } // namespace zth
