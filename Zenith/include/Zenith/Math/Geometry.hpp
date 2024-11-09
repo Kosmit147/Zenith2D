@@ -17,6 +17,11 @@ struct Line
     constexpr bool intersects(const Line& other) const;
 };
 
+struct Triangle
+{
+    std::array<Vec2f, 3> points;
+};
+
 struct Rect
 {
     Vec2f position;

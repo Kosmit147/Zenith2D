@@ -42,6 +42,9 @@ private:
     void draw_closed_lines_impl(std::span<const Vec2f> points, const Color& color) override;
     void draw_closed_lines_impl(std::span<const Line> lines, const Color& color) override;
 
+    void draw_triangle_impl(const Triangle& triangle, const Color& color) override;
+    void draw_filled_triangle_impl(const Triangle& triangle, const Color& color) override;
+
     void draw_rect_impl(const Rect& rect, const Color& color) override;
     void draw_filled_rect_impl(const Rect& rect, const Color& color) override;
 
@@ -64,6 +67,8 @@ private:
     void plot_closed_lines(std::span<const Vec2f> points, const Color& color);
     void plot_closed_lines(std::span<const Line> lines, const Color& color);
 
+    void plot_triangle(const Triangle& triangle, const Color& color);
+
     void plot_rect(const Rect& rect, const Color& color);
 
     void plot_convex_polygon(std::span<const Vec2f> points, const Color& color);
@@ -76,6 +81,7 @@ private:
     static void draw_line_on_image(sf::Image& image, const Line& line, const Color& color);
     static void draw_line_strip_on_image(sf::Image& image, std::span<const Vec2f> points, const Color& color);
     static void draw_lines_on_image(sf::Image& image, std::span<const Line> lines, const Color& color);
+    static void draw_triangle_on_image(sf::Image& image, const Triangle& triangle, const Color& color);
     static void draw_rect_on_image(sf::Image& image, const Rect& rect, const Color& color);
     static void draw_circle_on_image(sf::Image& image, const Circle& circle, const Color& color);
     static void draw_ellipse_on_image(sf::Image& image, const Ellipse& ellipse, const Color& color);

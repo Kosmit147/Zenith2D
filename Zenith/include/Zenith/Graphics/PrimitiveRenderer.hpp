@@ -28,6 +28,9 @@ public:
     void draw_closed_lines(std::span<const Vec2f> points, const Color& color);
     void draw_closed_lines(std::span<const Line> lines, const Color& color);
 
+    void draw_triangle(const Triangle& triangle, const Color& color);
+    void draw_filled_triangle(const Triangle& triangle, const Color& color);
+
     void draw_rect(const Rect& rect, const Color& color);
     void draw_filled_rect(const Rect& rect, const Color& color);
 
@@ -53,6 +56,9 @@ private:
     virtual void draw_lines_impl(std::span<const Line> lines, const Color& color) = 0;
     virtual void draw_closed_lines_impl(std::span<const Vec2f> points, const Color& color) = 0;
     virtual void draw_closed_lines_impl(std::span<const Line> lines, const Color& color) = 0;
+
+    virtual void draw_triangle_impl(const Triangle& triangle, const Color& color) = 0;
+    virtual void draw_filled_triangle_impl(const Triangle& triangle, const Color& color) = 0;
 
     virtual void draw_rect_impl(const Rect& rect, const Color& color) = 0;
     virtual void draw_filled_rect_impl(const Rect& rect, const Color& color) = 0;
