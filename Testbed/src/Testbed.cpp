@@ -16,6 +16,8 @@ static const zth::ApplicationSpec spec = {
     },
 };
 
+ZTH_IMPLEMENT_APP(Testbed)
+
 Testbed::Testbed() : Application(spec)
 {
     zth::logger->log_notification("On init.");
