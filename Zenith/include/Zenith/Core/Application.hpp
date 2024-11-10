@@ -24,12 +24,13 @@ public:
     // the user has to implement this function through ZTH_APP macro
     Application* create_application() = delete;
 
-    // TODO: make constructor private
-    explicit Application(const ApplicationSpec& spec = {});
     virtual ~Application();
     ZTH_NO_COPY_NO_MOVE(Application)
 
     void run();
+
+protected:
+    explicit Application(const ApplicationSpec& spec = {});
 
 private:
     virtual void on_update() {}
@@ -37,7 +38,6 @@ private:
 
     void handle_update();
     void handle_event(const Event& event);
-    static void handle_input_event(const Event& event);
 };
 
 } // namespace zth

@@ -1,5 +1,7 @@
 #include "Sandbox.hpp"
 
+#include "Scene.hpp"
+
 static const zth::ApplicationSpec spec = {
     .window_spec = {
         .title = "Sandbox",
@@ -13,31 +15,21 @@ static const zth::ApplicationSpec spec = {
     },
 };
 
-Sandbox::Sandbox()
-    : Application(spec), _player_texture(zth::Texture::from_file("assets/emoji.png").value_or(zth::Texture{})),
-      _player(_player_texture)
+Sandbox::Sandbox() : Application(spec)
 {
     zth::logger->log_notification("On init.");
-
-    zth::engine->window.clear_color = zth::Color::black;
-
-    zth::engine->register_listener(zth::EventType::KeyPressed, _player);
-    zth::engine->register_updatable(_player);
+    zth::engine->change_scene(std::make_unique<Scene>());
 }
 
 Sandbox::~Sandbox()
 {
     zth::logger->log_notification("On shutdown.");
-
-    zth::engine->deregister_listener(_player);
-    zth::engine->deregister_updatable(_player);
 }
 
 void Sandbox::on_update()
 {
     zth::Logger::print_notification("On Update with delta time: {} seconds.", zth::engine->delta_time());
     zth::Logger::print_notification("FPS: {}", zth::engine->fps());
-    zth::engine->window.renderer.draw(_player);
 }
 
 void Sandbox::on_event(const zth::Event& event)
