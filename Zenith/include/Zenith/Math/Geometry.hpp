@@ -15,10 +15,10 @@ struct Line
     Vec2f to;
     constexpr Line translated(const Vec2f& translation) const;
     constexpr void translate(const Vec2f& translation);
-    constexpr Line rotated(const float angle, const Vec2f& pivot_point) const;
-    constexpr void rotate(const float angle, const Vec2f& pivot_point);
-    constexpr Line scaled(const float factor, const Vec2f& scaling_point) const;
-    constexpr void scale(const float factor, const Vec2f& scaling_point);
+    constexpr Line rotated(float angle, const Vec2f& pivot_point) const;
+    constexpr void rotate(float angle, const Vec2f& pivot_point);
+    constexpr Line scaled(float factor, const Vec2f& scaling_point) const;
+    constexpr void scale(float factor, const Vec2f& scaling_point);
 
     constexpr bool intersects(const Line& other) const;
 };
@@ -29,10 +29,10 @@ struct Rect
     Vec2f size;
     constexpr Rect translated(const Vec2f& translation) const;
     constexpr void translate(const Vec2f& translation);
-    constexpr Rect rotated(const float angle, const Vec2f& pivot_point) const;
-    constexpr void rotate(const float angle, const Vec2f& pivot_point);
-    constexpr Rect scaled(const float factor, const Vec2f& scaling_point) const;
-    constexpr void scale(const float factor, const Vec2f& scaling_point);
+    constexpr Rect rotated(float angle, const Vec2f& pivot_point) const;
+    constexpr void rotate(float, const Vec2f& pivot_point);
+    constexpr Rect scaled(float factor, const Vec2f& scaling_point) const;
+    constexpr void scale(float factor, const Vec2f& scaling_point);
     constexpr std::array<Vec2f, 4> points() const;
 };
 

@@ -49,24 +49,27 @@ template<typename T> constexpr void Vec2<T>::translate(const Vec2& translation)
     *this = this->translated(translation);
 }
 
-template<typename T> constexpr Vec2<T> Vec2<T>::rotated(const float angle, const Vec2& pivot_point) const
+template<typename T> constexpr Vec2<T> Vec2<T>::rotated(float angle, const Vec2& pivot_point) const
 {
-    return { pivot_point.x + (this->x - pivot_point.x) * std::cos(angle) - (this->y - pivot_point.y) * std::sin(angle),
-             pivot_point.y + (this->x - pivot_point.x) * std::sin(angle)
-                 + (this->y - pivot_point.y) * std::cos(angle) };
+    auto diff = *this - pivot_point;
+
+    auto new_x = pivot_point.x + diff.x * std::cos(angle) - diff.y * std::sin(angle);
+    auto new_y = pivot_point.y + diff.x * std::sin(angle) + diff.y * std::cos(angle);
+
+    return { new_x, new_y };
 }
 
-template<typename T> constexpr void Vec2<T>::rotate(const float angle, const Vec2& pivot_point)
+template<typename T> constexpr void Vec2<T>::rotate(float angle, const Vec2& pivot_point)
 {
     *this = this->rotated(angle, pivot_point);
 }
 
-template<typename T> constexpr Vec2<T> Vec2<T>::scaled(const float factor, const Vec2& scaling_point) const
+template<typename T> constexpr Vec2<T> Vec2<T>::scaled(float factor, const Vec2& scaling_point) const
 {
     return { this->x * factor + (1 - factor) * scaling_point.x, this->y * factor + (1 - factor) * scaling_point.y };
 }
 
-template<typename T> constexpr void Vec2<T>::scale(const float factor, const Vec2& scaling_point)
+template<typename T> constexpr void Vec2<T>::scale(float factor, const Vec2& scaling_point)
 {
     *this = this->scaled(factor, scaling_point);
 }

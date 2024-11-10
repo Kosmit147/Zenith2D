@@ -66,22 +66,22 @@ constexpr void Line::translate(const Vec2<float>& translation)
     to.translate(translation);
 }
 
-constexpr Line Line::rotated(const float angle, const Vec2f& pivot_point) const
+constexpr Line Line::rotated(float angle, const Vec2f& pivot_point) const
 {
     return { from.rotated(angle, pivot_point), to.rotated(angle, pivot_point) };
 }
 
-constexpr void Line::rotate(const float angle, const Vec2f& pivot_point)
+constexpr void Line::rotate(float angle, const Vec2f& pivot_point)
 {
     from.rotate(angle, pivot_point);
     to.rotate(angle, pivot_point);
 }
 
-constexpr Line Line::scaled(const float factor, const Vec2f& scaling_point) const
+constexpr Line Line::scaled(float factor, const Vec2f& scaling_point) const
 {
     return { from.scaled(factor, scaling_point), to.scaled(factor, scaling_point) };
 }
-constexpr void Line::scale(const float factor, const Vec2f& scaling_point)
+constexpr void Line::scale(float factor, const Vec2f& scaling_point)
 {
     from.scale(factor, scaling_point);
     to.scale(factor, scaling_point);
@@ -97,7 +97,7 @@ constexpr void Rect::translate(const Vec2<float>& translation)
     position.translate(translation);
 }
 
-constexpr Rect Rect::rotated(const float angle, const Vec2<float>& pivot_point) const
+constexpr Rect Rect::rotated(float angle, const Vec2<float>& pivot_point) const
 {
     auto rect_points = points();
     for (auto& point : rect_points)
@@ -107,12 +107,12 @@ constexpr Rect Rect::rotated(const float angle, const Vec2<float>& pivot_point) 
     return { rect_points[0], size };
 }
 
-constexpr void Rect::rotate(const float angle, const Vec2<float>& pivot_point)
+constexpr void Rect::rotate(float angle, const Vec2<float>& pivot_point)
 {
     *this = rotated(angle, pivot_point);
 }
 
-constexpr Rect Rect::scaled(const float factor, const Vec2<float>& scaling_point) const
+constexpr Rect Rect::scaled(float factor, const Vec2<float>& scaling_point) const
 {
     auto rect_points = points();
     for (auto& point : rect_points)
@@ -122,7 +122,7 @@ constexpr Rect Rect::scaled(const float factor, const Vec2<float>& scaling_point
     return { rect_points[0], size * factor };
 }
 
-constexpr void Rect::scale(const float factor, const Vec2<float>& scaling_point)
+constexpr void Rect::scale(float factor, const Vec2<float>& scaling_point)
 {
     *this = scaled(factor, scaling_point);
 }

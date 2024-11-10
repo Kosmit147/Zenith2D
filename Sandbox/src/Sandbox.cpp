@@ -41,7 +41,6 @@ void Sandbox::on_update([[maybe_unused]] const double delta_time)
     _window.renderer.draw(rectangleShape);
     rectangleShape.translate({ 0.0f, 100.0f });
     rectangleShape.rotate(30.0f, { 960.0f, 540.0f });
-    rectangleShape.set_color(zth::Color::white);
     _window.renderer.draw(rectangleShape);
 }
 

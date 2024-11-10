@@ -24,10 +24,10 @@ template<typename T> struct Vec2
     constexpr void reflect(const Vec2& normal);
     constexpr Vec2 translated(const Vec2& translation) const;
     constexpr void translate(const Vec2& translation);
-    constexpr Vec2 rotated(const float angle, const Vec2& pivot_point) const;
-    constexpr void rotate(const float angle, const Vec2& pivot_point);
-    constexpr Vec2 scaled(const float factor, const Vec2& scaling_point) const;
-    constexpr void scale(const float factor, const Vec2& scaling_point);
+    constexpr Vec2 rotated(float angle, const Vec2& pivot_point) const;
+    constexpr void rotate(float angle, const Vec2& pivot_point);
+    constexpr Vec2 scaled(float factor, const Vec2& scaling_point) const;
+    constexpr void scale(float factor, const Vec2& scaling_point);
 
     constexpr Vec2 operator+(const Vec2& other) const;
     constexpr Vec2 operator-(const Vec2& other) const;

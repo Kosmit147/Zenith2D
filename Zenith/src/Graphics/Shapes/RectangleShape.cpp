@@ -18,19 +18,14 @@ void RectangleShape::translate(const Vec2f& translation)
     rect.translate(translation);
 }
 
-void RectangleShape::rotate(const float angle, const Vec2f& pivot_point)
+void RectangleShape::rotate(float angle, const Vec2f& pivot_point)
 {
     rect.rotate(angle, pivot_point);
 }
 
-void RectangleShape::scale(const float factor, const Vec2f& scaling_point)
+void RectangleShape::scale(float factor, const Vec2f& scaling_point)
 {
     rect.scale(factor, scaling_point);
-}
-
-void RectangleShape::set_color(const Color& color)
-{
-    this->color = color;
 }
 
 } // namespace zth
