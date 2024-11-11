@@ -14,7 +14,7 @@ void Updater::deregister_updatable(const Updatable& updatable)
     std::erase(_updatables, &updatable);
 }
 
-void Updater::update(double delta_time) const
+void Updater::update() const
 {
     // TODO:
     // modifying updatables vector during iterating over updatables will invalidate the iterators
@@ -22,7 +22,7 @@ void Updater::update(double delta_time) const
     // them and calling on_update
 
     for (auto updatable : _updatables)
-        updatable->on_update(delta_time);
+        updatable->on_update();
 }
 
 } // namespace zth

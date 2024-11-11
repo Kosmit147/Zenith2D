@@ -1,5 +1,6 @@
 #include "Testbed.hpp"
 
+#include <Zenith/Core/Engine.hpp>
 #include <Zenith/Time/Timer.hpp>
 
 #include <cassert>
@@ -113,6 +114,22 @@ static void draw_primitives(zth::PrimitiveRenderer& renderer)
     };
 
     renderer.draw_filled_ellipse(filled_ellipse, zth::Color::blue);
+
+    static constexpr zth::Triangle triangle = {
+        zth::Vec2f{ 100.0f, 175.0f },
+        zth::Vec2f{ 10.0f, 230.0f },
+        zth::Vec2f{ 190.0f, 230.0f },
+    };
+
+    renderer.draw_triangle(triangle, zth::Color::green);
+
+    static constexpr zth::Triangle filled_triangle = {
+        zth::Vec2f{ 290.0f, 175.0f },
+        zth::Vec2f{ 200.0f, 230.0f },
+        zth::Vec2f{ 380.0f, 230.0f },
+    };
+
+    renderer.draw_filled_triangle(filled_triangle, zth::Color::green);
 }
 
 static void sfml_primitive_renderer_test(zth::PrimitiveRenderer& renderer)
@@ -150,7 +167,7 @@ void Testbed::primitive_renderer_test() const
 
     static zth::Timer renderer_type_timer;
 
-    auto renderer_type = _window.renderer.get_primitive_renderer_type();
+    auto renderer_type = zth::engine->window.renderer.get_primitive_renderer_type();
 
     if (renderer_type_timer.elapsed_s() > 2.0)
     {
@@ -158,11 +175,11 @@ void Testbed::primitive_renderer_test() const
                             ? zth::PrimitiveRendererType::CustomPrimitiveRenderer
                             : zth::PrimitiveRendererType::SfmlPrimitiveRenderer;
 
-        _window.renderer.set_primitive_renderer_type(renderer_type);
+        zth::engine->window.renderer.set_primitive_renderer_type(renderer_type);
         renderer_type_timer.reset();
     }
 
-    auto& renderer = _window.renderer.primitive_renderer();
+    auto& renderer = zth::engine->window.renderer.primitive_renderer();
 
     switch (renderer_type)
     {

@@ -2,6 +2,19 @@
 
 namespace zth {
 
+bool Event::is_input_event() const
+{
+    static constexpr std::array input_events = {
+        EventType::KeyPressed,          EventType::KeyReleased, EventType::MouseButtonPressed,
+        EventType::MouseButtonReleased, EventType::MouseMoved,
+    };
+
+    if (std::ranges::find(input_events, _type) != input_events.end())
+        return true;
+    else
+        return false;
+}
+
 std::optional<Event> Event::from_sf_event(const sf::Event& event)
 {
     std::optional<Event> ret = {};
@@ -48,7 +61,7 @@ std::optional<Event> Event::from_sf_event(const sf::Event& event)
     break;
     case sf::Event::MouseButtonPressed:
     {
-        MouseButton button = event.mouseButton.button == sf::Mouse::Left ? MouseButton::Left : MouseButton::Right;
+        auto button = to_mouse_button(event.mouseButton.button);
         CursorPos cursor_pos{ event.mouseButton.x, event.mouseButton.y };
 
         ret = Event{ EventType::MouseButtonPressed, MouseButtonEvent{ button, cursor_pos } };
@@ -56,7 +69,7 @@ std::optional<Event> Event::from_sf_event(const sf::Event& event)
     break;
     case sf::Event::MouseButtonReleased:
     {
-        MouseButton button = event.mouseButton.button == sf::Mouse::Left ? MouseButton::Left : MouseButton::Right;
+        auto button = to_mouse_button(event.mouseButton.button);
         CursorPos cursor_pos{ event.mouseButton.x, event.mouseButton.y };
 
         ret = Event{ EventType::MouseButtonReleased, MouseButtonEvent{ button, cursor_pos } };

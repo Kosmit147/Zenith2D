@@ -1,6 +1,6 @@
 #include "Zenith/Graphics/SfmlPrimitiveRenderer.hpp"
 
-#include "Zenith/Graphics/EllipseShape.hpp"
+#include "Zenith/Graphics/SfmlEllipseShape.hpp"
 
 namespace zth {
 
@@ -50,6 +50,18 @@ void SfmlPrimitiveRenderer::draw_closed_lines_impl(std::span<const Line> lines, 
 {
     plot_closed_lines(lines, color);
     draw_call(sf::Lines);
+}
+
+void SfmlPrimitiveRenderer::draw_triangle_impl(const Triangle& triangle, const Color& color)
+{
+    plot_triangle(triangle, color);
+    draw_call(sf::LineStrip);
+}
+
+void SfmlPrimitiveRenderer::draw_filled_triangle_impl(const Triangle& triangle, const Color& color)
+{
+    plot_filled_triangle(triangle, color);
+    draw_call(sf::Triangles);
 }
 
 void SfmlPrimitiveRenderer::draw_rect_impl(const Rect& rect, const Color& color)
@@ -104,7 +116,7 @@ void SfmlPrimitiveRenderer::draw_circle_impl(const Circle& circle, const Color& 
 void SfmlPrimitiveRenderer::draw_ellipse_impl(const Ellipse& ellipse, const Color& color)
 {
     // TODO: handle this on our own instead of using SFML shapes
-    EllipseShape sf_ellipse(ellipse);
+    SfmlEllipseShape sf_ellipse(ellipse);
     sf_ellipse.setOutlineColor(static_cast<sf::Color>(color));
     sf_ellipse.setOutlineThickness(1);
     sf_ellipse.setFillColor(static_cast<sf::Color>(Color::transparent));
@@ -128,7 +140,7 @@ void SfmlPrimitiveRenderer::draw_filled_circle_impl(const Circle& circle, const 
 void SfmlPrimitiveRenderer::draw_filled_ellipse_impl(const Ellipse& ellipse, const Color& color)
 {
     // TODO: handle this on our own instead of using SFML shapes
-    EllipseShape sf_ellipse(ellipse);
+    SfmlEllipseShape sf_ellipse(ellipse);
     sf_ellipse.setOutlineColor(static_cast<sf::Color>(color));
     sf_ellipse.setOutlineThickness(1);
     sf_ellipse.setFillColor(static_cast<sf::Color>(color));
@@ -183,6 +195,17 @@ void SfmlPrimitiveRenderer::plot_closed_lines(std::span<const Line> lines, const
         return;
 
     plot_line(lines.back().to, lines.front().from, color);
+}
+
+void SfmlPrimitiveRenderer::plot_triangle(const Triangle& triangle, const Color& color)
+{
+    plot_line_strip(triangle.points, color);
+    plot_point(triangle.points[0], color);
+}
+
+void SfmlPrimitiveRenderer::plot_filled_triangle(const Triangle& triangle, const Color& color)
+{
+    plot_points(triangle.points, color);
 }
 
 void SfmlPrimitiveRenderer::plot_rect(const Rect& rect, const Color& color)

@@ -32,6 +32,9 @@ private:
     void draw_closed_lines_impl(std::span<const Vec2f> points, const Color& color) override;
     void draw_closed_lines_impl(std::span<const Line> lines, const Color& color) override;
 
+    void draw_triangle_impl(const Triangle& triangle, const Color& color) override;
+    void draw_filled_triangle_impl(const Triangle& triangle, const Color& color) override;
+
     void draw_rect_impl(const Rect& rect, const Color& color) override;
     void draw_filled_rect_impl(const Rect& rect, const Color& color) override;
 
@@ -53,6 +56,9 @@ private:
     void plot_lines(std::span<const Line> lines, const Color& color);
     void plot_closed_lines(std::span<const Vec2f> points, const Color& color);
     void plot_closed_lines(std::span<const Line> lines, const Color& color);
+
+    void plot_triangle(const Triangle& triangle, const Color& color);
+    void plot_filled_triangle(const Triangle& triangle, const Color& color);
 
     void plot_rect(const Rect& rect, const Color& color);
     void plot_filled_rect(const Rect& rect, const Color& color);
