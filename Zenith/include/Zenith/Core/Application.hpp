@@ -5,8 +5,14 @@
 #include "Zenith/Platform/Window.hpp"
 #include "Zenith/Utility/Utility.hpp"
 
-// TODO:
-#define ZTH_APP
+#define ZTH_IMPLEMENT_APP(user_app)                                                                                    \
+    namespace zth {                                                                                                    \
+                                                                                                                       \
+    Application* create_application()                                                                                  \
+    {                                                                                                                  \
+        return new user_app;                                                                                           \
+    }                                                                                                                  \
+    }
 
 namespace zth {
 
@@ -20,10 +26,6 @@ struct ApplicationSpec
 class Application
 {
 public:
-    // TODO:
-    // the user has to implement this function through ZTH_APP macro
-    Application* create_application() = delete;
-
     virtual ~Application();
     ZTH_NO_COPY_NO_MOVE(Application)
 

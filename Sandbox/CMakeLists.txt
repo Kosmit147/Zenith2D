@@ -3,7 +3,6 @@ project(Sandbox LANGUAGES CXX)
 
 add_executable(
 	Sandbox
-	"src/main.cpp"
 	"src/Player.cpp"
 	"src/Sandbox.cpp"
 	"src/Scene.cpp"

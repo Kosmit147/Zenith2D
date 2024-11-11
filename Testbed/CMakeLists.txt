@@ -3,7 +3,6 @@ project(Testbed LANGUAGES CXX)
 
 add_executable(
 	Testbed
-	"src/main.cpp"
 	"src/PrimitiveRendererTest.cpp"
 	"src/Testbed.cpp"
 )

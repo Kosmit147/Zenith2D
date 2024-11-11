@@ -2,6 +2,8 @@
 
 #include "Scene.hpp"
 
+ZTH_IMPLEMENT_APP(Sandbox)
+
 static const zth::ApplicationSpec spec = {
     .window_spec = {
         .title = "Sandbox",
