@@ -7,7 +7,8 @@
 
 static void draw_primitives(zth::PrimitiveRenderer& renderer)
 {
-    static constexpr zth::Vec2f point = { 960.0f, 540.0f };
+    zth::Vec2f point = { 960.0f, 540.0f };
+    point.translate({ 300.0f, 300.0f }).rotate(5.0f, { 960.0f, 540.0f }).scale(-0.2f, { 960.0f, 540.0f });
 
     renderer.draw_point(point, zth::Color::red);
 
@@ -18,11 +19,8 @@ static void draw_primitives(zth::PrimitiveRenderer& renderer)
 
     renderer.draw_points(points, zth::Color::green);
 
-    static constexpr zth::Vec2f line_from_points[] = { { 10.0f, 10.0f }, { 1910.0f, 10.0f } };
-
-    renderer.draw_line(line_from_points[0], line_from_points[1], zth::Color::red);
-
-    static constexpr zth::Line line = { { 10.0f, 20.0f }, { 1910.0f, 20.0f } };
+    zth::Line line = { { 900.0f, 540.0f }, { 1200.0f, 540.0f } };
+    line.translate({ 300.0f, 300.0f }).rotate(5.0f, { 960.0f, 540.0f }).scale(-0.8f, { 960.0f, 540.0f });
 
     renderer.draw_line(line, zth::Color::green);
 
@@ -53,7 +51,7 @@ static void draw_primitives(zth::PrimitiveRenderer& renderer)
 
     renderer.draw_closed_lines(closed_lines, zth::Color::blue);
 
-    static constexpr zth::Rect rect = { .position = { 110.0f, 70.0f }, .size = { 180.0f, 90.0f } };
+    static constexpr zth::Rect rect = { .position = { 960.0f, 740.0f }, .size = { 180.0f, 90.0f } };
 
     renderer.draw_rect(rect, zth::Color::blue);
 

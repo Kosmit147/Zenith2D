@@ -11,7 +11,7 @@ template<typename T> constexpr T Vec3<T>::length() const
 
 template<typename T> constexpr Vec3<T> Vec3<T>::normalized() const
 {
-    auto len = length();
+    auto len = this->length();
 
     if (len == 0)
         return { 0, 0, 0 };
@@ -19,9 +19,14 @@ template<typename T> constexpr Vec3<T> Vec3<T>::normalized() const
     return { x / len, y / len, z / len };
 }
 
-template<typename T> constexpr void Vec3<T>::normalize()
+template<typename T> constexpr Vec3<T>& Vec3<T>::normalize()
 {
-    *this = this->normalized();
+    return *this = this->normalized();
+}
+
+template<typename T> constexpr Vec3<T> Vec3<T>::abs() const
+{
+    return { std::abs(x), std::abs(y), std::abs(z) };
 }
 
 template<typename T> constexpr Vec3<T> Vec3<T>::reflected(const Vec3& normal) const
@@ -29,9 +34,9 @@ template<typename T> constexpr Vec3<T> Vec3<T>::reflected(const Vec3& normal) co
     return *this - normal * 2 * dot(*this, normal);
 }
 
-template<typename T> constexpr void Vec3<T>::reflect(const Vec3& normal)
+template<typename T> constexpr Vec3<T>& Vec3<T>::reflect(const Vec3& normal)
 {
-    *this = this->reflected(normal);
+    return *this = this->reflected(normal);
 }
 
 template<typename T> constexpr Vec3<T> Vec3<T>::operator+(const Vec3& other) const
@@ -87,6 +92,16 @@ template<typename T> template<typename Other> constexpr Vec3<T>::operator Vec3<O
 template<typename T> constexpr Vec3<T>::operator sf::Vector3<T>() const
 {
     return sf::Vector3<T>{ x, y, z };
+}
+
+template<typename T> constexpr Vec3<T> operator*(T val, const Vec3<T>& vec)
+{
+    return vec * val;
+}
+
+template<typename T> constexpr Vec3<T> abs(const Vec3<T>& vec)
+{
+    return vec.abs();
 }
 
 template<typename T> constexpr T dot(const Vec3<T>& a, const Vec3<T>& b)

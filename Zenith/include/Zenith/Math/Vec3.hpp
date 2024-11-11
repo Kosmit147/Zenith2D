@@ -18,9 +18,11 @@ template<typename T> struct Vec3
 
     constexpr T length() const;
     constexpr Vec3 normalized() const;
-    constexpr void normalize();
+    constexpr Vec3& normalize();
+    constexpr Vec3 abs() const;
+
     constexpr Vec3 reflected(const Vec3& normal) const;
-    constexpr void reflect(const Vec3& normal);
+    constexpr Vec3& reflect(const Vec3& normal);
 
     constexpr Vec3 operator+(const Vec3& other) const;
     constexpr Vec3 operator-(const Vec3& other) const;
@@ -45,6 +47,9 @@ using Vec3i = Vec3<i32>;
 using Vec3f = Vec3<float>;
 using Vec3d = Vec3<double>;
 
+template<typename T> constexpr Vec3<T> operator*(T val, const Vec3<T>& vec);
+
+template<typename T> constexpr Vec3<T> abs(const Vec3<T>& vec);
 template<typename T> constexpr T dot(const Vec3<T>& a, const Vec3<T>& b);
 template<typename T> constexpr T dot(const Vec3<T>& a, const Vec3<T>& b, const Vec3<T>& c);
 template<typename T> constexpr Vec3<T> cross(const Vec3<T>& a, const Vec3<T>& b);
