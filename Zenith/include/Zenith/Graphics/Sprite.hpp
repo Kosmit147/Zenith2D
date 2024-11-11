@@ -22,7 +22,8 @@ public:
 
     // creating a sprite from a temporary texture is a mistake,
     // because the texture must live as long as the sprite
-    explicit Sprite(const Texture&&, const IntRect&) = delete;
+    explicit Sprite(Texture&&) = delete;
+    explicit Sprite(Texture&&, const IntRect&) = delete;
 
     ZTH_DEFAULT_COPY_DEFAULT_MOVE(Sprite)
 
