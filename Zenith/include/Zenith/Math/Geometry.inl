@@ -2,6 +2,36 @@
 
 namespace zth {
 
+constexpr Line Line::translated(const Vec2f& translation) const
+{
+    return { from + translation, to + translation };
+}
+
+constexpr Line& Line::translate(const Vec2f& translation)
+{
+    return *this = this->translated(translation);
+}
+
+constexpr Line Line::rotated(float angle, const Vec2f& pivot_point) const
+{
+    return { from.rotated(angle, pivot_point), to.rotated(angle, pivot_point) };
+}
+
+constexpr Line& Line::rotate(float angle, const Vec2f& pivot_point)
+{
+    return *this = this->rotated(angle, pivot_point);
+}
+
+constexpr Line Line::scaled(float factor, const Vec2f& scaling_point) const
+{
+    return { from.scaled(factor, scaling_point), to.scaled(factor, scaling_point) };
+}
+
+constexpr Line& Line::scale(float factor, const Vec2f& scaling_point)
+{
+    return *this = this->scaled(factor, scaling_point);
+}
+
 constexpr bool Line::intersects(const Line& other) const
 {
     auto det = [](const Vec2f& a, const Vec2f& b, const Vec2f& c) {
@@ -22,6 +52,51 @@ constexpr bool Line::intersects(const Line& other) const
         return false;
 }
 
+constexpr Rect Rect::translated(const Vec2f& translation) const
+{
+    return { position + translation, size };
+}
+
+constexpr Rect& Rect::translate(const Vec2f& translation)
+{
+    return *this = this->translated(translation);
+}
+
+// constexpr Rect Rect::rotated(float angle, const Vec2f& pivot_point) const
+// {
+//     auto rect_points = points();
+// 
+//     for (auto& point : rect_points)
+//         point = point.rotated(angle, pivot_point);
+// 
+//     return { rect_points[0], size };
+// }
+// 
+// constexpr Rect& Rect::rotate(float angle, const Vec2f& pivot_point)
+// {
+//     *this = rotated(angle, pivot_point);
+// }
+
+constexpr Rect Rect::scaled(float factor, const Vec2f& scaling_point) const
+{
+    auto scaled_pos = position.scaled(factor, scaling_point);
+    auto scaled_size = size * factor;
+
+    if (factor < 0.0f)
+    {
+        scaled_pos += scaled_size;
+        scaled_size = abs(scaled_size);
+    }
+
+    return { scaled_pos, scaled_size };
+}
+
+constexpr Rect& Rect::scale(float factor, const Vec2f& scaling_point)
+{
+    return *this = scaled(factor, scaling_point);
+}
+
+// the first point is the position (top-left point)
 constexpr std::array<Vec2f, 4> Rect::points() const
 {
     auto [x1, y1] = position;
@@ -54,77 +129,6 @@ inline UIntRect::operator sf::Rect<u32>() const
 constexpr bool lines_intersect(const Line& first_line, const Line& second_line)
 {
     return first_line.intersects(second_line);
-}
-constexpr Line Line::translated(const Vec2<float>& translation) const
-{
-    return { from.translated(translation), to.translated(translation) };
-}
-
-constexpr void Line::translate(const Vec2<float>& translation)
-{
-    from.translate(translation);
-    to.translate(translation);
-}
-
-constexpr Line Line::rotated(float angle, const Vec2f& pivot_point) const
-{
-    return { from.rotated(angle, pivot_point), to.rotated(angle, pivot_point) };
-}
-
-constexpr void Line::rotate(float angle, const Vec2f& pivot_point)
-{
-    from.rotate(angle, pivot_point);
-    to.rotate(angle, pivot_point);
-}
-
-constexpr Line Line::scaled(float factor, const Vec2f& scaling_point) const
-{
-    return { from.scaled(factor, scaling_point), to.scaled(factor, scaling_point) };
-}
-constexpr void Line::scale(float factor, const Vec2f& scaling_point)
-{
-    from.scale(factor, scaling_point);
-    to.scale(factor, scaling_point);
-}
-
-constexpr Rect Rect::translated(const Vec2<float>& translation) const
-{
-    return { position + translation, size };
-}
-
-constexpr void Rect::translate(const Vec2<float>& translation)
-{
-    position.translate(translation);
-}
-
-constexpr Rect Rect::rotated(float angle, const Vec2<float>& pivot_point) const
-{
-    auto rect_points = points();
-    for (auto& point : rect_points)
-    {
-        point = point.rotated(angle, pivot_point);
-    }
-    return { rect_points[0], size };
-}
-
-constexpr void Rect::rotate(float angle, const Vec2<float>& pivot_point)
-{
-    *this = rotated(angle, pivot_point);
-}
-
-constexpr Rect Rect::scaled(float factor, const Vec2<float>& scaling_point) const
-{
-    auto rect_points = points();
-    for (auto& point : rect_points)
-    {
-        point = scaling_point + (point - scaling_point) * factor;
-    }
-    return { rect_points[0], size * factor };
-}
-
-constexpr void Rect::scale(float factor, const Vec2<float>& scaling_point)
-{
-    *this = scaled(factor, scaling_point);
 }
 
 } // namespace zth

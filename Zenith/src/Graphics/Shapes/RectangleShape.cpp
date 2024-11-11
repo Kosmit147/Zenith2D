@@ -20,7 +20,9 @@ void RectangleShape::translate(const Vec2f& translation)
 
 void RectangleShape::rotate(float angle, const Vec2f& pivot_point)
 {
-    rect.rotate(angle, pivot_point);
+    (void)angle;
+    (void)pivot_point;
+    // rect.rotate(angle, pivot_point);
 }
 
 void RectangleShape::scale(float factor, const Vec2f& scaling_point)

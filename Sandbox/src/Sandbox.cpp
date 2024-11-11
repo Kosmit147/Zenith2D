@@ -35,12 +35,17 @@ void Sandbox::on_update([[maybe_unused]] const double delta_time)
 {
     zth::Logger::print_notification("On Update with delta time: {} seconds.", delta_time);
     zth::Logger::print_notification("FPS: {}", get_fps());
+
     _window.renderer.draw(_player);
+
     static constexpr zth::Rect rect = { .position = { 960.0f, 540.0f }, .size = { 10.0f, 10.0f } };
     zth::RectangleShape rectangleShape(rect, zth::Color::magenta);
+
     _window.renderer.draw(rectangleShape);
+
     rectangleShape.translate({ 0.0f, 100.0f });
     rectangleShape.rotate(30.0f, { 960.0f, 540.0f });
+
     _window.renderer.draw(rectangleShape);
 }
 

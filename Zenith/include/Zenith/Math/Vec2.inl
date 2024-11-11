@@ -16,7 +16,7 @@ template<typename T> constexpr T Vec2<T>::length() const
 
 template<typename T> constexpr Vec2<T> Vec2<T>::normalized() const
 {
-    auto len = length();
+    auto len = this->length();
 
     if (len == 0)
         return { 0, 0 };
@@ -24,19 +24,14 @@ template<typename T> constexpr Vec2<T> Vec2<T>::normalized() const
     return { x / len, y / len };
 }
 
-template<typename T> constexpr void Vec2<T>::normalize()
+template<typename T> constexpr Vec2<T>& Vec2<T>::normalize()
 {
-    *this = this->normalized();
+    return *this = this->normalized();
 }
 
-template<typename T> constexpr Vec2<T> Vec2<T>::reflected(const Vec2& normal) const
+template<typename T> constexpr Vec2<T> Vec2<T>::abs() const
 {
-    return *this - normal * 2 * dot(*this, normal);
-}
-
-template<typename T> constexpr void Vec2<T>::reflect(const Vec2& normal)
-{
-    *this = this->reflected(normal);
+    return { std::abs(x), std::abs(y) };
 }
 
 template<typename T> constexpr Vec2<T> Vec2<T>::translated(const Vec2& translation) const
@@ -44,9 +39,9 @@ template<typename T> constexpr Vec2<T> Vec2<T>::translated(const Vec2& translati
     return *this + translation;
 }
 
-template<typename T> constexpr void Vec2<T>::translate(const Vec2& translation)
+template<typename T> constexpr Vec2<T>& Vec2<T>::translate(const Vec2& translation)
 {
-    *this = this->translated(translation);
+    return *this = this->translated(translation);
 }
 
 template<typename T> constexpr Vec2<T> Vec2<T>::rotated(float angle, const Vec2& pivot_point) const
@@ -59,19 +54,29 @@ template<typename T> constexpr Vec2<T> Vec2<T>::rotated(float angle, const Vec2&
     return { new_x, new_y };
 }
 
-template<typename T> constexpr void Vec2<T>::rotate(float angle, const Vec2& pivot_point)
+template<typename T> constexpr Vec2<T>& Vec2<T>::rotate(float angle, const Vec2& pivot_point)
 {
-    *this = this->rotated(angle, pivot_point);
+    return *this = this->rotated(angle, pivot_point);
 }
 
 template<typename T> constexpr Vec2<T> Vec2<T>::scaled(float factor, const Vec2& scaling_point) const
 {
-    return { this->x * factor + (1 - factor) * scaling_point.x, this->y * factor + (1 - factor) * scaling_point.y };
+    return *this * factor + (1 - factor) * scaling_point;
 }
 
-template<typename T> constexpr void Vec2<T>::scale(float factor, const Vec2& scaling_point)
+template<typename T> constexpr Vec2<T>& Vec2<T>::scale(float factor, const Vec2& scaling_point)
 {
-    *this = this->scaled(factor, scaling_point);
+    return *this = this->scaled(factor, scaling_point);
+}
+
+template<typename T> constexpr Vec2<T> Vec2<T>::reflected(const Vec2& normal) const
+{
+    return *this - normal * 2 * dot(*this, normal);
+}
+
+template<typename T> constexpr Vec2<T>& Vec2<T>::reflect(const Vec2& normal)
+{
+    return *this = this->reflected(normal);
 }
 
 template<typename T> constexpr Vec2<T> Vec2<T>::operator+(const Vec2& other) const
@@ -127,6 +132,16 @@ template<typename T> template<typename Other> constexpr Vec2<T>::operator Vec2<O
 template<typename T> constexpr Vec2<T>::operator sf::Vector2<T>() const
 {
     return sf::Vector2<T>{ x, y };
+}
+
+template<typename T> constexpr Vec2<T> operator*(T val, const Vec2<T>& vec)
+{
+    return vec * val;
+}
+
+template<typename T> constexpr Vec2<T> abs(const Vec2<T>& vec)
+{
+    return vec.abs();
 }
 
 template<typename T> constexpr T dot(const Vec2<T>& a, const Vec2<T>& b)

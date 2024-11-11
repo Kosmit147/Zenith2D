@@ -7,9 +7,8 @@
 static void draw_primitives(zth::PrimitiveRenderer& renderer)
 {
     zth::Vec2f point = { 960.0f, 540.0f };
-    point.translate({ 300.0f, 300.0f });
-    point.rotate(5.0f, { 960.0f, 540.0f });
-    point.scale(-0.2f, { 960.0f, 540.0f });
+    point.translate({ 300.0f, 300.0f }).rotate(5.0f, { 960.0f, 540.0f }).scale(-0.2f, { 960.0f, 540.0f });
+
     renderer.draw_point(point, zth::Color::red);
 
     static constexpr zth::Vec2f points[] = {
@@ -19,10 +18,9 @@ static void draw_primitives(zth::PrimitiveRenderer& renderer)
 
     renderer.draw_points(points, zth::Color::green);
 
-    zth::Line line = { { 900.0f, 540.0f }, { 1000.0f, 540.0f } };
-    line.translate({ 300.0f, 300.0f });
-    line.rotate(5.0f, { 960.0f, 540.0f });
-    line.scale(-0.2f, { 960.0f, 540.0f });
+    zth::Line line = { { 900.0f, 540.0f }, { 1200.0f, 540.0f } };
+    line.translate({ 300.0f, 300.0f }).rotate(5.0f, { 960.0f, 540.0f }).scale(-0.8f, { 960.0f, 540.0f });
+
     renderer.draw_line(line, zth::Color::green);
 
     static constexpr zth::Vec2f line_strip[] = {
