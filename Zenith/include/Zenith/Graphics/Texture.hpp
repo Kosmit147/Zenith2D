@@ -16,6 +16,7 @@ struct TextureSize
     u32 height;
 };
 
+// The texture needs to live as long as it is used!
 class Texture
 {
 public:

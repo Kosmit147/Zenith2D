@@ -19,6 +19,12 @@ class Sprite : public Drawable, public Transformable2D
 public:
     explicit Sprite() = default;
     explicit Sprite(const Texture& texture, const IntRect& texture_rect = { { 0, 0 }, { 0, 0 } });
+
+    // creating a sprite from a temporary texture is a mistake,
+    // because the texture must live as long as the sprite
+    explicit Sprite(Texture&&) = delete;
+    explicit Sprite(Texture&&, const IntRect&) = delete;
+
     ZTH_DEFAULT_COPY_DEFAULT_MOVE(Sprite)
 
     ~Sprite() override = default;

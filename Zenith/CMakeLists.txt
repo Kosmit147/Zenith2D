@@ -9,6 +9,7 @@ add_library(
     "src/Core/Engine.cpp"
     "src/Core/EventDispatcher.cpp"
     "src/Core/main.cpp"
+    "src/Core/Scene.cpp"
     "src/Core/Updater.cpp"
     "src/Filesystem/FileIo.cpp"
     "src/Graphics/Shapes/RectangleShape.cpp"

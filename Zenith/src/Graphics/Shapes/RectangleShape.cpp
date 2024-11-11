@@ -10,7 +10,7 @@ RectangleShape::RectangleShape(const Rect& rect, const Color& color) : Shape(col
 
 void RectangleShape::draw(Renderer& renderer) const
 {
-    renderer.primitive_renderer().draw_filled_rect(rect, color);
+    renderer.primitive_renderer()->draw_filled_rect(rect, color);
 }
 
 void RectangleShape::translate(const Vec2f& translation)
