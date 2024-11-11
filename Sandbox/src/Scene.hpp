@@ -11,8 +11,8 @@ public:
     ~Scene() override;
 
 private:
-    zth::Texture _player_texture = zth::Texture::from_file("assets/emoji.png").value_or(zth::Texture{});
-    Player _player{ _player_texture };
+    zth::Texture _player_texture;
+    Player _player;
 
 private:
     void on_update() override;

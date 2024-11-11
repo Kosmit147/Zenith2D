@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-include(cmake/warnings.cmake)
+include("cmake/warnings.cmake")
 
 project(ZenithEngine LANGUAGES CXX)
 
@@ -12,13 +12,16 @@ set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO On)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL On)
 
 if (CMAKE_BUILD_TYPE MATCHES "Debug")
+    set(B_PRODUCTION_MODE OFF) # for battery::embed
     add_compile_definitions(_DEBUG)
 elseif(CMAKE_BUILD_TYPE MATCHES "Release" OR CMAKE_BUILD_TYPE MATCHES "MinSizeRel" OR CMAKE_BUILD_TYPE MATCHES "RelWithDebInfo")
+    set(B_PRODUCTION_MODE ON) # for battery::embed
     add_compile_definitions(_RELEASE)
     add_compile_definitions(NDEBUG)
 endif()
 
 get_compile_warnings(COMPILE_WARNINGS)
+add_subdirectory("dependencies/embed")
 add_subdirectory("dependencies/SFML")
 
 # unfortunately sfml-graphics does not set its headers as SYSTEM

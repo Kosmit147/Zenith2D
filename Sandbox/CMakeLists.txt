@@ -8,6 +8,8 @@ add_executable(
 	"src/Scene.cpp"
 )
 
+b_embed(Sandbox "assets/emoji.png")
+
 if(CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*")
 	target_link_libraries(Sandbox PRIVATE Zenith -lstdc++exp)
 else()
