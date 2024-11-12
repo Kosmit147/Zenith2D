@@ -67,28 +67,10 @@ void CustomPrimitiveRenderer::draw_filled_triangle_impl(const Triangle& triangle
 
     draw_triangle_on_image(image, triangle, color);
 
-    const auto& points = triangle.points;
-    auto points_sum = std::reduce(points.begin(), points.end(), Vec2f{ 0.0f, 0.0f });
-    auto points_average = points_sum / static_cast<float>(points.size());
-    auto seed = static_cast<Vec2u>(points_average);
+    auto seed = get_triangle_seed(triangle);
+    fill_on_image(image, seed, color, color, Color::transparent);
 
-    switch (fill_algorithm)
-    {
-    case FillAlgorithm::BoundaryFill:
-        boundary_fill(image, seed, color, color);
-        break;
-    case FillAlgorithm::FloodFill:
-        flood_fill(image, seed, color, Color::transparent);
-        break;
-    }
-
-    sf::Texture texture;
-
-    if (!texture.loadFromImage(image))
-        return;
-
-    sf::Sprite sprite(texture);
-    _render_target.draw(sprite);
+    draw_image(image);
 }
 
 void CustomPrimitiveRenderer::draw_rect_impl(const Rect& rect, const Color& color)
@@ -104,29 +86,10 @@ void CustomPrimitiveRenderer::draw_filled_rect_impl(const Rect& rect, const Colo
 
     draw_rect_on_image(image, rect, color);
 
-    auto top_left = rect.position;
-    auto bottom_right = rect.position + rect.size;
+    auto seed = get_rect_seed(rect);
+    fill_on_image(image, seed, color, color, Color::transparent);
 
-    // get the middle of the diagonal as the starting point
-    auto seed = static_cast<Vec2u>((top_left + bottom_right) / 2.0f);
-
-    switch (fill_algorithm)
-    {
-    case FillAlgorithm::BoundaryFill:
-        boundary_fill(image, seed, color, color);
-        break;
-    case FillAlgorithm::FloodFill:
-        flood_fill(image, seed, color, Color::transparent);
-        break;
-    }
-
-    sf::Texture texture;
-
-    if (!texture.loadFromImage(image))
-        return;
-
-    sf::Sprite sprite(texture);
-    _render_target.draw(sprite);
+    draw_image(image);
 }
 
 void CustomPrimitiveRenderer::draw_convex_polygon_impl(std::span<const Vec2f> points, const Color& color)
@@ -151,27 +114,10 @@ void CustomPrimitiveRenderer::draw_filled_convex_polygon_impl(std::span<const Ve
     draw_line_strip_on_image(image, points, color);
     draw_line_on_image(image, points.back(), points.front(), color);
 
-    auto points_sum = std::reduce(points.begin(), points.end(), Vec2f{ 0.0f, 0.0f });
-    auto points_average = points_sum / static_cast<float>(points.size());
-    auto seed = static_cast<Vec2u>(points_average);
+    auto seed = get_convex_polygon_seed(points);
+    fill_on_image(image, seed, color, color, Color::transparent);
 
-    switch (fill_algorithm)
-    {
-    case FillAlgorithm::BoundaryFill:
-        boundary_fill(image, seed, color, color);
-        break;
-    case FillAlgorithm::FloodFill:
-        flood_fill(image, seed, color, Color::transparent);
-        break;
-    }
-
-    sf::Texture texture;
-
-    if (!texture.loadFromImage(image))
-        return;
-
-    sf::Sprite sprite(texture);
-    _render_target.draw(sprite);
+    draw_image(image);
 }
 
 void CustomPrimitiveRenderer::draw_filled_convex_polygon_impl(std::span<const Line> lines, const Color& color)
@@ -181,28 +127,10 @@ void CustomPrimitiveRenderer::draw_filled_convex_polygon_impl(std::span<const Li
 
     draw_lines_on_image(image, lines, color);
 
-    auto points_sum = std::transform_reduce(lines.begin(), lines.end(), Vec2f{ 0.0f, 0.0f }, std::plus{},
-                                            [](auto& line) { return line.from; });
-    auto points_average = points_sum / static_cast<float>(lines.size());
-    auto seed = static_cast<Vec2u>(points_average);
+    auto seed = get_convex_polygon_seed(lines);
+    fill_on_image(image, seed, color, color, Color::transparent);
 
-    switch (fill_algorithm)
-    {
-    case FillAlgorithm::BoundaryFill:
-        boundary_fill(image, seed, color, color);
-        break;
-    case FillAlgorithm::FloodFill:
-        flood_fill(image, seed, color, Color::transparent);
-        break;
-    }
-
-    sf::Texture texture;
-
-    if (!texture.loadFromImage(image))
-        return;
-
-    sf::Sprite sprite(texture);
-    _render_target.draw(sprite);
+    draw_image(image);
 }
 
 void CustomPrimitiveRenderer::draw_circle_impl(const Circle& circle, const Color& color)
@@ -224,25 +152,10 @@ void CustomPrimitiveRenderer::draw_filled_circle_impl(const Circle& circle, cons
 
     draw_circle_on_image(image, circle, color);
 
-    auto seed = static_cast<Vec2u>(circle.center);
+    auto seed = get_circle_seed(circle);
+    fill_on_image(image, seed, color, color, Color::transparent);
 
-    switch (fill_algorithm)
-    {
-    case FillAlgorithm::BoundaryFill:
-        boundary_fill(image, seed, color, color);
-        break;
-    case FillAlgorithm::FloodFill:
-        flood_fill(image, seed, color, Color::transparent);
-        break;
-    }
-
-    sf::Texture texture;
-
-    if (!texture.loadFromImage(image))
-        return;
-
-    sf::Sprite sprite(texture);
-    _render_target.draw(sprite);
+    draw_image(image);
 }
 
 void CustomPrimitiveRenderer::draw_filled_ellipse_impl(const Ellipse& ellipse, const Color& color)
@@ -252,30 +165,15 @@ void CustomPrimitiveRenderer::draw_filled_ellipse_impl(const Ellipse& ellipse, c
 
     draw_ellipse_on_image(image, ellipse, color);
 
-    auto seed = static_cast<Vec2u>(ellipse.center);
+    auto seed = get_ellipse_seed(ellipse);
+    fill_on_image(image, seed, color, color, Color::transparent);
 
-    switch (fill_algorithm)
-    {
-    case FillAlgorithm::BoundaryFill:
-        boundary_fill(image, seed, color, color);
-        break;
-    case FillAlgorithm::FloodFill:
-        flood_fill(image, seed, color, Color::transparent);
-        break;
-    }
-
-    sf::Texture texture;
-
-    if (!texture.loadFromImage(image))
-        return;
-
-    sf::Sprite sprite(texture);
-    _render_target.draw(sprite);
+    draw_image(image);
 }
 
 void CustomPrimitiveRenderer::plot_point(const Vec2f& point, const Color& color)
 {
-    _vertex_array.append({ static_cast<sf::Vector2f>(point), static_cast<sf::Color>(color) });
+    _vertex_array.append({ point, color });
 }
 
 void CustomPrimitiveRenderer::plot_points(std::span<const Vec2f> points, const Color& color)
@@ -588,8 +486,60 @@ void CustomPrimitiveRenderer::draw_ellipse_on_image(sf::Image& image, const Elli
     }
 }
 
-void CustomPrimitiveRenderer::boundary_fill(sf::Image& image, const Vec2u& seed, const Color& border_color,
-                                            const Color& fill_color)
+Vec2u CustomPrimitiveRenderer::get_triangle_seed(const Triangle& triangle)
+{
+    const auto& points = triangle.points;
+    auto points_sum = std::reduce(points.begin(), points.end(), Vec2f{ 0.0f, 0.0f });
+    auto points_average = points_sum / static_cast<float>(points.size());
+    auto seed = static_cast<Vec2u>(points_average);
+
+    return seed;
+}
+
+Vec2u CustomPrimitiveRenderer::get_rect_seed(const Rect& rect)
+{
+    auto top_left = rect.position;
+    auto bottom_right = rect.position + rect.size;
+
+    // get the middle of the diagonal as the starting point
+    auto seed = static_cast<Vec2u>((top_left + bottom_right) / 2.0f);
+
+    return seed;
+}
+
+Vec2u CustomPrimitiveRenderer::get_convex_polygon_seed(std::span<const Vec2f> points)
+{
+    auto points_sum = std::reduce(points.begin(), points.end(), Vec2f{ 0.0f, 0.0f });
+    auto points_average = points_sum / static_cast<float>(points.size());
+    auto seed = static_cast<Vec2u>(points_average);
+
+    return seed;
+}
+
+Vec2u CustomPrimitiveRenderer::get_convex_polygon_seed(std::span<const Line> lines)
+{
+    auto points_sum = std::transform_reduce(lines.begin(), lines.end(), Vec2f{ 0.0f, 0.0f }, std::plus{},
+                                            [](auto& line) { return line.from; });
+    auto points_average = points_sum / static_cast<float>(lines.size());
+    auto seed = static_cast<Vec2u>(points_average);
+
+    return seed;
+}
+
+Vec2u CustomPrimitiveRenderer::get_circle_seed(const Circle& circle)
+{
+    auto seed = static_cast<Vec2u>(circle.center);
+    return seed;
+}
+
+Vec2u CustomPrimitiveRenderer::get_ellipse_seed(const Ellipse& ellipse)
+{
+    auto seed = static_cast<Vec2u>(ellipse.center);
+    return seed;
+}
+
+void CustomPrimitiveRenderer::boundary_fill_on_image(sf::Image& image, const Vec2u& seed, const Color& border_color,
+                                                     const Color& fill_color)
 {
     const auto image_size = image.getSize();
 
@@ -627,8 +577,8 @@ void CustomPrimitiveRenderer::boundary_fill(sf::Image& image, const Vec2u& seed,
     }
 }
 
-void CustomPrimitiveRenderer::flood_fill(sf::Image& image, const Vec2u& seed, const Color& fill_color,
-                                         const Color& background_color)
+void CustomPrimitiveRenderer::flood_fill_on_image(sf::Image& image, const Vec2u& seed, const Color& fill_color,
+                                                  const Color& background_color)
 {
     const auto image_size = image.getSize();
 
@@ -665,6 +615,31 @@ void CustomPrimitiveRenderer::flood_fill(sf::Image& image, const Vec2u& seed, co
     }
 }
 
+void CustomPrimitiveRenderer::fill_on_image(sf::Image& image, const Vec2u& seed, const Color& border_color,
+                                            const Color& fill_color, const Color& background_color) const
+{
+    switch (fill_algorithm)
+    {
+    case FillAlgorithm::BoundaryFill:
+        boundary_fill_on_image(image, seed, border_color, fill_color);
+        break;
+    case FillAlgorithm::FloodFill:
+        flood_fill_on_image(image, seed, fill_color, background_color);
+        break;
+    }
+}
+
+void CustomPrimitiveRenderer::draw_image(const sf::Image& image) const
+{
+    sf::Texture texture;
+
+    if (!texture.loadFromImage(image))
+        return;
+
+    sf::Sprite sprite(texture);
+    _render_target.draw(sprite);
+}
+
 sf::Image& CustomPrimitiveRenderer::get_tmp_image(const sf::Vector2u& target_size)
 {
     static std::vector<Color> buff;
@@ -682,8 +657,8 @@ sf::Image& CustomPrimitiveRenderer::get_tmp_image(const sf::Vector2u& target_siz
 
 void CustomPrimitiveRenderer::draw_call()
 {
-    _vertex_array.setPrimitiveType(sf::Points); // we're only ever drawing points in custom renderer
-    _render_target.draw(_vertex_array);
+    _vertex_array.set_primitive_type(PrimitiveType::Points); // we're only ever drawing points in custom renderer
+    _render_target.draw(_vertex_array._vertex_array);
     _vertex_array.clear();
 }
 

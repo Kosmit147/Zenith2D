@@ -1,11 +1,10 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-
 #include <span>
 
 #include "Zenith/Graphics/Color.hpp"
 #include "Zenith/Graphics/PrimitiveRenderer.hpp"
+#include "Zenith/Graphics/VertexArray.hpp"
 #include "Zenith/Math/Geometry.hpp"
 #include "Zenith/Math/Vec2.hpp"
 #include "Zenith/Utility/Utility.hpp"
@@ -20,7 +19,7 @@ public:
     ZTH_NO_COPY_NO_MOVE(SfmlPrimitiveRenderer)
 
 private:
-    sf::VertexArray _vertex_array = sf::VertexArray{};
+    VertexArray _vertex_array;
 
 private:
     void draw_point_impl(const Vec2f& point, const Color& color) override;
@@ -68,7 +67,7 @@ private:
     void plot_filled_convex_polygon(std::span<const Vec2f> points, const Color& color);
     void plot_filled_convex_polygon(std::span<const Line> lines, const Color& color);
 
-    void draw_call(sf::PrimitiveType primitive_type);
+    void draw_call(PrimitiveType primitive_type);
 };
 
 } // namespace zth
