@@ -3,6 +3,7 @@
 #include <Zenith/Zenith.hpp>
 
 #include "Player.hpp"
+#include "Dragon.hpp"
 
 class Scene : public zth::Scene
 {
@@ -11,6 +12,8 @@ public:
     ~Scene() override;
 
 private:
+    zth::Texture _dragon_texture;
+    Dragon _dragon;
     zth::Texture _player_texture;
     Player _player;
 

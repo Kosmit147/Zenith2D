@@ -30,8 +30,8 @@ Sandbox::~Sandbox()
 
 void Sandbox::on_update()
 {
-    zth::Logger::print_notification("On Update with delta time: {} seconds.", zth::engine->delta_time());
-    zth::Logger::print_notification("FPS: {}", zth::engine->fps());
+    // zth::Logger::print_notification("On Update with delta time: {} seconds.", zth::engine->delta_time());
+    // zth::Logger::print_notification("FPS: {}", zth::engine->fps());
 }
 
 void Sandbox::on_event(const zth::Event& event)
@@ -44,18 +44,6 @@ void Sandbox::on_event(const zth::Event& event)
         auto& resize_event = event.resize_event();
         auto& new_res = resize_event.new_res;
         zth::Logger::print_notification("Window resized. New size: ({}, {}).", new_res.width, new_res.height);
-    }
-    break;
-    case KeyPressed:
-    {
-        auto& key_event = event.key_event();
-        zth::Logger::print_notification("{} key pressed.", to_string(key_event.key));
-    }
-    break;
-    case KeyReleased:
-    {
-        auto& key_event = event.key_event();
-        zth::Logger::print_notification("{} key released.", to_string(key_event.key));
     }
     break;
     case MouseButtonPressed:
