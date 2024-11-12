@@ -35,13 +35,14 @@ Testbed::~Testbed()
 
 void Testbed::on_update()
 {
-    zth::Logger::print_notification("On Update with delta time: {} seconds.", zth::engine->delta_time());
-    zth::Logger::print_notification("FPS: {}", zth::engine->fps());
+    // zth::Logger::print_notification("On Update with delta time: {} seconds.", zth::engine->delta_time());
+    // zth::Logger::print_notification("FPS: {}", zth::engine->fps());
 }
 
 void Testbed::on_event(const zth::Event& event)
 {
-    event_test(event);
+    (void)event;
+    // event_test(event);
 
     // switch (event.type())
     // {
