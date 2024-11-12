@@ -27,6 +27,9 @@ struct Rect
     Vec2f position;
     Vec2f size;
 
+    static Rect from_sf_rect(const sf::FloatRect& rect);
+
+    constexpr Vec2f center() const;
     constexpr std::array<Vec2f, 4> points() const;
 };
 
@@ -46,16 +49,20 @@ struct UIntRect
     explicit operator sf::Rect<u32>() const;
 };
 
-struct Ellipse
-{
-    Vec2f center;
-    Vec2f radius;
-};
-
 struct Circle
 {
     Vec2f center;
     float radius;
+
+    constexpr Rect bounds() const;
+};
+
+struct Ellipse
+{
+    Vec2f center;
+    Vec2f radius;
+
+    constexpr Rect bounds() const;
 };
 
 constexpr bool lines_intersect(const Line& first_line, const Line& second_line);

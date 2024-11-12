@@ -22,6 +22,19 @@ constexpr bool Line::intersects(const Line& other) const
         return false;
 }
 
+inline Rect Rect::from_sf_rect(const sf::FloatRect& rect)
+{
+    return {
+        .position = static_cast<Vec2f>(rect.getPosition()),
+        .size = static_cast<Vec2f>(rect.getSize()),
+    };
+}
+
+constexpr Vec2f Rect::center() const
+{
+    return (position + (position + size)) / 2.0f;
+}
+
 constexpr std::array<Vec2f, 4> Rect::points() const
 {
     auto [x1, y1] = position;
@@ -49,6 +62,17 @@ inline UIntRect::operator sf::Rect<u32>() const
         static_cast<sf::Vector2u>(position),
         static_cast<sf::Vector2u>(size),
     };
+}
+
+constexpr Rect Circle::bounds() const
+{
+    auto half_size = Vec2f{ radius, radius };
+    return { center - half_size, half_size * 2.0f };
+}
+
+constexpr Rect Ellipse::bounds() const
+{
+    return { center - radius, radius * 2.0f };
 }
 
 constexpr bool lines_intersect(const Line& first_line, const Line& second_line)
