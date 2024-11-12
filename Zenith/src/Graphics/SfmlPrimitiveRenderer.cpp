@@ -102,7 +102,6 @@ void SfmlPrimitiveRenderer::draw_filled_convex_polygon_impl(std::span<const Line
 
 void SfmlPrimitiveRenderer::draw_circle_impl(const Circle& circle, const Color& color)
 {
-    // TODO: handle this on our own instead of using SFML shapes
     sf::CircleShape sf_circle;
     sf_circle.setRadius(circle.radius);
     sf_circle.setOutlineColor(static_cast<sf::Color>(color));
@@ -115,7 +114,6 @@ void SfmlPrimitiveRenderer::draw_circle_impl(const Circle& circle, const Color& 
 
 void SfmlPrimitiveRenderer::draw_ellipse_impl(const Ellipse& ellipse, const Color& color)
 {
-    // TODO: handle this on our own instead of using SFML shapes
     SfmlEllipseShape sf_ellipse(ellipse);
     sf_ellipse.setOutlineColor(static_cast<sf::Color>(color));
     sf_ellipse.setOutlineThickness(1);
@@ -126,7 +124,6 @@ void SfmlPrimitiveRenderer::draw_ellipse_impl(const Ellipse& ellipse, const Colo
 
 void SfmlPrimitiveRenderer::draw_filled_circle_impl(const Circle& circle, const Color& color)
 {
-    // TODO: handle this on our own instead of using SFML shapes
     sf::CircleShape sf_circle;
     sf_circle.setRadius(circle.radius);
     sf_circle.setOutlineColor(static_cast<sf::Color>(color));
@@ -139,7 +136,6 @@ void SfmlPrimitiveRenderer::draw_filled_circle_impl(const Circle& circle, const 
 
 void SfmlPrimitiveRenderer::draw_filled_ellipse_impl(const Ellipse& ellipse, const Color& color)
 {
-    // TODO: handle this on our own instead of using SFML shapes
     SfmlEllipseShape sf_ellipse(ellipse);
     sf_ellipse.setOutlineColor(static_cast<sf::Color>(color));
     sf_ellipse.setOutlineThickness(1);
