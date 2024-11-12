@@ -2,6 +2,7 @@
 
 #include "Zenith/Graphics/Drawable.hpp"
 #include "Zenith/Graphics/Sprite.hpp"
+#include "Zenith/Graphics/VertexArray.hpp"
 
 namespace zth {
 
@@ -13,6 +14,11 @@ void Renderer::draw(const Drawable& drawable)
 void Renderer::draw_sprite(const Sprite& sprite) const
 {
     _render_target.draw(sprite._sprite);
+}
+
+void Renderer::draw_vertex_array(const VertexArray& vertex_array) const
+{
+    _render_target.draw(vertex_array._vertex_array);
 }
 
 void Renderer::set_primitive_renderer_type(PrimitiveRendererType primitive_renderer_type)
