@@ -1,11 +1,12 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Image.hpp>
 
 #include <span>
 
 #include "Zenith/Graphics/Color.hpp"
 #include "Zenith/Graphics/PrimitiveRenderer.hpp"
+#include "Zenith/Graphics/VertexArray.hpp"
 #include "Zenith/Math/Geometry.hpp"
 #include "Zenith/Math/Vec2.hpp"
 #include "Zenith/Utility/Utility.hpp"
@@ -30,7 +31,7 @@ public:
     ZTH_NO_COPY_NO_MOVE(CustomPrimitiveRenderer)
 
 private:
-    sf::VertexArray _vertex_array{ sf::Points, 0 }; // we're only ever drawing points in custom renderer
+    VertexArray _vertex_array{ PrimitiveType::Points }; // we're only ever drawing points in custom renderer
 
 private:
     void draw_point_impl(const Vec2f& point, const Color& color) override;
@@ -86,8 +87,21 @@ private:
     static void draw_circle_on_image(sf::Image& image, const Circle& circle, const Color& color);
     static void draw_ellipse_on_image(sf::Image& image, const Ellipse& ellipse, const Color& color);
 
-    static void boundary_fill(sf::Image& image, const Vec2u& seed, const Color& border_color, const Color& fill_color);
-    static void flood_fill(sf::Image& image, const Vec2u& seed, const Color& fill_color, const Color& background_color);
+    static Vec2u get_triangle_seed(const Triangle& triangle);
+    static Vec2u get_rect_seed(const Rect& rect);
+    static Vec2u get_convex_polygon_seed(std::span<const Vec2f> points);
+    static Vec2u get_convex_polygon_seed(std::span<const Line> lines);
+    static Vec2u get_circle_seed(const Circle& circle);
+    static Vec2u get_ellipse_seed(const Ellipse& ellipse);
+
+    static void boundary_fill_on_image(sf::Image& image, const Vec2u& seed, const Color& border_color,
+                                       const Color& fill_color);
+    static void flood_fill_on_image(sf::Image& image, const Vec2u& seed, const Color& fill_color,
+                                    const Color& background_color);
+
+    void fill_on_image(sf::Image& image, const Vec2u& seed, const Color& border_color, const Color& fill_color,
+                       const Color& background_color) const;
+    void draw_image(const sf::Image& image) const;
 
     static sf::Image& get_tmp_image(const sf::Vector2u& target_size);
 
