@@ -40,7 +40,6 @@ private:
 
     void handle_update();
     void handle_event(const Event& event);
-    void handle_input_event(const Event& event);
 };
 
 } // namespace zth

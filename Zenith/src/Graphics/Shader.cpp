@@ -4,50 +4,54 @@
 
 namespace zth {
 
-bool Shader::load_from_string(std::string_view shader_source, ShaderType shader_type)
+Shader::Shader(const std::string& vertex_shader_source, const std::string& fragment_shader_source)
 {
-    if (!_shader.loadFromMemory(shader_source.data(), to_sf_shader_type(shader_type)))
+    load_from_string(vertex_shader_source, fragment_shader_source);
+}
+
+bool Shader::load_from_string(const std::string& shader_source, ShaderType shader_type)
+{
+    if (!_shader.loadFromMemory(shader_source, to_sf_shader_type(shader_type)))
     {
-        logger.get_or_init().log_error("Failed to create {} shader from source: {}", to_string(shader_type),
-                                       shader_source.data());
+        logger.get_or_init().log_error("Failed to create {} shader from source:\n{}", to_string(shader_type),
+                                       shader_source);
         return false;
     }
 
     return true;
 }
 
-bool Shader::load_from_string(std::string_view vertex_shader_source, std::string_view fragment_shader_source)
+bool Shader::load_from_string(const std::string& vertex_shader_source, const std::string& fragment_shader_source)
 {
-    if (!_shader.loadFromMemory(vertex_shader_source.data(), fragment_shader_source.data()))
+    if (!_shader.loadFromMemory(vertex_shader_source, fragment_shader_source))
     {
         auto& log = logger.get_or_init();
-        log.log_error("Failed to create vertex shader from source: {}", vertex_shader_source.data());
-        log.log_error("Failed to create fragment shader from source: {}", fragment_shader_source.data());
+        log.log_error("Failed to create vertex shader from source:\n{}", vertex_shader_source);
+        log.log_error("Failed to create fragment shader from source:\n{}", fragment_shader_source);
         return false;
     }
 
     return true;
 }
 
-bool Shader::load_from_file(std::string_view shader_path, ShaderType shader_type)
+bool Shader::load_from_file(const std::string& shader_path, ShaderType shader_type)
 {
-    if (!_shader.loadFromFile(shader_path.data(), to_sf_shader_type(shader_type)))
+    if (!_shader.loadFromFile(shader_path, to_sf_shader_type(shader_type)))
     {
-        logger.get_or_init().log_error("Failed to load {} shader from path: {}", to_string(shader_type),
-                                       shader_path.data());
+        logger.get_or_init().log_error("Failed to load {} shader from path: {}", to_string(shader_type), shader_path);
         return false;
     }
 
     return true;
 }
 
-bool Shader::load_from_file(std::string_view vertex_shader_path, std::string_view fragment_shader_path)
+bool Shader::load_from_file(const std::string& vertex_shader_path, const std::string& fragment_shader_path)
 {
-    if (!_shader.loadFromFile(vertex_shader_path.data(), fragment_shader_path.data()))
+    if (!_shader.loadFromFile(vertex_shader_path, fragment_shader_path))
     {
         auto& log = logger.get_or_init();
-        log.log_error("Failed to load vertex shader from path: {}", vertex_shader_path.data());
-        log.log_error("Failed to load fragment shader from path: {}", fragment_shader_path.data());
+        log.log_error("Failed to load vertex shader from path: {}", vertex_shader_path);
+        log.log_error("Failed to load fragment shader from path: {}", fragment_shader_path);
         return false;
     }
 

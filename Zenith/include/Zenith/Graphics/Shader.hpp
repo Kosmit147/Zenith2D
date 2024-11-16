@@ -5,7 +5,6 @@
 #include <SFML/System/Vector3.hpp>
 
 #include <string>
-#include <string_view>
 
 #include "Zenith/Core/Typedefs.hpp"
 #include "Zenith/Graphics/Texture.hpp"
@@ -26,13 +25,14 @@ class Shader
 {
 public:
     explicit Shader() = default;
+    explicit Shader(const std::string& vertex_shader_source, const std::string& fragment_shader_source);
     ~Shader() = default;
     ZTH_NO_COPY_NO_MOVE(Shader)
 
-    bool load_from_string(std::string_view shader_source, ShaderType shader_type);
-    bool load_from_string(std::string_view vertex_shader_source, std::string_view fragment_shader_source);
-    bool load_from_file(std::string_view shader_path, ShaderType shader_type);
-    bool load_from_file(std::string_view vertex_shader_path, std::string_view fragment_shader_path);
+    bool load_from_string(const std::string& shader_source, ShaderType shader_type);
+    bool load_from_string(const std::string& vertex_shader_source, const std::string& fragment_shader_source);
+    bool load_from_file(const std::string& shader_path, ShaderType shader_type);
+    bool load_from_file(const std::string& vertex_shader_path, const std::string& fragment_shader_path);
 
     void bind() const { sf::Shader::bind(&_shader); }
     static void unbind() { sf::Shader::bind(nullptr); }

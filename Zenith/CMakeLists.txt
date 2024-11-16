@@ -9,6 +9,7 @@ add_library(
     "src/Core/Engine.cpp"
     "src/Core/EventDispatcher.cpp"
     "src/Core/main.cpp"
+    "src/Core/Scene.cpp"
     "src/Core/Updater.cpp"
     "src/Filesystem/FileIo.cpp"
     "src/Graphics/Shapes/RectangleShape.cpp"
@@ -18,8 +19,10 @@ add_library(
     "src/Graphics/SfmlEllipseShape.cpp"
     "src/Graphics/SfmlPrimitiveRenderer.cpp"
     "src/Graphics/Shader.cpp"
+    "src/Graphics/Shaders.cpp"
     "src/Graphics/Sprite.cpp"
     "src/Graphics/Texture.cpp"
+    "src/Graphics/VertexArray.cpp"
     "src/Logging/Logger.cpp"
     "src/Math/Geometry.cpp"
     "src/Platform/Input/Input.cpp"
@@ -28,6 +31,10 @@ add_library(
     "src/Platform/Event.cpp"
     "src/Platform/Window.cpp"
 )
+
+b_embed(Zenith "src/Shaders/basic.vert")
+b_embed(Zenith "src/Shaders/basic.frag")
+
 target_link_libraries(Zenith PUBLIC sfml-graphics)
 target_include_directories(Zenith PUBLIC "include")
 target_compile_features(Zenith PRIVATE cxx_std_23)

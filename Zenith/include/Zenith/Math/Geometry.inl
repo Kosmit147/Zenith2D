@@ -65,13 +65,13 @@ constexpr Rect& Rect::translate(const Vec2f& translation)
 // constexpr Rect Rect::rotated(float angle, const Vec2f& pivot_point) const
 // {
 //     auto rect_points = points();
-// 
+//
 //     for (auto& point : rect_points)
 //         point = point.rotated(angle, pivot_point);
-// 
+//
 //     return { rect_points[0], size };
 // }
-// 
+//
 // constexpr Rect& Rect::rotate(float angle, const Vec2f& pivot_point)
 // {
 //     *this = rotated(angle, pivot_point);
@@ -97,6 +97,19 @@ constexpr Rect& Rect::scale(float factor, const Vec2f& scaling_point)
 }
 
 // the first point is the position (top-left point)
+inline Rect Rect::from_sf_rect(const sf::FloatRect& rect)
+{
+    return {
+        .position = static_cast<Vec2f>(rect.getPosition()),
+        .size = static_cast<Vec2f>(rect.getSize()),
+    };
+}
+
+constexpr Vec2f Rect::center() const
+{
+    return (position + (position + size)) / 2.0f;
+}
+
 constexpr std::array<Vec2f, 4> Rect::points() const
 {
     auto [x1, y1] = position;
@@ -124,6 +137,17 @@ inline UIntRect::operator sf::Rect<u32>() const
         static_cast<sf::Vector2u>(position),
         static_cast<sf::Vector2u>(size),
     };
+}
+
+constexpr Rect Circle::bounds() const
+{
+    auto half_size = Vec2f{ radius, radius };
+    return { center - half_size, half_size * 2.0f };
+}
+
+constexpr Rect Ellipse::bounds() const
+{
+    return { center - radius, radius * 2.0f };
 }
 
 constexpr bool lines_intersect(const Line& first_line, const Line& second_line)

@@ -3,9 +3,14 @@ project(Sandbox LANGUAGES CXX)
 
 add_executable(
 	Sandbox
+	"src/Dragon.cpp"
 	"src/Player.cpp"
 	"src/Sandbox.cpp"
+	"src/Scene.cpp"
 )
+
+b_embed(Sandbox "assets/emoji.png")
+b_embed(Sandbox "assets/dragon.png")
 
 if(CMAKE_CXX_COMPILER_ID MATCHES ".*GNU.*")
 	target_link_libraries(Sandbox PRIVATE Zenith -lstdc++exp)

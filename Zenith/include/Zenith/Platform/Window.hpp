@@ -32,7 +32,6 @@ public:
     Color clear_color = Color::black;
 
 public:
-    explicit Window(const WindowSpec& spec);
     ~Window() = default;
     ZTH_NO_COPY_NO_MOVE(Window)
 
@@ -41,8 +40,11 @@ public:
     void clear(const Color& color) { _sf_window.clear(static_cast<sf::Color>(color)); }
 
     friend class Application;
+    friend class Engine;
 
 private:
+    explicit Window(const WindowSpec& spec);
+
     std::optional<Event> poll_event();
     void display() { _sf_window.display(); }
     void close() { _sf_window.close(); }

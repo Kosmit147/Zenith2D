@@ -11,6 +11,7 @@ namespace zth {
 
 class Drawable;
 class Sprite;
+class VertexArray;
 
 enum class PrimitiveRendererType
 {
@@ -27,8 +28,9 @@ public:
 
     void draw(const Drawable& drawable);
     void draw_sprite(const Sprite& sprite) const;
+    void draw_vertex_array(const VertexArray& vertex_array) const;
 
-    auto& primitive_renderer() const { return *_selected_primitive_renderer; }
+    auto& primitive_renderer() { return _selected_primitive_renderer; }
     void set_primitive_renderer_type(PrimitiveRendererType primitive_renderer_type);
     PrimitiveRendererType get_primitive_renderer_type() const;
 

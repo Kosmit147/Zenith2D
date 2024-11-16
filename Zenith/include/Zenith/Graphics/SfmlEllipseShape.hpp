@@ -9,7 +9,6 @@
 
 namespace zth {
 
-// TODO: delete this class once we figure out how to deal with drawing shapes on our own
 class SfmlEllipseShape : public sf::Shape
 {
 public:

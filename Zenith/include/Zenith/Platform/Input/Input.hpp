@@ -13,7 +13,7 @@ public:
     bool is_mouse_button_pressed(MouseButton button) const;
     bool is_key_pressed(Key key) const;
 
-    friend class Application;
+    friend class Engine;
 
 private:
     CursorPos _cursor_pos{};
