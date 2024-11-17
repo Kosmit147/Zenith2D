@@ -17,6 +17,14 @@ Transformable2D& Sprite::translate(const Vec2f& translation)
     _sprite.move(static_cast<sf::Vector2f>(translation));
 }
 
+Transformable2D& Sprite::rotateAroundOrigin(float angle)
+{
+    (void)angle;
+    // TODO
+    return *this;
+    _sprite.rotate(angle);
+}
+
 Transformable2D& Sprite::rotate(float angle, const Vec2f& pivot_point)
 {
     (void)angle;
@@ -29,10 +37,9 @@ Transformable2D& Sprite::rotate(float angle, const Vec2f& pivot_point)
 Transformable2D& Sprite::scale(float factor, const Vec2f& scaling_point)
 {
     (void)factor;
-    (void)scaling_point;
     // TODO
     return *this;
-    _sprite.setScale(static_cast<sf::Vector2f>(factor));
+    _sprite.setScale(static_cast<sf::Vector2f>(scaling_point));
 }
 
 void Sprite::draw(Renderer& renderer) const

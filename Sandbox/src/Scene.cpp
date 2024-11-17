@@ -16,7 +16,7 @@ Scene::Scene()
 {
     // register_updatable(_player);
     register_updatable(_dragon);
-    _dragon.scale({ 3.0f, 3.0f });
+    _dragon.scale(5.0f, { 3.0f, 3.0f });
 }
 
 Scene::~Scene()

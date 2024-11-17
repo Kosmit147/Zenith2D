@@ -59,6 +59,21 @@ template<typename T> constexpr Vec2<T>& Vec2<T>::rotate(float angle, const Vec2&
     return *this = this->rotated(angle, pivot_point);
 }
 
+template<typename T> constexpr Vec2<T> Vec2<T>::rotatedAroundOrigin(float angle) const
+{
+    auto diff = *this;
+
+    auto new_x = diff.x * std::cos(angle) - diff.y * std::sin(angle);
+    auto new_y = diff.x * std::sin(angle) + diff.y * std::cos(angle);
+
+    return { new_x, new_y };
+}
+
+template<typename T> constexpr Vec2<T>& Vec2<T>::rotateAroundOrigin(float angle)
+{
+    return *this = this->rotatedAroundOrigin(angle);
+}
+
 template<typename T> constexpr Vec2<T> Vec2<T>::scaled(float factor, const Vec2& scaling_point) const
 {
     return *this * factor + (1 - factor) * scaling_point;

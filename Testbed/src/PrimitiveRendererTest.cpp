@@ -68,7 +68,6 @@ void PrimitiveRendererTest::draw_primitives() const
     auto& renderer = _renderer.primitive_renderer();
 
     static constexpr zth::Vec2f point = { 960.0f, 540.0f };
-
     renderer->draw_point(point, zth::Color::red);
 
     static constexpr zth::Vec2f points[] = {

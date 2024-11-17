@@ -19,11 +19,17 @@ Transformable2D& RectangleShape::translate(const Vec2f& translation)
     return *this;
 }
 
+Transformable2D& RectangleShape::rotateAroundOrigin(float angle)
+{
+
+    rect.rotateAroundOrigin(angle);
+    return *this;
+}
+
 Transformable2D& RectangleShape::rotate(float angle, const Vec2f& pivot_point)
 {
-    (void)angle;
-    (void)pivot_point;
-    // rect.rotate(angle, pivot_point);
+
+    rect.rotate(angle, pivot_point);
     return *this;
 }
 
