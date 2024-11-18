@@ -24,7 +24,7 @@ class VertexArray;
  */
 enum class PrimitiveRendererType
 {
-    SfmlPrimitiveRenderer, ///< Use the SFML-based primitive renderer.
+    SfmlPrimitiveRenderer,   ///< Use the SFML-based primitive renderer.
     CustomPrimitiveRenderer, ///< Use a custom primitive renderer.
 };
 
@@ -35,7 +35,8 @@ enum class PrimitiveRendererType
  * The `Renderer` class is responsible for drawing `Drawable` objects, `Sprite` objects, and `VertexArray` objects
  * to the given SFML render target. It also allows for the selection of different types of primitive renderers.
  *
- * @note The class can switch between using the SFML-based `SfmlPrimitiveRenderer` and a custom `CustomPrimitiveRenderer`.
+ * @note The class can switch between using the SFML-based `SfmlPrimitiveRenderer` and a custom
+ * `CustomPrimitiveRenderer`.
  */
 class Renderer
 {
@@ -44,7 +45,7 @@ public:
      * @brief Constructs a Renderer with a specified render target.
      * @param render_target The render target (e.g., a window or texture) on which the rendering is done.
      */
-    explicit Renderer(sf::RenderTarget& render_target);
+    explicit Renderer(sf::RenderTarget& render_target) : _render_target(render_target) {}
 
     /**
      * @brief Destructor for the Renderer class.
@@ -76,7 +77,7 @@ public:
      * @brief Accesses the currently selected primitive renderer.
      * @return A reference to the current primitive renderer.
      */
-    auto& primitive_renderer();
+    auto& primitive_renderer() { return _selected_primitive_renderer; }
 
     /**
      * @brief Sets the type of primitive renderer to use.
@@ -91,10 +92,11 @@ public:
     PrimitiveRendererType get_primitive_renderer_type() const;
 
 private:
-    sf::RenderTarget& _render_target; ///< The render target for drawing.
-    SfmlPrimitiveRenderer _sfml_primitive_renderer; ///< The SFML-based primitive renderer.
-    CustomPrimitiveRenderer _custom_primitive_renderer; ///< The custom primitive renderer.
-    PrimitiveRenderer* _selected_primitive_renderer; ///< The currently selected primitive renderer.
+    sf::RenderTarget& _render_target;                                     ///< The render target for drawing.
+    SfmlPrimitiveRenderer _sfml_primitive_renderer{ _render_target };     ///< The SFML-based primitive renderer.
+    CustomPrimitiveRenderer _custom_primitive_renderer{ _render_target }; ///< The custom primitive renderer.
+    PrimitiveRenderer* _selected_primitive_renderer =
+        &_sfml_primitive_renderer; ///< The currently selected primitive renderer.
 };
 
 } // namespace zth

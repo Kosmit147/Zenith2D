@@ -19,6 +19,8 @@
 
 namespace zth {
 
+class Texture;
+
 /**
  * @struct SpriteSize
  * @brief Holds the dimensions of a sprite in pixels (width and height).

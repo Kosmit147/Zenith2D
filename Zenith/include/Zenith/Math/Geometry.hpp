@@ -558,3 +558,5 @@ bool points_form_a_valid_polygon(std::span<const Vec2f> points);
 bool lines_form_a_valid_polygon(std::span<const Line> lines);
 
 } // namespace zth
+
+#include "Geometry.inl"

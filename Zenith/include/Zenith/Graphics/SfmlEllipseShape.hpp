@@ -63,7 +63,7 @@ public:
      * @brief Gets the number of points used to represent the ellipse.
      * @return The number of points in the ellipse shape.
      */
-    std::size_t getPointCount() const override;
+    std::size_t getPointCount() const override { return _point_count; }
 
     /**
      * @brief Gets the point at a specified index.

@@ -31,7 +31,7 @@ public:
      * @brief Constructs a `SfmlPrimitiveRenderer` that draws primitives on the specified render target.
      * @param render_target The target to render to (e.g., window or texture).
      */
-    explicit SfmlPrimitiveRenderer(sf::RenderTarget& render_target);
+    explicit SfmlPrimitiveRenderer(sf::RenderTarget& render_target) : PrimitiveRenderer(render_target) {}
 
     /**
      * @brief Destructor for `SfmlPrimitiveRenderer`.

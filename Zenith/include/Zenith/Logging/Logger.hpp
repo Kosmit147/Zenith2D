@@ -261,3 +261,5 @@ private:
 inline GlobalAccessPtr<Logger> logger;
 
 } // namespace zth
+
+#include "Logger.inl"

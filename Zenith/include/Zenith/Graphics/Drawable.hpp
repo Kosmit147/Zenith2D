@@ -7,6 +7,8 @@
 
 namespace zth {
 
+class Renderer;
+
 /**
  * @class Drawable
  * @brief An interface for objects that can be rendered by a `Renderer`.

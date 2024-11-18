@@ -105,47 +105,54 @@ public:
      * 
      * @param primitive_type The new `PrimitiveType` for the `VertexArray`.
      */
-    void set_primitive_type(PrimitiveType primitive_type);
+    void set_primitive_type(PrimitiveType primitive_type)
+    {
+        _vertex_array.setPrimitiveType(to_sf_primitive_type(primitive_type));
+    }
 
     /**
      * @brief Appends a single `Vertex` to the `VertexArray`.
      * 
      * @param vertex The `Vertex` to append.
      */
-    void append(const Vertex& vertex);
+    void append(const Vertex& vertex) { _vertex_array.append(static_cast<sf::Vertex>(vertex)); }
 
     /**
      * @brief Appends a range of vertices to the `VertexArray`.
      * 
      * @param vertices A span of `Vertex` objects to append.
      */
-    void append(std::span<const Vertex> vertices);
+    void append(std::span<const Vertex> vertices)
+    {
+        for (const auto& vertex : vertices)
+            append(vertex);
+    }
 
     /**
      * @brief Clears all vertices from the `VertexArray`.
      */
-    void clear();
+    void clear() { _vertex_array.clear(); }
 
     /**
      * @brief Retrieves the primitive type of the `VertexArray`.
      * 
      * @return The current `PrimitiveType` of the `VertexArray`.
      */
-    auto primitive_type() const;
+    auto primitive_type() const { return to_primitive_type(_vertex_array.getPrimitiveType()); }
 
     /**
      * @brief Retrieves the number of vertices in the `VertexArray`.
      * 
      * @return The vertex count.
      */
-    auto vertex_count() const;
+    auto vertex_count() const { return _vertex_array.getVertexCount(); }
 
     /**
      * @brief Retrieves the bounding rectangle of the `VertexArray`.
      * 
      * @return The bounding rectangle of the `VertexArray`.
      */
-    auto bounds() const;
+    auto bounds() const { return Rect::from_sf_rect(_vertex_array.getBounds()); }
 
     friend class Renderer; ///< Allows `Renderer` class to access private members of `VertexArray`.
     friend class SfmlPrimitiveRenderer; ///< Allows `SfmlPrimitiveRenderer` class to access private members of `VertexArray`.
