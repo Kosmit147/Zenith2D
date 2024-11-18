@@ -372,6 +372,19 @@ constexpr Ellipse& Ellipse::rotate(float angle, const Vec2f& pivot_point)
     return *this = this->rotated(angle, pivot_point);
 }
 
+constexpr Ellipse Ellipse::scaled(float factor) const
+{
+    auto scaled_center = center.scaled(factor);
+    auto scaled_radius = abs(radius * factor);
+
+    return { scaled_center, scaled_radius };
+}
+
+constexpr Ellipse& Ellipse::scale(float factor)
+{
+    return *this = scaled(factor);
+}
+
 constexpr Ellipse Ellipse::scaled(float factor, const Vec2f& scaling_point) const
 {
     auto scaled_center = center.scaled(factor, scaling_point);
