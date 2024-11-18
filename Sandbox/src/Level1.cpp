@@ -20,6 +20,7 @@ Level1::Level1()
 {
     // register_updatable(_player);
     register_updatable(_dragon);
+    _dragon.scale(3.0f, { 3.0f, 3.0f });
 
     register_animatable(_dragon);
 
@@ -27,7 +28,7 @@ Level1::Level1()
     register_drawable(_gold_bars);
     register_drawable(_dragon);
 
-    _dragon.scale({ 3.0f, 3.0f });
+    _dragon.scale(3.0f);
 
     _gold_bars.set_position({ 1000.0f, 500.0f });
 }

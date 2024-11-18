@@ -20,6 +20,8 @@ PrimitiveType to_primitive_type(sf::PrimitiveType primitive_type)
         return PrimitiveType::TriangleStrip;
     case sf::PrimitiveType::TriangleFan:
         return PrimitiveType::TriangleFan;
+    default:
+        break;
     }
 
     assert(false);

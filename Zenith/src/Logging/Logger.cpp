@@ -4,23 +4,27 @@
 
 namespace zth {
 
-Logger::Logger() : log_target(LogTarget::Console), log_file_path("") {}
+Logger::Logger() : log_target(LogTarget::Console) {}
 
-Logger::Logger(const LoggerSpec& spec) : log_target(spec.target), log_file_path(spec.log_file_path) {}
+Logger::Logger(const LoggerSpec& spec) : log_target(spec.target)
+{
+    if (spec.log_file_path)
+        set_log_file_path(spec.log_file_path.value());
+}
 
-Logger::Logger(LoggerSpec&& spec) : log_target(spec.target), log_file_path(std::move(spec.log_file_path)) {}
+Logger::Logger(LogTarget log_target) : log_target(log_target) {}
 
-Logger::Logger(LogTarget log_target) : log_target(log_target), log_file_path("") {}
+Logger::Logger(LogTarget log_target, const std::filesystem::path& log_file_path) : log_target(log_target)
+{
+    set_log_file_path(log_file_path);
+}
 
-Logger::Logger(LogTarget log_target, const std::filesystem::path& log_file_path)
-    : log_target(log_target), log_file_path(log_file_path)
-{}
+void Logger::set_log_file_path(const std::filesystem::path& log_file_path)
+{
+    _file.open(log_file_path);
+}
 
-Logger::Logger(LogTarget log_target, std::filesystem::path&& log_file_path)
-    : log_target(log_target), log_file_path(std::move(log_file_path))
-{}
-
-void Logger::log(LogSeverity severity, std::string_view message) const
+void Logger::log(LogSeverity severity, std::string_view message)
 {
     if (has_flag(log_target, LogTarget::Console))
     {
@@ -40,17 +44,10 @@ void Logger::log(LogSeverity severity, std::string_view message) const
 
     if (has_flag(log_target, LogTarget::File))
     {
-        if (!log_file_path.empty())
-        {
-            auto success = append_to_file_with_newline(log_file_path, message);
-
-            if (!success)
-                print_error("Failed to write to log file: {}.", log_file_path.string());
-        }
+        if (_file.is_open())
+            _file << message << '\n';
         else
-        {
-            print_error("Log file path not set.");
-        }
+            print_error("Failed to log to file. Log file is not opened.");
     }
 }
 

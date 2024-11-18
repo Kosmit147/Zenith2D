@@ -13,7 +13,7 @@ static const zth::ApplicationSpec spec = {
     },
     .logger_spec = {
         .target = zth::LogTarget::ConsoleAndFile,
-        .log_file_path = "log/sandbox_log.txt",
+        .log_file_path = "sandbox_log.txt",
     },
 };
 
@@ -28,11 +28,7 @@ Sandbox::~Sandbox()
     zth::logger->log_notification("On shutdown.");
 }
 
-void Sandbox::on_update()
-{
-    // zth::Logger::print_notification("On Update with delta time: {} seconds.", zth::engine->delta_time());
-    // zth::Logger::print_notification("FPS: {}", zth::engine->fps());
-}
+void Sandbox::on_update() {}
 
 void Sandbox::on_event(const zth::Event& event)
 {

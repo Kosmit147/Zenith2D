@@ -67,7 +67,7 @@ zth::u32 Dragon::next_frame()
     if (!_walking)
         timer.reset();
 
-    if (timer.elapsed_s() > _walking_animation_length)
+    if (timer.elapsed_s() > static_cast<double>(_walking_animation_length))
     {
         timer.reset();
         remainder = (remainder + 1) % 3;

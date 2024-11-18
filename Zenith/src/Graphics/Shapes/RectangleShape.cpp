@@ -13,22 +13,43 @@ void RectangleShape::draw(Renderer& renderer) const
     renderer.primitive_renderer()->draw_filled_rect(rect, color);
 }
 
-void RectangleShape::translate(const Vec2f& translation)
+Transformable2D& RectangleShape::translate(const Vec2f& translation)
 {
-    (void)translation;
-    // TODO
+    rect.translate(translation);
+    return *this;
 }
 
-void RectangleShape::rotate(float angle)
+Transformable2D& RectangleShape::rotate(float angle)
 {
     (void)angle;
+    // rect.rotate(angle);
+
     // TODO
+
+    return *this;
 }
 
-void RectangleShape::scale(const Vec2f& factor)
+Transformable2D& RectangleShape::rotate(float angle, const Vec2f& pivot_point)
 {
-    (void)factor;
+    (void)angle;
+    (void)pivot_point;
+    // rect.rotate(angle, pivot_point);
+
     // TODO
+
+    return *this;
+}
+
+Transformable2D& RectangleShape::scale(float factor)
+{
+    rect.scale(factor);
+    return *this;
+}
+
+Transformable2D& RectangleShape::scale(float factor, const Vec2f& scaling_point)
+{
+    rect.scale(factor, scaling_point);
+    return *this;
 }
 
 } // namespace zth
