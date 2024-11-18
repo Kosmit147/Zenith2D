@@ -1,6 +1,6 @@
 #include "Sandbox.hpp"
 
-#include "Scene.hpp"
+#include "Level1.hpp"
 
 ZTH_IMPLEMENT_APP(Sandbox)
 
@@ -20,7 +20,7 @@ static const zth::ApplicationSpec spec = {
 Sandbox::Sandbox() : Application(spec)
 {
     zth::logger->log_notification("On init.");
-    zth::engine->change_scene(std::make_unique<Scene>());
+    zth::engine->change_scene(std::make_unique<Level1>());
 }
 
 Sandbox::~Sandbox()
@@ -28,27 +28,7 @@ Sandbox::~Sandbox()
     zth::logger->log_notification("On shutdown.");
 }
 
-void Sandbox::on_update()
-{
-    zth::Logger::print_notification("On Update with delta time: {} seconds.", zth::engine->delta_time());
-    zth::Logger::print_notification("FPS: {}", zth::engine->fps());
-
-    auto& renderer = zth::engine->window.renderer;
-
-    static constexpr zth::Triangle filled_triangle = {
-        zth::Vec2f{ 930.0f, 490.0f },
-        zth::Vec2f{ 990.0f, 490.0f },
-        zth::Vec2f{ 960.0f, 570.0f },
-    };
-    zth::TriangleShape triangleShape(filled_triangle, zth::Color::magenta);
-    renderer.draw(triangleShape);
-    triangleShape.translate({ 0.0f, 100.0f }).scale(-2, { 960.0f, 540.0f }).rotate(180.0f, { 960.0f, 540.0f });
-
-    renderer.draw(triangleShape);
-
-    // zth::Logger::print_notification("On Update with delta time: {} seconds.", zth::engine->delta_time());
-    // zth::Logger::print_notification("FPS: {}", zth::engine->fps());
-}
+void Sandbox::on_update() {}
 
 void Sandbox::on_event(const zth::Event& event)
 {

@@ -67,6 +67,7 @@ struct Rect
     // the first point is the position (top-left point)
     constexpr std::array<Vec2f, 4> points() const;
     constexpr Vec2f center() const;
+    constexpr bool contains(const Vec2f& point) const;
 };
 
 struct IntRect

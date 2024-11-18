@@ -13,7 +13,7 @@ enum class Direction
 class Dragon : public zth::AnimatedSprite, public zth::Updatable
 {
 public:
-    explicit Dragon(const zth::Texture& texture);
+    explicit Dragon(const zth::Texture& texture, const zth::Sprite& gold_bar);
 
     void on_update() override;
 
@@ -22,6 +22,7 @@ private:
     bool _walking = false;
     Direction _direction = Direction::Down;
     float _walking_animation_length = 0.15f;
+    const zth::Sprite& _gold_bar;
 
 private:
     zth::u32 next_frame() override;

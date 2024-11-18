@@ -6,6 +6,9 @@
 
 namespace zth {
 
+class Drawable;
+class Animatable;
+
 class Scene
 {
 public:
@@ -25,9 +28,17 @@ protected:
     void deregister_event_listener(EventType event_type, const EventListener& listener);
     void deregister_event_listener(const EventListener& listener);
 
+    void register_drawable(Drawable& drawable);
+    void deregister_drawable(Drawable& drawable);
+
+    void register_animatable(Animatable& animatable);
+    void deregister_animatable(Animatable& animatable);
+
 private:
     Updater _updater;
     EventDispatcher _event_dispatcher;
+    std::vector<Drawable*> _drawables;
+    std::vector<Animatable*> _animatables;
 
 private:
     void update();

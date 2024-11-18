@@ -112,7 +112,7 @@ void PrimitiveRendererTest::draw_primitives() const
 
     renderer->draw_closed_lines(closed_lines, zth::Color::blue);
 
-    static constexpr zth::Rect rect = { .position = { 960.0f, 740.0f }, .size = { 180.0f, 90.0f } };
+    static constexpr zth::Rect rect = { .position = { 110.0f, 70.0f }, .size = { 180.0f, 90.0f } };
 
     renderer->draw_rect(rect, zth::Color::blue);
 
