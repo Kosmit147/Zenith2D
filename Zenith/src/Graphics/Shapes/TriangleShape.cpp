@@ -19,17 +19,21 @@ Transformable2D& TriangleShape::translate(const Vec2f& translation)
     return *this;
 }
 
-Transformable2D& TriangleShape::rotateAroundOrigin(float angle)
+Transformable2D& TriangleShape::rotate(float angle)
 {
-
-    triangle.rotateAroundOrigin(angle);
+    triangle.rotate(angle);
     return *this;
 }
 
 Transformable2D& TriangleShape::rotate(float angle, const Vec2f& pivot_point)
 {
-
     triangle.rotate(angle, pivot_point);
+    return *this;
+}
+
+Transformable2D& TriangleShape::scale(float factor)
+{
+    triangle.scale(factor);
     return *this;
 }
 

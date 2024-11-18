@@ -19,17 +19,21 @@ Transformable2D& CircleShape::translate(const Vec2f& translation)
     return *this;
 }
 
-Transformable2D& CircleShape::rotateAroundOrigin(float angle)
+Transformable2D& CircleShape::rotate(float angle)
 {
-
-    circle.rotateAroundOrigin(angle);
+    circle.rotate(angle);
     return *this;
 }
 
 Transformable2D& CircleShape::rotate(float angle, const Vec2f& pivot_point)
 {
-
     circle.rotate(angle, pivot_point);
+    return *this;
+}
+
+Transformable2D& CircleShape::scale(float factor)
+{
+    circle.scale(factor);
     return *this;
 }
 

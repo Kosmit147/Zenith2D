@@ -19,17 +19,21 @@ Transformable2D& EllipseShape::translate(const Vec2f& translation)
     return *this;
 }
 
-Transformable2D& EllipseShape::rotateAroundOrigin(float angle)
+Transformable2D& EllipseShape::rotate(float angle)
 {
-
-    ellipse.rotateAroundOrigin(angle);
+    ellipse.rotate(angle);
     return *this;
 }
 
 Transformable2D& EllipseShape::rotate(float angle, const Vec2f& pivot_point)
 {
-
     ellipse.rotate(angle, pivot_point);
+    return *this;
+}
+
+Transformable2D& EllipseShape::scale(float factor)
+{
+    ellipse.scale(factor);
     return *this;
 }
 

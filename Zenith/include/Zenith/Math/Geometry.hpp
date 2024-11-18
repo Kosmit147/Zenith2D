@@ -16,10 +16,12 @@ struct Line
 
     constexpr Line translated(const Vec2f& translation) const;
     constexpr Line& translate(const Vec2f& translation);
-    constexpr Line rotatedAroundOrigin(float angle) const;
-    constexpr Line& rotateAroundOrigin(float angle);
+    constexpr Line rotated(float angle) const;
+    constexpr Line& rotate(float angle);
     constexpr Line rotated(float angle, const Vec2f& pivot_point) const;
     constexpr Line& rotate(float angle, const Vec2f& pivot_point);
+    constexpr Line scaled(float factor) const;
+    constexpr Line& scale(float factor);
     constexpr Line scaled(float factor, const Vec2f& scaling_point) const;
     constexpr Line& scale(float factor, const Vec2f& scaling_point);
 
@@ -32,11 +34,12 @@ struct Triangle
 
     constexpr Triangle translated(const Vec2f& translation) const;
     constexpr Triangle& translate(const Vec2f& translation);
-    constexpr Triangle rotatedAroundOrigin(float angle) const;
-    constexpr Triangle& rotateAroundOrigin(float angle);
+    constexpr Triangle rotated(float angle) const;
+    constexpr Triangle& rotate(float angle);
     constexpr Triangle rotated(float angle, const Vec2f& pivot_point) const;
     constexpr Triangle& rotate(float angle, const Vec2f& pivot_point);
-
+    constexpr Triangle scaled(float factor) const;
+    constexpr Triangle& scale(float factor);
     constexpr Triangle scaled(float factor, const Vec2f& scaling_point) const;
     constexpr Triangle& scale(float factor, const Vec2f& scaling_point);
 };
@@ -46,23 +49,24 @@ struct Rect
     Vec2f position;
     Vec2f size;
 
+    static Rect from_sf_rect(const sf::FloatRect& rect);
+
     constexpr Rect translated(const Vec2f& translation) const;
     constexpr Rect& translate(const Vec2f& translation);
 
-    // Rect can't be rotated anyway
-    constexpr Rect rotatedAroundOrigin(float angle) const;
-    constexpr Rect& rotateAroundOrigin(float angle);
-    constexpr Rect rotated(float angle, const Vec2f& pivot_point) const;
-    constexpr Rect& rotate(float angle, const Vec2f& pivot_point);
+    // constexpr Rect rotated(float angle) const;
+    // constexpr Rect& rotate(float angle);
+    // constexpr Rect rotated(float angle, const Vec2f& pivot_point) const;
+    // constexpr Rect& rotate(float angle, const Vec2f& pivot_point);
 
+    constexpr Rect scaled(float factor) const;
+    constexpr Rect& scale(float factor);
     constexpr Rect scaled(float factor, const Vec2f& scaling_point) const;
     constexpr Rect& scale(float factor, const Vec2f& scaling_point);
 
     // the first point is the position (top-left point)
-    static Rect from_sf_rect(const sf::FloatRect& rect);
-
-    constexpr Vec2f center() const;
     constexpr std::array<Vec2f, 4> points() const;
+    constexpr Vec2f center() const;
 };
 
 struct IntRect
@@ -88,11 +92,12 @@ struct Circle
 
     constexpr Circle translated(const Vec2f& translation) const;
     constexpr Circle& translate(const Vec2f& translation);
-    constexpr Circle rotatedAroundOrigin(float angle) const;
-    constexpr Circle& rotateAroundOrigin(float angle);
+    constexpr Circle rotated(float angle) const;
+    constexpr Circle& rotate(float angle);
     constexpr Circle rotated(float angle, const Vec2f& pivot_point) const;
     constexpr Circle& rotate(float angle, const Vec2f& pivot_point);
-
+    constexpr Circle scaled(float factor) const;
+    constexpr Circle& scale(float factor);
     constexpr Circle scaled(float factor, const Vec2f& scaling_point) const;
     constexpr Circle& scale(float factor, const Vec2f& scaling_point);
 
@@ -106,13 +111,15 @@ struct Ellipse
 
     constexpr Ellipse translated(const Vec2f& translation) const;
     constexpr Ellipse& translate(const Vec2f& translation);
-    constexpr Ellipse rotatedAroundOrigin(float angle) const;
-    constexpr Ellipse& rotateAroundOrigin(float angle);
+    constexpr Ellipse rotated(float angle) const;
+    constexpr Ellipse& rotate(float angle);
     constexpr Ellipse rotated(float angle, const Vec2f& pivot_point) const;
     constexpr Ellipse& rotate(float angle, const Vec2f& pivot_point);
-
+    constexpr Ellipse scaled(float factor) const;
+    constexpr Ellipse& scale(float factor);
     constexpr Ellipse scaled(float factor, const Vec2f& scaling_point) const;
     constexpr Ellipse& scale(float factor, const Vec2f& scaling_point);
+
     constexpr Rect bounds() const;
 };
 
