@@ -19,6 +19,11 @@ void Sprite::rotate(float angle)
     _sprite.rotate(angle);
 }
 
+void Sprite::scale(float factor)
+{
+    _sprite.scale({ factor, factor });
+}
+
 void Sprite::scale(const Vec2f& factor)
 {
     _sprite.setScale(static_cast<sf::Vector2f>(factor));

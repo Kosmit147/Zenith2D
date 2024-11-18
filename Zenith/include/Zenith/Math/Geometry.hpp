@@ -31,6 +31,7 @@ struct Rect
 
     constexpr Vec2f center() const;
     constexpr std::array<Vec2f, 4> points() const;
+    constexpr bool contains(const Vec2f& point) const;
 };
 
 struct IntRect

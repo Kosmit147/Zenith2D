@@ -40,12 +40,15 @@ public:
 
     void translate(const Vec2f& translation) override;
     void rotate(float angle) override;
+    void scale(float factor);
     void scale(const Vec2f& factor) override;
 
     void draw(Renderer& renderer) const override;
 
     void set_position(const Vec2f& pos) { _sprite.setPosition(static_cast<sf::Vector2f>(pos)); }
     auto get_position() const { return static_cast<Vec2f>(_sprite.getPosition()); }
+
+    auto bounds() const { return Rect::from_sf_rect(_sprite.getGlobalBounds()); }
 
     void set_texture_rect(const IntRect& texture_rect);
 

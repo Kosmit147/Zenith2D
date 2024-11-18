@@ -1,5 +1,8 @@
 #include "Zenith/Core/Scene.hpp"
 
+#include "Zenith/Core/Engine.hpp"
+#include "Zenith/Graphics/Animatable.hpp"
+
 namespace zth {
 
 void Scene::register_updatable(Updatable& updatable)
@@ -32,10 +35,36 @@ void Scene::deregister_event_listener(const EventListener& listener)
     _event_dispatcher.deregister_listener(listener);
 }
 
+void Scene::register_drawable(Drawable& drawable)
+{
+    _drawables.push_back(&drawable);
+}
+
+void Scene::deregister_drawable(Drawable& drawable)
+{
+    std::erase(_drawables, &drawable);
+}
+
+void Scene::register_animatable(Animatable& animatable)
+{
+    _animatables.push_back(&animatable);
+}
+
+void Scene::deregister_animatable(Animatable& animatable)
+{
+    std::erase(_animatables, &animatable);
+}
+
 void Scene::update()
 {
     on_update();
     _updater.update();
+
+    for (auto& animatable : _animatables)
+        animatable->animate();
+
+    for (auto& drawable : _drawables)
+        engine->window.renderer.draw(*drawable);
 }
 
 void Scene::dispatch_event(const Event& event)

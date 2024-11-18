@@ -48,6 +48,16 @@ constexpr std::array<Vec2f, 4> Rect::points() const
     };
 }
 
+constexpr bool Rect::contains(const Vec2f& point) const
+{
+    auto bottom_left = position + size;
+
+    if (point >= position && point <= bottom_left)
+        return true;
+    else
+        return false;
+}
+
 inline IntRect::operator sf::Rect<i32>() const
 {
     return sf::Rect<i32>{

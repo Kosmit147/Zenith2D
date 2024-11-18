@@ -1,6 +1,6 @@
 #include "Sandbox.hpp"
 
-#include "Scene.hpp"
+#include "Level1.hpp"
 
 ZTH_IMPLEMENT_APP(Sandbox)
 
@@ -20,7 +20,7 @@ static const zth::ApplicationSpec spec = {
 Sandbox::Sandbox() : Application(spec)
 {
     zth::logger->log_notification("On init.");
-    zth::engine->change_scene(std::make_unique<Scene>());
+    zth::engine->change_scene(std::make_unique<Level1>());
 }
 
 Sandbox::~Sandbox()

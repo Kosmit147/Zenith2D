@@ -1,11 +1,15 @@
 #include "Dragon.hpp"
 
+#include "Level2.hpp"
+
 static constexpr zth::SpriteSize dragon_sprite_size = {
     .width = 192,
     .height = 192,
 };
 
-Dragon::Dragon(const zth::Texture& texture) : AnimatedSprite(texture, dragon_sprite_size, 3 * 4, 0.1f) {}
+Dragon::Dragon(const zth::Texture& texture, const zth::Sprite& gold_bar)
+    : AnimatedSprite(texture, dragon_sprite_size, 3 * 4, 0.1f), _gold_bar(gold_bar)
+{}
 
 void Dragon::on_update()
 {
@@ -46,6 +50,11 @@ void Dragon::on_update()
         _direction = Direction::Down;
         _walking = true;
     }
+
+    auto center = bounds().center();
+
+    if (_gold_bar.bounds().contains(center))
+        zth::engine->change_scene(std::make_unique<Level2>());
 
     set_position({ new_x, new_y });
 }
