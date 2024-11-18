@@ -13,32 +13,32 @@ inline auto white = "\x1b[37m";
 inline auto reset = "\x1b[0m";
 } // namespace ansi_colors
 
-inline void Logger::log_notification(std::string_view message) const
+inline void Logger::log_notification(std::string_view message)
 {
     log(LogSeverity::Notification, message);
 }
 
-inline void Logger::log_warning(std::string_view message) const
+inline void Logger::log_warning(std::string_view message)
 {
     log(LogSeverity::Warning, message);
 }
 
-inline void Logger::log_error(std::string_view message) const
+inline void Logger::log_error(std::string_view message)
 {
     log(LogSeverity::Error, message);
 }
 
-template<typename... Args> void Logger::log_notification(std::format_string<Args...>&& format, Args&&... args) const
+template<typename... Args> void Logger::log_notification(std::format_string<Args...>&& format, Args&&... args)
 {
     log(LogSeverity::Notification, std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
 }
 
-template<typename... Args> void Logger::log_warning(std::format_string<Args...>&& format, Args&&... args) const
+template<typename... Args> void Logger::log_warning(std::format_string<Args...>&& format, Args&&... args)
 {
     log(LogSeverity::Warning, std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
 }
 
-template<typename... Args> void Logger::log_error(std::format_string<Args...>&& format, Args&&... args) const
+template<typename... Args> void Logger::log_error(std::format_string<Args...>&& format, Args&&... args)
 {
     log(LogSeverity::Error, std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
 }
@@ -82,7 +82,7 @@ template<typename... Args> void Logger::print_error(std::format_string<Args...>&
 }
 
 template<typename... Args>
-void Logger::log(LogSeverity severity, std::format_string<Args...>&& format, Args&&... args) const
+void Logger::log(LogSeverity severity, std::format_string<Args...>&& format, Args&&... args)
 {
     auto message = std::format(std::forward<std::format_string<Args...>>(format), std::forward<Args>(args)...);
     log(severity, message);

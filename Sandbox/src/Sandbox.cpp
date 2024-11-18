@@ -13,7 +13,7 @@ static const zth::ApplicationSpec spec = {
     },
     .logger_spec = {
         .target = zth::LogTarget::ConsoleAndFile,
-        .log_file_path = "log/sandbox_log.txt",
+        .log_file_path = "sandbox_log.txt",
     },
 };
 
