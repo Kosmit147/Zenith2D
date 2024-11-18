@@ -1,3 +1,8 @@
+/**
+ * @file SfmlPrimitiveRenderer.hpp
+ * @brief Defines the `SfmlPrimitiveRenderer` class, which provides implementation for rendering various primitives using SFML.
+ */
+
 #pragma once
 
 #include <span>
@@ -11,17 +16,37 @@
 
 namespace zth {
 
+/**
+ * @class SfmlPrimitiveRenderer
+ * @brief Renders primitives using SFML.
+ *
+ * `SfmlPrimitiveRenderer` is a subclass of `PrimitiveRenderer` that implements the methods for drawing various types of primitives 
+ * (points, lines, polygons, etc.) using the SFML graphics system. This class is responsible for creating and managing 
+ * SFML's `sf::VertexArray` to render shapes efficiently.
+ */
 class SfmlPrimitiveRenderer : public PrimitiveRenderer
 {
 public:
-    explicit SfmlPrimitiveRenderer(sf::RenderTarget& render_target) : PrimitiveRenderer(render_target) {}
+    /**
+     * @brief Constructs a `SfmlPrimitiveRenderer` that draws primitives on the specified render target.
+     * @param render_target The target to render to (e.g., window or texture).
+     */
+    explicit SfmlPrimitiveRenderer(sf::RenderTarget& render_target);
+
+    /**
+     * @brief Destructor for `SfmlPrimitiveRenderer`.
+     */
     ~SfmlPrimitiveRenderer() override = default;
+
+    /**
+     * @brief Deleted copy constructor and move constructor.
+     */
     ZTH_NO_COPY_NO_MOVE(SfmlPrimitiveRenderer)
 
 private:
-    VertexArray _vertex_array;
+    VertexArray _vertex_array; ///< The vertex array used for drawing primitives.
 
-private:
+    // Implementation methods for drawing different types of primitives.
     void draw_point_impl(const Vec2f& point, const Color& color) override;
     void draw_points_impl(std::span<const Vec2f> points, const Color& color) override;
     void draw_line_impl(const Vec2f& from, const Vec2f& to, const Color& color) override;
@@ -47,6 +72,7 @@ private:
     void draw_filled_circle_impl(const Circle& circle, const Color& color) override;
     void draw_filled_ellipse_impl(const Ellipse& ellipse, const Color& color) override;
 
+    // Plotting methods for individual primitives (used internally).
     void plot_point(const Vec2f& point, const Color& color);
     void plot_points(std::span<const Vec2f> points, const Color& color);
     void plot_line(const Vec2f& from, const Vec2f& to, const Color& color);
@@ -67,6 +93,10 @@ private:
     void plot_filled_convex_polygon(std::span<const Vec2f> points, const Color& color);
     void plot_filled_convex_polygon(std::span<const Line> lines, const Color& color);
 
+    /**
+     * @brief Performs the actual drawing of the primitive after it's been prepared.
+     * @param primitive_type The type of primitive to be drawn (point, line, triangle, etc.).
+     */
     void draw_call(PrimitiveType primitive_type);
 };
 
