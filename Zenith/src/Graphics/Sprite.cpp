@@ -9,19 +9,42 @@ Sprite::Sprite(const Texture& texture, const IntRect& texture_rect)
     : _sprite(texture._texture, static_cast<sf::IntRect>(texture_rect))
 {}
 
-void Sprite::translate(const Vec2f& translation)
+Transformable2D& Sprite::translate(const Vec2f& translation)
 {
     _sprite.move(static_cast<sf::Vector2f>(translation));
+    return *this;
 }
 
-void Sprite::rotate(float angle)
+Transformable2D& Sprite::rotate(float angle)
 {
     _sprite.rotate(angle);
+    return *this;
 }
 
-void Sprite::scale(const Vec2f& factor)
+Transformable2D& Sprite::rotate(float angle, const Vec2f& pivot_point)
 {
-    _sprite.setScale(static_cast<sf::Vector2f>(factor));
+    (void)angle;
+    (void)pivot_point;
+
+    // TODO
+
+    return *this;
+}
+
+Transformable2D& Sprite::scale(float factor)
+{
+    _sprite.setScale({ factor, factor });
+    return *this;
+}
+
+Transformable2D& Sprite::scale(float factor, const Vec2f& scaling_point)
+{
+    (void)factor;
+    (void)scaling_point;
+
+    // TODO
+
+    return *this;
 }
 
 void Sprite::draw(Renderer& renderer) const
