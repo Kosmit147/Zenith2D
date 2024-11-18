@@ -19,9 +19,22 @@ template<typename T> struct Vec2
 
     constexpr T length() const;
     constexpr Vec2 normalized() const;
-    constexpr void normalize();
+    constexpr Vec2& normalize();
+    constexpr Vec2 abs() const;
+
+    constexpr Vec2 translated(const Vec2& translation) const;
+    constexpr Vec2& translate(const Vec2& translation);
+    constexpr Vec2 rotated(float angle) const;
+    constexpr Vec2& rotate(float angle);
+    constexpr Vec2 rotated(float angle, const Vec2& pivot_point) const;
+    constexpr Vec2& rotate(float angle, const Vec2& pivot_point);
+    constexpr Vec2 scaled(float factor) const;
+    constexpr Vec2& scale(float factor);
+    constexpr Vec2 scaled(float factor, const Vec2& scaling_point) const;
+    constexpr Vec2& scale(float factor, const Vec2& scaling_point);
+
     constexpr Vec2 reflected(const Vec2& normal) const;
-    constexpr void reflect(const Vec2& normal);
+    constexpr Vec2& reflect(const Vec2& normal);
 
     constexpr Vec2 operator+(const Vec2& other) const;
     constexpr Vec2 operator-(const Vec2& other) const;
@@ -46,6 +59,9 @@ using Vec2i = Vec2<i32>;
 using Vec2f = Vec2<float>;
 using Vec2d = Vec2<double>;
 
+template<typename T> constexpr Vec2<T> operator*(T val, const Vec2<T>& vec);
+
+template<typename T> constexpr Vec2<T> abs(const Vec2<T>& vec);
 template<typename T> constexpr T dot(const Vec2<T>& a, const Vec2<T>& b);
 
 } // namespace zth
