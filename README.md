@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/Kosmit147/Zenith2D/blob/master/LICENSE.md)
 [![Build](https://github.com/Kosmit147/Zenith2D/actions/workflows/ci.yml/badge.svg)](https://github.com/Kosmit147/Zenith2D/actions/workflows/ci.yml)
 
-A simple 2D video game engine which uses SFML made for a university project.
+A simple 2D video game engine which uses SFML.
 
 </div>
 
